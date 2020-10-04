@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shopApp/models/cart_model.dart';
+import 'package:shopApp/models/product_model.dart';
+import 'package:shopApp/pages/home_page/components/product_card_view.dart';
 import 'package:shopApp/size_config.dart';
-import 'package:shopApp/views/home_page/components/product_card_view.dart';
 
 class HomePage extends StatelessWidget {
   final String title;
+  final List<ProductModel> products;
+
   static const Map<String, IconData> drawerOptions = {
     'Shop': Icons.shopping_cart,
     'Orders': Icons.credit_card,
     'Manage Products': Icons.edit
   };
 
-  const HomePage({Key key, this.title}) : super(key: key);
+  const HomePage(this.title, this.products);
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +43,11 @@ class HomePage extends StatelessWidget {
                       color: Colors.deepOrange,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Text('1'),
+                        child: Consumer<CartModel>(
+                          builder: (context, cart, child) {
+                            return Text(cart.qtdProducts.toString());
+                          },
+                        ),
                       ),
                     ),
                     borderRadius: BorderRadius.circular(90),
@@ -80,11 +89,7 @@ class HomePage extends StatelessWidget {
           padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
           crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
           mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-          children: [
-            ProductCardView(),
-            ProductCardView(),
-            ProductCardView(),
-          ],
+          children: products.map((e) => ProductCardView(e)).toList(),
         ),
       ),
     );
