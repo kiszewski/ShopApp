@@ -3,17 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/favorite_model.dart';
 import 'package:shopApp/models/products_model.dart';
+import 'package:shopApp/pages/home_page/components/drawer_view.dart';
 import 'package:shopApp/pages/home_page/components/product_card_view.dart';
 import 'package:shopApp/size_config.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
-
-  static const Map<String, IconData> drawerOptions = {
-    'Shop': Icons.shopping_cart,
-    'Orders': Icons.credit_card,
-    'Manage Products': Icons.edit
-  };
 
   HomePage(this.title);
 
@@ -85,31 +80,7 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Container(
-              height: SizeConfig.blockSizeVertical * 20,
-              width: double.maxFinite,
-              child: Center(child: Text('Hello Friend!')),
-              color: Theme.of(context).primaryColor,
-            ),
-            Container(
-              height: SizeConfig.blockSizeVertical * 80,
-              width: double.maxFinite,
-              child: ListView.builder(
-                  itemCount: HomePage.drawerOptions.length,
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading:
-                          Icon(HomePage.drawerOptions.values.toList()[index]),
-                      title: Text(HomePage.drawerOptions.keys.toList()[index]),
-                    );
-                  }),
-            ),
-          ],
-        ),
-      ),
+      drawer: DrawerView(),
       body: Center(
         child: GridView.count(
           childAspectRatio: 1.5,
