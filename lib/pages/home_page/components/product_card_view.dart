@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
+import 'package:shopApp/models/favorite_model.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/size_config.dart';
 
@@ -11,6 +12,8 @@ class ProductCardView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final FavoriteModel favoriteModel = Provider.of<FavoriteModel>(context);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
@@ -36,10 +39,12 @@ class ProductCardView extends StatelessWidget {
                   children: [
                     IconButton(
                         icon: Icon(
-                          Icons.favorite_border,
+                          favoriteModel.isFavorite(product)
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: Colors.deepOrange,
                         ),
-                        onPressed: () {}),
+                        onPressed: () => favoriteModel.toggleFavorite(product)),
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
