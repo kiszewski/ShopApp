@@ -4,6 +4,7 @@ import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/favorite_model.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/products_model.dart';
+import 'package:shopApp/pages/cart_page/cart_page.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (context) => HomePage('MyShop'),
+          'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
         },
       ),

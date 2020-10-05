@@ -53,7 +53,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.shopping_cart),
-                  onPressed: () {},
+                  onPressed: () => Navigator.pushNamed(context, 'cart'),
                 ),
                 Positioned(
                   right: 10,

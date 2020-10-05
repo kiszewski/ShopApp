@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:shopApp/models/product_model.dart';
 
 class CartModel extends ChangeNotifier {
-  List<ProductModel> _productsInCart = [];
+  Set<ProductModel> _productsInCart = {};
 
-  List<ProductModel> get productsInCart => _productsInCart;
+  Set<ProductModel> get productsInCart => _productsInCart;
 
   void addProduct(ProductModel product) {
     _productsInCart.add(product);
