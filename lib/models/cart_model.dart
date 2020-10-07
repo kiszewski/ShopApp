@@ -7,7 +7,6 @@ class CartModel extends ChangeNotifier {
   Set<ProductModel> get productsInCart => _productsInCart;
 
   void addProduct(ProductModel product) {
-    product.qtd = 1;
     _productsInCart.add(product);
     notifyListeners();
   }
@@ -25,6 +24,11 @@ class CartModel extends ChangeNotifier {
   void decreaseQtd(ProductModel productModel) {
     productModel.decreaseQtd();
     notifyListeners();
+  }
+
+  double totalInCart() {
+    return _productsInCart.fold(
+        0, (previousValue, product) => previousValue + product.totalValue);
   }
 
   int get qtdProducts => _productsInCart.length;

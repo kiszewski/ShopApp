@@ -16,4 +16,6 @@ class ProductModel {
       qtd--;
     }
   }
+
+  double get totalValue => qtd * price;
 }
