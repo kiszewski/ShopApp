@@ -18,7 +18,49 @@ class CartPage extends StatelessWidget {
         itemBuilder: (context, index) {
           return ListTile(
             contentPadding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 2),
-            trailing: Text('x1'),
+            trailing: Container(
+              width: 140,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        icon: Icon(
+                          Icons.keyboard_arrow_up,
+                        ),
+                        onPressed: () {
+                          cartModel.increaseQtd(
+                              cartModel.productsInCart.toList()[index]);
+                        },
+                      ),
+                      Text('${cartModel.productsInCart.toList()[index].qtd}'),
+                      IconButton(
+                        padding: EdgeInsets.zero,
+                        constraints: BoxConstraints(),
+                        icon: Icon(Icons.keyboard_arrow_down),
+                        onPressed: () {
+                          cartModel.decreaseQtd(
+                              cartModel.productsInCart.toList()[index]);
+                        },
+                      ),
+                      IconButton(
+                        icon: Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          cartModel.removeProduct(
+                              cartModel.productsInCart.toList()[index]);
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             title: Text(cartModel.productsInCart.toList()[index].name),
             leading: Container(
               width: SizeConfig.blockSizeHorizontal * 15,

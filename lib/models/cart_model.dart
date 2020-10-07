@@ -7,12 +7,23 @@ class CartModel extends ChangeNotifier {
   Set<ProductModel> get productsInCart => _productsInCart;
 
   void addProduct(ProductModel product) {
+    product.qtd = 1;
     _productsInCart.add(product);
     notifyListeners();
   }
 
   void removeProduct(ProductModel product) {
     _productsInCart.remove(product);
+    notifyListeners();
+  }
+
+  void increaseQtd(ProductModel productModel) {
+    productModel.increaseQtd();
+    notifyListeners();
+  }
+
+  void decreaseQtd(ProductModel productModel) {
+    productModel.decreaseQtd();
     notifyListeners();
   }
 

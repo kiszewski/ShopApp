@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/favorite_model.dart';
-import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/products_model.dart';
 import 'package:shopApp/pages/cart_page/cart_page.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
