@@ -27,6 +27,18 @@ class ProductsModel extends ChangeNotifier {
             'https://artwalk.vteximg.com.br/arquivos/ids/218426-1000-1000/Tenis-Nike-Air-Max-97-Masculino-Multicolor.jpg?v=637091629305300000',
         price: 89,
         description: 'Tenis Nike preto'),
+    ProductModel(
+        name: 'Tenis preto',
+        imageUrl:
+            'https://artwalk.vteximg.com.br/arquivos/ids/218426-1000-1000/Tenis-Nike-Air-Max-97-Masculino-Multicolor.jpg?v=637091629305300000',
+        price: 89,
+        description: 'Tenis Nike preto'),
+    ProductModel(
+        name: 'Tenis preto',
+        imageUrl:
+            'https://artwalk.vteximg.com.br/arquivos/ids/218426-1000-1000/Tenis-Nike-Air-Max-97-Masculino-Multicolor.jpg?v=637091629305300000',
+        price: 89,
+        description: 'Tenis Nike preto'),
   ];
 
   List<ProductModel> get products => _products;

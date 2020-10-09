@@ -1,10 +1,17 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
+import 'package:shopApp/models/orders_model.dart';
 import 'package:shopApp/models/product_model.dart';
 
 class CartModel extends ChangeNotifier {
   Set<ProductModel> _productsInCart = {};
 
   Set<ProductModel> get productsInCart => _productsInCart;
+
+  double get totalInCart => _productsInCart.fold(
+      0, (previousValue, product) => previousValue + product.totalValue);
+
+  int get qtdProducts => _productsInCart.length;
 
   void addProduct(ProductModel product) {
     _productsInCart.add(product);
@@ -26,10 +33,12 @@ class CartModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  double totalInCart() {
-    return _productsInCart.fold(
-        0, (previousValue, product) => previousValue + product.totalValue);
-  }
+  void order(BuildContext context) {
+    OrdersModel ordersModel = Provider.of<OrdersModel>(context);
 
-  int get qtdProducts => _productsInCart.length;
+    ordersModel.addOrder(Order(this._productsInCart.toList()));
+
+    _productsInCart.clear();
+    notifyListeners();
+  }
 }

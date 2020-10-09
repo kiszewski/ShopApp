@@ -4,7 +4,7 @@ import 'package:shopApp/size_config.dart';
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
     DrawerOption(Icons.shopping_cart, 'Shop', '/'),
-    DrawerOption(Icons.credit_card, 'Orders', '/'),
+    DrawerOption(Icons.credit_card, 'Orders', 'orders'),
     DrawerOption(Icons.edit, 'Manage Products', '/'),
   ];
 
