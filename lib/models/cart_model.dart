@@ -14,7 +14,7 @@ class CartModel extends ChangeNotifier {
   int get qtdProducts => _productsInCart.length;
 
   void addProduct(ProductModel product) {
-    _productsInCart.add(product);
+    _productsInCart.add(product.copy());
     notifyListeners();
   }
 

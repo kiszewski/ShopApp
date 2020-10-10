@@ -17,5 +17,14 @@ class ProductModel {
     }
   }
 
+  ProductModel copy() {
+    return ProductModel(
+      name: this.name,
+      imageUrl: this.imageUrl,
+      price: this.price,
+      description: this.description,
+    );
+  }
+
   double get totalValue => qtd * price;
 }
