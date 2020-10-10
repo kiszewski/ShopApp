@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/size_config.dart';
+import 'package:shopApp/utils/size_config.dart';
 
 class CartPage extends StatelessWidget {
   @override

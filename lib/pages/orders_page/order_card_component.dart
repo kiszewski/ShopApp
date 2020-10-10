@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shopApp/models/orders_model.dart';
-import 'package:shopApp/size_config.dart';
+import 'package:shopApp/utils/size_config.dart';
 
 class OrderCard extends StatefulWidget {
   final Order order;

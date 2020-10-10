@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/favorite_model.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/size_config.dart';
+import 'package:shopApp/utils/size_config.dart';
 
 class ProductCardView extends StatelessWidget {
   final ProductModel product;

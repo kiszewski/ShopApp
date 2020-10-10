@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/size_config.dart';
+import 'package:shopApp/utils/size_config.dart';
 
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
     DrawerOption(Icons.shopping_cart, 'Shop', '/'),
     DrawerOption(Icons.credit_card, 'Orders', 'orders'),
-    DrawerOption(Icons.edit, 'Manage Products', '/'),
+    DrawerOption(Icons.edit, 'Manage Products', 'products_registration'),
   ];
 
   @override
