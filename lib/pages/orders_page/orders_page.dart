@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/orders_model.dart';
 import 'package:shopApp/pages/home_page/components/drawer_view.dart';
+import 'package:shopApp/pages/orders_page/order_card_component.dart';
 
 class OrdersPage extends StatelessWidget {
   @override
@@ -16,12 +16,7 @@ class OrdersPage extends StatelessWidget {
       drawer: DrawerView(),
       body: ListView.builder(
         itemBuilder: (context, index) {
-          Order order = ordersModel.orders[index];
-
-          return ListTile(
-            title: Text('R\$ ${order.totalOrder.toStringAsFixed(2)}'),
-            subtitle: Text(DateFormat('dd/M/y H:m').format(order.date)),
-          );
+          return OrderCard(ordersModel.orders[index]);
         },
         itemCount: ordersModel.orders.length,
       ),
