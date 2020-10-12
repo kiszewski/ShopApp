@@ -8,7 +8,8 @@ import 'package:shopApp/pages/cart_page/cart_page.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/orders_page/orders_page.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
-import 'package:shopApp/pages/product_registration_page/products_list_page.dart';
+import 'package:shopApp/pages/registration_pages/product_form_page.dart';
+import 'package:shopApp/pages/registration_pages/products_list_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -36,7 +37,8 @@ class MyApp extends StatelessWidget {
           'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
           'orders': (context) => OrdersPage(),
-          'products_registration': (context) => ProductsListPage(),
+          'products_list': (context) => ProductsListPage(),
+          'product_form': (context) => ProductFormPage(),
         },
       ),
     );

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/products_model.dart';
-import 'package:shopApp/pages/home_page/components/drawer_view.dart';
+import 'package:shopApp/pages/drawer/drawer_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class ProductsListPage extends StatelessWidget {
@@ -13,7 +13,11 @@ class ProductsListPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Products'),
-        actions: [IconButton(icon: Icon(Icons.add), onPressed: () {})],
+        actions: [
+          IconButton(
+              icon: Icon(Icons.add),
+              onPressed: () => Navigator.pushNamed(context, 'product_form'))
+        ],
       ),
       drawer: DrawerView(),
       body: ListView.builder(
@@ -27,12 +31,19 @@ class ProductsListPage extends StatelessWidget {
               title: Text(product.name),
               leading: ClipOval(
                 child: Container(
-                  child: Image.network(
-                    product.imageUrl,
-                    fit: BoxFit.cover,
-                    height: SizeConfig.blockSizeHorizontal * 12,
-                    width: SizeConfig.blockSizeHorizontal * 12,
-                  ),
+                  child: product.imageUrl is String
+                      ? Image.network(
+                          product.imageUrl,
+                          fit: BoxFit.cover,
+                          height: SizeConfig.blockSizeHorizontal * 12,
+                          width: SizeConfig.blockSizeHorizontal * 12,
+                        )
+                      : Image.file(
+                          product.imageUrl,
+                          fit: BoxFit.cover,
+                          height: SizeConfig.blockSizeHorizontal * 12,
+                          width: SizeConfig.blockSizeHorizontal * 12,
+                        ),
                 ),
               ),
               trailing: Row(

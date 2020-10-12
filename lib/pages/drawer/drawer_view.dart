@@ -5,7 +5,7 @@ class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
     DrawerOption(Icons.shopping_cart, 'Shop', '/'),
     DrawerOption(Icons.credit_card, 'Orders', 'orders'),
-    DrawerOption(Icons.edit, 'Manage Products', 'products_registration'),
+    DrawerOption(Icons.edit, 'Manage Products', 'products_list'),
   ];
 
   @override

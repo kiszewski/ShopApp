@@ -75,6 +75,7 @@ class CartPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       child: FittedBox(
                         fit: BoxFit.cover,
+                        //TO DO: A Image Class to show both network or file
                         child: Image.network(product.imageUrl),
                       ),
                     ),

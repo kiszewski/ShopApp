@@ -18,7 +18,16 @@ class ProductDetailsPage extends StatelessWidget {
               width: SizeConfig.blockSizeHorizontal * 100,
               height: SizeConfig.blockSizeVertical * 40,
               child: FittedBox(
-                  fit: BoxFit.cover, child: Image.network(product.imageUrl)),
+                fit: BoxFit.cover,
+                child: product.imageUrl is String
+                    ? Image.network(
+                        product.imageUrl,
+                        fit: BoxFit.cover,
+                      )
+                    : Image.file(
+                        product.imageUrl,
+                      ),
+              ),
             ),
             SizedBox(height: 10),
             Text(

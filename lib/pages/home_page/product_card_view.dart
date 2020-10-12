@@ -24,10 +24,15 @@ class ProductCardView extends StatelessWidget {
             Container(
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
-              child: Image.network(
-                product.imageUrl,
-                fit: BoxFit.cover,
-              ),
+              child: product.imageUrl is String
+                  ? Image.network(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(
+                      product.imageUrl,
+                      fit: BoxFit.cover,
+                    ),
             ),
             Positioned(
               bottom: 0,

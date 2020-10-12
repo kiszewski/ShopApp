@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:shopApp/models/cart_model.dart';
 import 'package:shopApp/models/favorite_model.dart';
 import 'package:shopApp/models/products_model.dart';
-import 'package:shopApp/pages/home_page/components/drawer_view.dart';
-import 'package:shopApp/pages/home_page/components/product_card_view.dart';
+import 'package:shopApp/pages/drawer/drawer_view.dart';
+import 'package:shopApp/pages/home_page/product_card_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {
