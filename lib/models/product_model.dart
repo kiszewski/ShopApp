@@ -1,13 +1,18 @@
 class ProductModel {
-  final String name;
-  final dynamic imageUrl;
-  final double price;
-  final String description;
+  final String _name;
+  final dynamic _imageUrl;
+  final double _price;
+  final String _description;
   int qtd = 1;
 
-  ProductModel({this.name, this.imageUrl, this.price, this.description});
+  ProductModel(this._name, this._imageUrl, this._price, this._description);
 
-  double get totalValue => qtd * price;
+  String get name => this._name;
+  dynamic get imageUrl => this._imageUrl;
+  double get price => this._price;
+  String get description => this._description;
+
+  double get totalValue => qtd * _price;
 
   void increaseQtd() => qtd++;
 
@@ -15,10 +20,10 @@ class ProductModel {
 
   ProductModel copy() {
     return new ProductModel(
-      name: this.name,
-      imageUrl: this.imageUrl,
-      price: this.price,
-      description: this.description,
+      this._name,
+      this._imageUrl,
+      this._price,
+      this._description,
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopApp/models/product_model.dart';
 
-class FavoriteModel extends ChangeNotifier {
+class FavoriteViewModel extends ChangeNotifier {
   Set<ProductModel> _favoriteProducts = {};
 
   Set<ProductModel> get favorites => _favoriteProducts;

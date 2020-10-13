@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/models/cart_model.dart';
-import 'package:shopApp/models/favorite_model.dart';
-import 'package:shopApp/models/products_model.dart';
-import 'package:shopApp/pages/drawer/drawer_view.dart';
+import 'package:shopApp/pages/components/drawer/drawer_view.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
+import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
+import 'package:shopApp/viewmodels/products_viewmodel.dart';
 import 'package:shopApp/pages/home_page/product_card_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 
@@ -27,8 +27,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final ProductsModel productsModel = Provider.of<ProductsModel>(context);
-    final FavoriteModel favoriteModel = Provider.of<FavoriteModel>(context);
+    final ProductsViewModel productsModel =
+        Provider.of<ProductsViewModel>(context);
+    final FavoriteViewModel favoriteModel =
+        Provider.of<FavoriteViewModel>(context);
     SizeConfig().init(context);
 
     return Scaffold(
@@ -65,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.deepOrange,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
-                        child: Consumer<CartModel>(
+                        child: Consumer<CartViewModel>(
                           builder: (context, cart, child) {
                             return Text(cart.qtdProducts.toString());
                           },

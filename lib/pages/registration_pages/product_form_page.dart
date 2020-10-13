@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/models/products_model.dart';
+import 'package:shopApp/viewmodels/products_viewmodel.dart';
 
 class ProductFormPage extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductsModel productsModel = Provider.of<ProductsModel>(context);
+    ProductsViewModel productsModel = Provider.of<ProductsViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(),
@@ -46,10 +46,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             productsModel.addProduct(ProductModel(
-              description: _descriptionController.text,
-              name: _nameController.text,
-              price: double.tryParse(_priceController.text) ?? 0.0,
-              imageUrl: _image,
+              _descriptionController.text,
+              _image,
+              double.tryParse(_priceController.text) ?? 0.0,
+              _nameController.text,
             ));
 
             Navigator.popAndPushNamed(context, '/').then((_) {

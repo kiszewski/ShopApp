@@ -1,9 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/models/orders_model.dart';
+import 'package:shopApp/models/order_model.dart';
+import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 
-class CartModel extends ChangeNotifier {
+class CartViewModel extends ChangeNotifier {
   Set<ProductModel> _productsInCart = {};
 
   Set<ProductModel> get productsInCart => _productsInCart;
@@ -34,9 +35,10 @@ class CartModel extends ChangeNotifier {
   }
 
   void order(BuildContext context) {
-    OrdersModel ordersModel = Provider.of<OrdersModel>(context);
+    OrdersViewModel ordersModel = Provider.of<OrdersViewModel>(context);
 
-    ordersModel.addOrder(Order(this._productsInCart.toList()));
+    Order order = Order(this._productsInCart.toList());
+    ordersModel.addOrder(order);
 
     _productsInCart.clear();
     notifyListeners();
