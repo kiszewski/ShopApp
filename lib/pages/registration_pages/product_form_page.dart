@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
@@ -18,22 +15,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
-
-  File _image;
-
-  Future _getImage() async {
-    final ImagePicker _imagePicker = ImagePicker();
-
-    var pickedFile = await _imagePicker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _image = File(pickedFile.path);
-      } else {
-        print('No image selected.');
-      }
-    });
-  }
+  final _imageUrl = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +29,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           if (_formKey.currentState.validate()) {
             productsModel.addProduct(ProductModel(
               _nameController.text,
-              _image,
+              _imageUrl.text,
               double.tryParse(_priceController.text) ?? 0.0,
               _descriptionController.text,
             ));
@@ -86,7 +68,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
                 TextFormField(
                   controller: _descriptionController,
-                  keyboardType: TextInputType.url,
+                  keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                       labelText: 'Descrição*',
                       hintText: 'Digite a descrição do produto'),
@@ -94,16 +76,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     return value.isEmpty ? 'Digite algo' : null;
                   },
                 ),
-                IconButton(
-                  icon: Icon(Icons.photo_library),
-                  onPressed: _getImage,
+                TextFormField(
+                  controller: _imageUrl,
+                  keyboardType: TextInputType.url,
+                  decoration: InputDecoration(
+                      labelText: 'Link da imagem*',
+                      hintText: 'Coloque o link da imagem aqui'),
+                  validator: (String value) {
+                    return value.isEmpty ? 'Digite algo' : null;
+                  },
                 ),
-                _image != null
-                    ? Image.file(
-                        _image,
-                        width: 100,
-                      )
-                    : Text('')
               ],
             )),
       ),

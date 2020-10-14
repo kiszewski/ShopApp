@@ -4,6 +4,7 @@ import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductCardView extends StatelessWidget {
   final ProductModel product;
@@ -25,15 +26,11 @@ class ProductCardView extends StatelessWidget {
             Container(
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
-              child: product.imageUrl is String
-                  ? Image.network(
-                      product.imageUrl,
-                      fit: BoxFit.cover,
-                    )
-                  : Image.file(
-                      product.imageUrl,
-                      fit: BoxFit.cover,
-                    ),
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: product.imageUrl,
+                fit: BoxFit.cover,
+              ),
             ),
             Positioned(
               bottom: 0,

@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class CartPage extends StatelessWidget {
   @override
@@ -75,8 +76,11 @@ class CartPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(100),
                       child: FittedBox(
                         fit: BoxFit.cover,
-                        //TO DO: A Image Class to show both network or file
-                        child: Image.network(product.imageUrl),
+                        child: FadeInImage.memoryNetwork(
+                          fadeInDuration: Duration(seconds: 2),
+                          placeholder: kTransparentImage,
+                          image: product.imageUrl,
+                        ),
                       ),
                     ),
                   ),

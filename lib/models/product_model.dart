@@ -1,6 +1,6 @@
 class ProductModel {
   final String _name;
-  final dynamic _imageUrl;
+  final String _imageUrl;
   final double _price;
   final String _description;
   int qtd = 1;
