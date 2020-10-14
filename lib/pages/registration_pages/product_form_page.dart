@@ -46,10 +46,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
         onPressed: () {
           if (_formKey.currentState.validate()) {
             productsModel.addProduct(ProductModel(
-              _descriptionController.text,
+              _nameController.text,
               _image,
               double.tryParse(_priceController.text) ?? 0.0,
-              _nameController.text,
+              _descriptionController.text,
             ));
 
             Navigator.popAndPushNamed(context, '/').then((_) {
