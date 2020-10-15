@@ -3,9 +3,9 @@ import 'package:shopApp/utils/size_config.dart';
 
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
-    DrawerOption(Icons.shopping_cart, 'Shop', '/'),
-    DrawerOption(Icons.credit_card, 'Orders', 'orders'),
-    DrawerOption(Icons.edit, 'Manage Products', 'products_list'),
+    DrawerOption(Icons.shopping_cart, 'Loja', '/'),
+    DrawerOption(Icons.credit_card, 'Compras', 'orders'),
+    DrawerOption(Icons.edit, 'Gerenciar produtos', 'products_list'),
   ];
 
   @override
@@ -16,7 +16,7 @@ class DrawerView extends StatelessWidget {
           Container(
             height: SizeConfig.blockSizeVertical * 20,
             width: double.maxFinite,
-            child: Center(child: Text('Hello Friend!')),
+            child: Center(child: Text('Seja bem-vindo(a)')),
             color: Theme.of(context).primaryColor,
           ),
           Container(

@@ -14,7 +14,7 @@ class ProductsListPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Products'),
+        title: Text('Produtos'),
         actions: [
           IconButton(
               icon: Icon(Icons.add),
