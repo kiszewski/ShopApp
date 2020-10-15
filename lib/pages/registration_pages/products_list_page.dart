@@ -4,6 +4,7 @@ import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductsListPage extends StatelessWidget {
   @override
@@ -32,20 +33,13 @@ class ProductsListPage extends StatelessWidget {
               title: Text(product.name),
               leading: ClipOval(
                 child: Container(
-                  child: product.imageUrl is String
-                      ? Image.network(
-                          product.imageUrl,
-                          fit: BoxFit.cover,
-                          height: SizeConfig.blockSizeHorizontal * 12,
-                          width: SizeConfig.blockSizeHorizontal * 12,
-                        )
-                      : Image.file(
-                          product.imageUrl,
-                          fit: BoxFit.cover,
-                          height: SizeConfig.blockSizeHorizontal * 12,
-                          width: SizeConfig.blockSizeHorizontal * 12,
-                        ),
-                ),
+                    child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: product.imageUrl,
+                  fit: BoxFit.cover,
+                  height: SizeConfig.blockSizeHorizontal * 12,
+                  width: SizeConfig.blockSizeHorizontal * 12,
+                )),
               ),
               trailing: Row(
                 mainAxisAlignment: MainAxisAlignment.end,

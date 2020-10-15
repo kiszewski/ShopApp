@@ -16,6 +16,9 @@ class ProductCardView extends StatelessWidget {
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
 
+    final CartViewModel cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GestureDetector(
@@ -63,8 +66,17 @@ class ProductCardView extends StatelessWidget {
                           color: Colors.deepOrange,
                         ),
                         onPressed: () {
-                          Provider.of<CartViewModel>(context, listen: false)
-                              .addProduct(product);
+                          if (cartViewModel.addProduct(product)) {
+                            Scaffold.of(context).showSnackBar(SnackBar(
+                              content: Text('Produto adicionado no carrinho'),
+                              duration: Duration(seconds: 5),
+                              action: SnackBarAction(
+                                  label: 'Desfazer',
+                                  onPressed: () {
+                                    cartViewModel.removeProduct(product);
+                                  }),
+                            ));
+                          }
                         }),
                   ],
                 ),

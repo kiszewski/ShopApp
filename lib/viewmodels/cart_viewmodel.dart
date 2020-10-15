@@ -14,13 +14,22 @@ class CartViewModel extends ChangeNotifier {
 
   int get qtdProducts => _productsInCart.length;
 
-  void addProduct(ProductModel product) {
-    _productsInCart.add(product.copy());
-    notifyListeners();
+  bool addProduct(ProductModel product) {
+    bool alreadyInCart =
+        _productsInCart.any((element) => element.id == product.id);
+
+    if (!alreadyInCart) {
+      _productsInCart.add(product.copy());
+      notifyListeners();
+
+      return true;
+    } else {
+      return false;
+    }
   }
 
   void removeProduct(ProductModel product) {
-    _productsInCart.remove(product);
+    _productsInCart.removeWhere((element) => product.id == element.id);
     notifyListeners();
   }
 

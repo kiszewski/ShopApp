@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   @override
@@ -17,16 +18,10 @@ class ProductDetailsPage extends StatelessWidget {
             Container(
               width: SizeConfig.blockSizeHorizontal * 100,
               height: SizeConfig.blockSizeVertical * 40,
-              child: FittedBox(
+              child: FadeInImage.memoryNetwork(
+                placeholder: kTransparentImage,
+                image: product.imageUrl,
                 fit: BoxFit.cover,
-                child: product.imageUrl is String
-                    ? Image.network(
-                        product.imageUrl,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.file(
-                        product.imageUrl,
-                      ),
               ),
             ),
             SizedBox(height: 10),

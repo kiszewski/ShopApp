@@ -22,25 +22,23 @@ class _ProductFormPageState extends State<ProductFormPage> {
     ProductsViewModel productsModel = Provider.of<ProductsViewModel>(context);
 
     return Scaffold(
-      appBar: AppBar(),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          if (_formKey.currentState.validate()) {
-            productsModel.addProduct(ProductModel(
-              _nameController.text,
-              _imageUrl.text,
-              double.tryParse(_priceController.text) ?? 0.0,
-              _descriptionController.text,
-            ));
-
-            Navigator.popAndPushNamed(context, '/').then((_) {
-              Scaffold.of(context)
-                  .showSnackBar(SnackBar(content: Text('Processing Data')));
-            });
-          }
-        },
+      appBar: AppBar(
+        title: Text('Criar Produto'),
       ),
+      floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () {
+            if (_formKey.currentState.validate()) {
+              productsModel.addProduct(ProductModel(
+                _nameController.text,
+                _imageUrl.text,
+                double.tryParse(_priceController.text) ?? 0.0,
+                _descriptionController.text,
+              ));
+
+              Navigator.of(context).pop();
+            }
+          }),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
