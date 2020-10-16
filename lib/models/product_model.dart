@@ -2,10 +2,10 @@ import 'dart:math';
 
 class ProductModel {
   final Random _rnd = Random();
-  final String _name;
-  final String _imageUrl;
-  final double _price;
-  final String _description;
+  String _name;
+  String _imageUrl;
+  double _price;
+  String _description;
   int qtd = 1;
   int id;
 
@@ -30,4 +30,9 @@ class ProductModel {
         this._name, this._imageUrl, this._price, this._description,
         id: this.id);
   }
+
+  set setName(String name) => this._name = name;
+  set setPrice(double price) => this._price = price;
+  set setDescription(String description) => this._description = description;
+  set setImageUrl(String imageUrl) => this._imageUrl = imageUrl;
 }

@@ -45,7 +45,12 @@ class ProductsListPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  IconButton(icon: Icon(Icons.edit), onPressed: () {}),
+                  IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .pushNamed('product_form', arguments: product);
+                      }),
                   IconButton(icon: Icon(Icons.delete), onPressed: () {})
                 ],
               ),

@@ -19,7 +19,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    ProductsViewModel productsModel = Provider.of<ProductsViewModel>(context);
+    final ProductsViewModel productsModel =
+        Provider.of<ProductsViewModel>(context);
+    ProductModel product = ModalRoute.of(context).settings.arguments;
+
+    _nameController.text = product?.name;
+    _priceController.text = product?.price?.toString();
+    _descriptionController.text = product?.description;
+    _imageUrl.text = product?.imageUrl;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,12 +36,20 @@ class _ProductFormPageState extends State<ProductFormPage> {
           child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState.validate()) {
-              productsModel.addProduct(ProductModel(
-                _nameController.text,
-                _imageUrl.text,
-                double.tryParse(_priceController.text) ?? 0.0,
-                _descriptionController.text,
-              ));
+              if (product == null) {
+                productsModel.addProduct(ProductModel(
+                  _nameController.text,
+                  _imageUrl.text,
+                  double.tryParse(_priceController.text) ?? 0.0,
+                  _descriptionController.text,
+                ));
+              } else {
+                product.setName = _nameController.text;
+                product.setPrice =
+                    double.tryParse(_priceController.text) ?? 0.0;
+                product.setDescription = _descriptionController.text;
+                product.setImageUrl = _imageUrl.text;
+              }
 
               Navigator.of(context).pop();
             }
