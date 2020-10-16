@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
+import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -9,8 +10,10 @@ import 'package:transparent_image/transparent_image.dart';
 class ProductsListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final ProductsViewModel productsModel =
+    final ProductsViewModel productsViewModel =
         Provider.of<ProductsViewModel>(context);
+    final FavoriteViewModel favoriteViewModel =
+        Provider.of<FavoriteViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -23,9 +26,9 @@ class ProductsListPage extends StatelessWidget {
       ),
       drawer: DrawerView(),
       body: ListView.builder(
-        itemCount: productsModel.qtdProducts,
+        itemCount: productsViewModel.qtdProducts,
         itemBuilder: (context, index) {
-          final ProductModel product = productsModel.products[index];
+          final ProductModel product = productsViewModel.products[index];
 
           return Card(
             elevation: 5,
@@ -51,7 +54,39 @@ class ProductsListPage extends StatelessWidget {
                         Navigator.of(context)
                             .pushNamed('product_form', arguments: product);
                       }),
-                  IconButton(icon: Icon(Icons.delete), onPressed: () {})
+                  IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: Text('Excluir produto'),
+                              content: Text(
+                                  'Você deseja excluir o produto ${product.name}?'),
+                              actions: [
+                                FlatButton(
+                                  onPressed: () => Navigator.of(context).pop(),
+                                  child: Text('Cancelar'),
+                                  textColor: Colors.grey,
+                                ),
+                                FlatButton(
+                                  onPressed: () {
+                                    if (favoriteViewModel.favorites
+                                        .contains(product)) {
+                                      favoriteViewModel.toggleFavorite(product);
+                                    }
+
+                                    productsViewModel.removeProduct(product);
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text('Excluir'),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      })
                 ],
               ),
             ),
