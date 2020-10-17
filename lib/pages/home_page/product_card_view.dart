@@ -11,13 +11,27 @@ class ProductCardView extends StatelessWidget {
 
   const ProductCardView(this.product);
 
+  void _addInCart(BuildContext ctx) {
+    final CartViewModel cartViewModel =
+        Provider.of<CartViewModel>(ctx, listen: false);
+
+    if (cartViewModel.addProduct(product)) {
+      Scaffold.of(ctx).showSnackBar(SnackBar(
+        content: Text('Produto adicionado no carrinho'),
+        duration: Duration(seconds: 5),
+        action: SnackBarAction(
+            label: 'Desfazer',
+            onPressed: () {
+              cartViewModel.removeProduct(product);
+            }),
+      ));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
-
-    final CartViewModel cartViewModel =
-        Provider.of<CartViewModel>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -65,19 +79,7 @@ class ProductCardView extends StatelessWidget {
                           Icons.shopping_cart,
                           color: Colors.deepOrange,
                         ),
-                        onPressed: () {
-                          if (cartViewModel.addProduct(product)) {
-                            Scaffold.of(context).showSnackBar(SnackBar(
-                              content: Text('Produto adicionado no carrinho'),
-                              duration: Duration(seconds: 5),
-                              action: SnackBarAction(
-                                  label: 'Desfazer',
-                                  onPressed: () {
-                                    cartViewModel.removeProduct(product);
-                                  }),
-                            ));
-                          }
-                        }),
+                        onPressed: () => _addInCart(context)),
                   ],
                 ),
               ),

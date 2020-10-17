@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/login_page/login_page.dart';
 import 'package:shopApp/services/authentication_service.dart';
+import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/orders_viewmodel.dart';
@@ -62,6 +63,7 @@ class MyApp extends StatelessWidget {
 class WrapperAuthentication extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     User user = context.watch<User>();
 
     if (user == null) {

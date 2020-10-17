@@ -31,7 +31,6 @@ class _HomePageState extends State<HomePage> {
         Provider.of<ProductsViewModel>(context);
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
-    SizeConfig().init(context);
 
     return Scaffold(
       appBar: AppBar(
