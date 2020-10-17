@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/utils/size_config.dart';
 
@@ -16,7 +17,17 @@ class DrawerView extends StatelessWidget {
           Container(
             height: SizeConfig.blockSizeVertical * 20,
             width: double.maxFinite,
-            child: Center(child: Text('Seja bem-vindo(a)')),
+            child: Center(
+                child: Column(
+              children: [
+                Text('Seja bem-vindo(a)'),
+                IconButton(
+                    icon: Icon(Icons.exit_to_app),
+                    onPressed: () async {
+                      await FirebaseAuth.instance.signOut();
+                    })
+              ],
+            )),
             color: Theme.of(context).primaryColor,
           ),
           Container(
@@ -26,10 +37,10 @@ class DrawerView extends StatelessWidget {
                 itemCount: drawerOptions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: Icon(drawerOptions[index].icon),
-                    title: Text(drawerOptions[index].title),
+                    leading: Icon(drawerOptions[index]._icon),
+                    title: Text(drawerOptions[index]._title),
                     onTap: () => Navigator.pushReplacementNamed(
-                        context, drawerOptions[index].route),
+                        context, drawerOptions[index]._route),
                   );
                 }),
           ),
@@ -40,9 +51,9 @@ class DrawerView extends StatelessWidget {
 }
 
 class DrawerOption {
-  final IconData icon;
-  final String title;
-  final String route;
+  final IconData _icon;
+  final String _title;
+  final String _route;
 
-  const DrawerOption(this.icon, this.title, this.route);
+  const DrawerOption(this._icon, this._title, this._route);
 }
