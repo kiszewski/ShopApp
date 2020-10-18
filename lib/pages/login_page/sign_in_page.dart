@@ -3,12 +3,12 @@ import 'package:shopApp/services/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/utils/size_config.dart';
 
-class LoginPage extends StatefulWidget {
+class SignInPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
@@ -17,7 +17,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: Text('Sign In'),
         centerTitle: true,
       ),
       body: Container(
@@ -45,19 +45,35 @@ class _LoginPageState extends State<LoginPage> {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 4,
               ),
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 25,
-                ),
-                child: Text('Entrar'),
-                onPressed: () {
-                  context.read<AuthenticationService>().signIn(
-                        email: _email.text,
-                        password: _password.text,
-                      );
-                },
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 10,
+                    ),
+                    child: Text('Cadastrar'),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('sign_up');
+                    },
+                  ),
+                  FlatButton(
+                    color: Theme.of(context).primaryColor,
+                    textColor: Colors.white,
+                    padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeHorizontal * 13,
+                    ),
+                    child: Text('Entrar'),
+                    onPressed: () {
+                      context.read<AuthenticationService>().signIn(
+                            email: _email.text,
+                            password: _password.text,
+                          );
+                    },
+                  ),
+                ],
               )
             ],
           ),

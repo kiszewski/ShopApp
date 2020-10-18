@@ -2,7 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/pages/login_page/login_page.dart';
+import 'package:shopApp/pages/login_page/sign_in_page.dart';
+import 'package:shopApp/pages/login_page/sign_up_page.dart';
 import 'package:shopApp/services/authentication_service.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
@@ -48,6 +49,7 @@ class MyApp extends StatelessWidget {
         ),
         routes: {
           '/': (context) => WrapperAuthentication(),
+          'sign_up': (context) => SignUpPage(),
           'home': (context) => HomePage('MyShop'),
           'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
@@ -67,7 +69,7 @@ class WrapperAuthentication extends StatelessWidget {
     User user = context.watch<User>();
 
     if (user == null) {
-      return LoginPage();
+      return SignInPage();
     } else {
       return HomePage('MyShop');
     }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:provider/provider.dart';
 
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
@@ -11,6 +12,8 @@ class DrawerView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    User user = context.watch<User>();
+
     return Drawer(
       child: Column(
         children: [
@@ -19,8 +22,9 @@ class DrawerView extends StatelessWidget {
             width: double.maxFinite,
             child: Center(
                 child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Seja bem-vindo(a)'),
+                Text('Seja bem-vindo(a) ${user?.email}'),
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
                     onPressed: () async {

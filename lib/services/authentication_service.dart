@@ -19,10 +19,10 @@ class AuthenticationService {
 
   Future<String> signUp({String email, String password}) async {
     try {
-      _firebaseAuth.createUserWithEmailAndPassword(
+      await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return 'User criado';
-    } on FirebaseAuthException catch (e) {
+      return 'Usuario criado';
+    } catch (e) {
       return e.message;
     }
   }
