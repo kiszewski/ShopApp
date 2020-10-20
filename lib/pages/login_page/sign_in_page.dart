@@ -43,35 +43,36 @@ class _SignInPageState extends State<SignInPage> {
                 autocorrect: false,
               ),
               SizedBox(
-                height: SizeConfig.blockSizeVertical * 4,
+                height: SizeConfig.blockSizeVertical * 2,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  FlatButton(
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 10,
+                  Expanded(
+                    child: FlatButton(
+                      color: Theme.of(context).accentColor,
+                      textColor: Colors.white,
+                      child: Text('Cadastrar'),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('sign_up');
+                      },
                     ),
-                    child: Text('Cadastrar'),
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('sign_up');
-                    },
                   ),
-                  FlatButton(
-                    color: Theme.of(context).primaryColor,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: SizeConfig.blockSizeHorizontal * 13,
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: FlatButton(
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                      child: Text('Entrar'),
+                      onPressed: () {
+                        context.read<AuthenticationService>().signIn(
+                              email: _email.text,
+                              password: _password.text,
+                            );
+                      },
                     ),
-                    child: Text('Entrar'),
-                    onPressed: () {
-                      context.read<AuthenticationService>().signIn(
-                            email: _email.text,
-                            password: _password.text,
-                          );
-                    },
                   ),
                 ],
               )

@@ -46,15 +46,15 @@ class _SignUpPageState extends State<SignUpPage> {
                 autocorrect: false,
               ),
               SizedBox(
-                height: SizeConfig.blockSizeVertical * 4,
+                height: SizeConfig.blockSizeVertical * 2,
               ),
               FlatButton(
                 color: Theme.of(context).primaryColor,
                 textColor: Colors.white,
                 padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 25,
+                  horizontal: SizeConfig.blockSizeHorizontal * 40,
                 ),
-                child: Text('Criar conta'),
+                child: FittedBox(child: Text('Criar conta')),
                 onPressed: () async {
                   String resp =
                       await context.read<AuthenticationService>().signUp(

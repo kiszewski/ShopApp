@@ -44,7 +44,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Shop App',
         theme: ThemeData(
-          primarySwatch: Colors.purple,
+          primaryColor: Colors.purple[300],
+          accentColor: Colors.deepOrange[300],
           visualDensity: VisualDensity.adaptivePlatformDensity,
         ),
         routes: {
