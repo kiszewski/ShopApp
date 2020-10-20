@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopApp/services/authentication_service.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class SignInPage extends StatefulWidget {
@@ -9,13 +10,30 @@ class SignInPage extends StatefulWidget {
 }
 
 class _SignInPageState extends State<SignInPage> {
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
+
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
+
+  _signIn() async {
+    if (_formKey.currentState.validate()) {
+      String resp = await context.read<AuthenticationService>().signIn(
+            email: _email.text,
+            password: _password.text,
+          );
+      if (resp == 'User criado') {
+        Navigator.of(context).pushReplacementNamed('home');
+      } else {
+        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: Text('Sign In'),
         centerTitle: true,
@@ -31,6 +49,7 @@ class _SignInPageState extends State<SignInPage> {
                   labelText: 'Email',
                 ),
                 keyboardType: TextInputType.emailAddress,
+                validator: GeneralFormFieldValidator.emailValidator,
               ),
               TextFormField(
                 controller: _password,
@@ -39,6 +58,7 @@ class _SignInPageState extends State<SignInPage> {
                 ),
                 obscureText: true,
                 keyboardType: TextInputType.visiblePassword,
+                validator: GeneralFormFieldValidator.passwordValidator,
                 enableSuggestions: false,
                 autocorrect: false,
               ),
@@ -66,12 +86,7 @@ class _SignInPageState extends State<SignInPage> {
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       child: Text('Entrar'),
-                      onPressed: () {
-                        context.read<AuthenticationService>().signIn(
-                              email: _email.text,
-                              password: _password.text,
-                            );
-                      },
+                      onPressed: _signIn,
                     ),
                   ),
                 ],

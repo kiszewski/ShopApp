@@ -21,7 +21,7 @@ class AuthenticationService {
     try {
       await _firebaseAuth.createUserWithEmailAndPassword(
           email: email, password: password);
-      return 'Usuario criado';
+      return 'User criado';
     } catch (e) {
       return e.message;
     }
