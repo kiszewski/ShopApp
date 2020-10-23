@@ -49,6 +49,9 @@ class _ProductFormPageState extends State<ProductFormPage> {
                     double.tryParse(_priceController.text) ?? 0.0;
                 product.setDescription = _descriptionController.text;
                 product.setImageUrl = _imageUrl.text;
+
+                // To Implement
+                productsModel.notifyListeners();
               }
 
               Navigator.of(context).pop();

@@ -41,27 +41,21 @@ class CartPage extends StatelessWidget {
                               icon: Icon(
                                 Icons.keyboard_arrow_up,
                               ),
-                              onPressed: () {
-                                cartModel.increaseQtd(product);
-                              },
+                              onPressed: () => cartModel.increaseQtd(product),
                             ),
                             Text('${product.qtd}'),
                             IconButton(
                               padding: EdgeInsets.zero,
                               constraints: BoxConstraints(),
                               icon: Icon(Icons.keyboard_arrow_down),
-                              onPressed: () {
-                                cartModel.decreaseQtd(product);
-                              },
+                              onPressed: () => cartModel.decreaseQtd(product),
                             ),
                             IconButton(
                               icon: Icon(
                                 Icons.close,
                                 color: Colors.red,
                               ),
-                              onPressed: () {
-                                cartModel.removeProduct(product);
-                              },
+                              onPressed: () => cartModel.removeProduct(product),
                             ),
                           ],
                         ),
