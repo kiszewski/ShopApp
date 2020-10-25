@@ -32,6 +32,10 @@ class _HomePageState extends State<HomePage> {
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
 
+    final List<ProductCardView> productsToShow = onlyFavorites
+        ? favoriteModel.favorites.map((e) => ProductCardView(e)).toList()
+        : productsModel.products.map((e) => ProductCardView(e)).toList();
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
@@ -82,18 +86,22 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       drawer: DrawerView(),
-      body: Center(
-        child: GridView.count(
-          childAspectRatio: 1.5,
-          crossAxisCount: 2,
-          padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
-          crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-          mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-          children: onlyFavorites
-              ? favoriteModel.favorites.map((e) => ProductCardView(e)).toList()
-              : productsModel.products.map((e) => ProductCardView(e)).toList(),
-        ),
-      ),
+      body: productsToShow.isNotEmpty
+          ? GridView.count(
+              childAspectRatio: 1.5,
+              crossAxisCount: 2,
+              padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
+              crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
+              mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
+              children: productsToShow,
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: SizeConfig.blockSizeVertical * 5),
+                Text('Lista de produtos vazia'),
+              ],
+            ),
     );
   }
 }

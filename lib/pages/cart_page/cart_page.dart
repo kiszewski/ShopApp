@@ -5,7 +5,12 @@ import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
+  @override
+  _CartPageState createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
     final CartViewModel cartModel = Provider.of<CartViewModel>(context);

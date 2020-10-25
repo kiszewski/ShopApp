@@ -20,18 +20,34 @@ class DrawerView extends StatelessWidget {
           Container(
             height: SizeConfig.blockSizeVertical * 20,
             width: double.maxFinite,
-            child: Center(
-                child: Column(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text('Seja bem-vindo(a) ${user?.email}'),
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
                     onPressed: () async {
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.max,
+                              children: [
+                                CircularProgressIndicator(),
+                                Text("Loading"),
+                              ],
+                            ),
+                          );
+                        },
+                      );
+                      // await Future.delayed(Duration(seconds: 3));
                       await FirebaseAuth.instance.signOut();
+                      Navigator.pushNamed(context, '/');
                     })
               ],
-            )),
+            ),
             color: Theme.of(context).primaryColor,
           ),
           Container(

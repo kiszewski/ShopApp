@@ -17,6 +17,22 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
 
+  bool _showPassword = false;
+
+  _toggleShowPassword() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
+  bool _showConfirmPassword = false;
+
+  _toggleConfirmPassword() {
+    setState(() {
+      _showConfirmPassword = !_showConfirmPassword;
+    });
+  }
+
   _signUp() async {
     if (_formKey.currentState.validate()) {
       String resp = await context.read<AuthenticationService>().signUp(
@@ -36,14 +52,23 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('Criar conta'),
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Form(
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                children: [
+                  Text('Crie a sua conta',
+                      style: TextStyle(
+                          fontSize: 24, color: Theme.of(context).accentColor))
+                ],
+              ),
+              SizedBox(height: SizeConfig.blockSizeVertical * 4),
               TextFormField(
                 controller: _email,
                 decoration: InputDecoration(
@@ -55,9 +80,14 @@ class _SignUpPageState extends State<SignUpPage> {
               TextFormField(
                 controller: _password,
                 decoration: InputDecoration(
-                  labelText: 'Senha',
-                ),
-                obscureText: true,
+                    labelText: 'Senha',
+                    suffixIcon: IconButton(
+                      icon: Icon(_showPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: _toggleShowPassword,
+                    )),
+                obscureText: _showPassword ? false : true,
                 keyboardType: TextInputType.visiblePassword,
                 validator: GeneralFormFieldValidator.passwordValidator,
                 enableSuggestions: false,
@@ -66,9 +96,14 @@ class _SignUpPageState extends State<SignUpPage> {
               TextFormField(
                 controller: _confirmPassword,
                 decoration: InputDecoration(
-                  labelText: 'Confirme a senha',
-                ),
-                obscureText: true,
+                    labelText: 'Confirme a senha',
+                    suffixIcon: IconButton(
+                      icon: Icon(_showConfirmPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: _toggleConfirmPassword,
+                    )),
+                obscureText: _showConfirmPassword ? false : true,
                 keyboardType: TextInputType.visiblePassword,
                 validator: (value) {
                   if (value != _password.text) {
@@ -82,14 +117,17 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: SizeConfig.blockSizeVertical * 2,
               ),
-              FlatButton(
-                color: Theme.of(context).primaryColor,
-                textColor: Colors.white,
-                padding: EdgeInsets.symmetric(
-                  horizontal: SizeConfig.blockSizeHorizontal * 40,
-                ),
-                child: FittedBox(child: Text('Criar conta')),
-                onPressed: _signUp,
+              Row(
+                children: [
+                  Expanded(
+                    child: FlatButton(
+                      color: Theme.of(context).primaryColor,
+                      textColor: Colors.white,
+                      child: Text('Criar conta'),
+                      onPressed: _signUp,
+                    ),
+                  ),
+                ],
               )
             ],
           ),

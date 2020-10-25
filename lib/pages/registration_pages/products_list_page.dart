@@ -7,7 +7,12 @@ import 'package:shopApp/viewmodels/products_viewmodel.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProductsListPage extends StatelessWidget {
+class ProductsListPage extends StatefulWidget {
+  @override
+  _ProductsListPageState createState() => _ProductsListPageState();
+}
+
+class _ProductsListPageState extends State<ProductsListPage> {
   @override
   Widget build(BuildContext context) {
     final ProductsViewModel productsViewModel =

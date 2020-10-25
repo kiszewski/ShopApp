@@ -16,8 +16,25 @@ class _SignInPageState extends State<SignInPage> {
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
 
+  bool _showPassword = false;
+
+  _toggleShowPassword() {
+    setState(() {
+      _showPassword = !_showPassword;
+    });
+  }
+
   _signIn() async {
     if (_formKey.currentState.validate()) {
+      SnackBar(
+        duration: Duration(seconds: 4),
+        content: Row(
+          children: <Widget>[
+            CircularProgressIndicator(),
+            Text("  Signing-In...")
+          ],
+        ),
+      );
       String resp = await context.read<AuthenticationService>().signIn(
             email: _email.text,
             password: _password.text,
@@ -35,14 +52,26 @@ class _SignInPageState extends State<SignInPage> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: Text('Login'),
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Form(
+          key: _formKey,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Row(
+                children: [
+                  Text(
+                    'Seja bem-vindo',
+                    style: TextStyle(
+                        fontSize: 24, color: Theme.of(context).accentColor),
+                  ),
+                ],
+              ),
+              SizedBox(height: SizeConfig.blockSizeVertical * 4),
               TextFormField(
                 controller: _email,
                 decoration: InputDecoration(
@@ -54,9 +83,14 @@ class _SignInPageState extends State<SignInPage> {
               TextFormField(
                 controller: _password,
                 decoration: InputDecoration(
-                  labelText: 'Senha',
-                ),
-                obscureText: true,
+                    labelText: 'Senha',
+                    suffixIcon: IconButton(
+                      icon: Icon(_showPassword
+                          ? Icons.visibility_off
+                          : Icons.visibility),
+                      onPressed: _toggleShowPassword,
+                    )),
+                obscureText: _showPassword ? false : true,
                 keyboardType: TextInputType.visiblePassword,
                 validator: GeneralFormFieldValidator.passwordValidator,
                 enableSuggestions: false,
@@ -66,21 +100,7 @@ class _SignInPageState extends State<SignInPage> {
                 height: SizeConfig.blockSizeVertical * 2,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Expanded(
-                    child: FlatButton(
-                      color: Theme.of(context).accentColor,
-                      textColor: Colors.white,
-                      child: Text('Cadastrar'),
-                      onPressed: () {
-                        Navigator.of(context).pushNamed('sign_up');
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
                   Expanded(
                     child: FlatButton(
                       color: Theme.of(context).primaryColor,
@@ -90,12 +110,45 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                 ],
+              ),
+              OutlineButton(
+                child: Text('Criar conta'),
+                onPressed: () {
+                  Navigator.of(context).pushNamed('sign_up');
+                },
+                borderSide: BorderSide(width: 0, color: Colors.white),
               )
             ],
           ),
-          key: _formKey,
         ),
       ),
     );
   }
 }
+
+// Row(
+//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                 children: [
+//                   Expanded(
+//                     child: FlatButton(
+//                       color: Theme.of(context).accentColor,
+//                       textColor: Colors.white,
+//                       child: Text('Cadastrar'),
+//                       onPressed: () {
+//                         Navigator.of(context).pushNamed('sign_up');
+//                       },
+//                     ),
+//                   ),
+//                   SizedBox(
+//                     width: 10,
+//                   ),
+//                   Expanded(
+//                     child: FlatButton(
+//                       color: Theme.of(context).primaryColor,
+//                       textColor: Colors.white,
+//                       child: Text('Entrar'),
+//                       onPressed: _signIn,
+//                     ),
+//                   ),
+//                 ],
+//               )
