@@ -4,7 +4,7 @@ import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
-import 'package:shopApp/pages/home_page/product_card_view.dart';
+import 'package:shopApp/pages/home_page/product_card_component.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {
@@ -32,9 +32,9 @@ class _HomePageState extends State<HomePage> {
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
 
-    final List<ProductCardView> productsToShow = onlyFavorites
-        ? favoriteModel.favorites.map((e) => ProductCardView(e)).toList()
-        : productsModel.products.map((e) => ProductCardView(e)).toList();
+    final List<ProductCardComponent> productsToShow = onlyFavorites
+        ? favoriteModel.favorites.map((e) => ProductCardComponent(e)).toList()
+        : productsModel.products.map((e) => ProductCardComponent(e)).toList();
 
     return Scaffold(
       appBar: AppBar(

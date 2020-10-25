@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
-    DrawerOption(Icons.shopping_cart, 'Loja', '/'),
+    DrawerOption(Icons.shopping_cart, 'Loja', 'home'),
     DrawerOption(Icons.credit_card, 'Compras', 'orders'),
     DrawerOption(Icons.edit, 'Gerenciar produtos', 'products_list'),
   ];
@@ -23,9 +23,13 @@ class DrawerView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('Seja bem-vindo(a) ${user?.email}'),
+                Text(
+                  'Seja bem-vindo(a) ${user?.email}',
+                  style: TextStyle(color: Colors.white),
+                ),
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
+                    color: Colors.white,
                     onPressed: () async {
                       showDialog(
                         context: context,

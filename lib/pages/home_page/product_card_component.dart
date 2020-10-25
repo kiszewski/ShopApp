@@ -6,10 +6,10 @@ import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProductCardView extends StatelessWidget {
+class ProductCardComponent extends StatelessWidget {
   final ProductModel product;
 
-  const ProductCardView(this.product);
+  const ProductCardComponent(this.product);
 
   void _addInCart(BuildContext ctx) {
     final CartViewModel cartViewModel =
@@ -17,8 +17,8 @@ class ProductCardView extends StatelessWidget {
 
     if (cartViewModel.addProduct(product)) {
       Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text('Produto adicionado no carrinho'),
-        duration: Duration(seconds: 5),
+        content: Text('${product.name} adicionado no carrinho'),
+        duration: Duration(seconds: 3),
         action: SnackBarAction(
             label: 'Desfazer',
             onPressed: () {
