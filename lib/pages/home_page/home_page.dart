@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
+import 'package:shopApp/pages/registration_pages/products_list_page.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
@@ -32,9 +34,9 @@ class _HomePageState extends State<HomePage> {
     final FavoriteViewModel favoriteModel =
         Provider.of<FavoriteViewModel>(context);
 
-    final List<ProductCardComponent> productsToShow = onlyFavorites
-        ? favoriteModel.favorites.map((e) => ProductCardComponent(e)).toList()
-        : productsModel.products.map((e) => ProductCardComponent(e)).toList();
+    final List<ProductModel> productsToShow = onlyFavorites
+        ? favoriteModel.favorites.toList()
+        : productsModel.products.toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -87,13 +89,18 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: DrawerView(),
       body: productsToShow.isNotEmpty
-          ? GridView.count(
-              childAspectRatio: 1.5,
-              crossAxisCount: 2,
+          ? GridView.builder(
+              itemBuilder: (context, index) {
+                return ProductCardComponent(productsToShow[index]);
+              },
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 1.5,
+                crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
+                mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
+              ),
+              itemCount: productsToShow.length,
               padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
-              crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-              mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-              children: productsToShow,
             )
           : Row(
               mainAxisAlignment: MainAxisAlignment.center,

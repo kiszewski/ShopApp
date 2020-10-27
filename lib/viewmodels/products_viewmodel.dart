@@ -105,7 +105,9 @@ class ProductsViewModel extends ChangeNotifier {
         'Tenis Nike preto'),
   ];
 
-  List<ProductModel> get products => _products;
+  List<ProductModel> get products => [..._products];
+
+  int get qtdProducts => _products.length;
 
   void addProduct(ProductModel product) {
     _products.add(product);
@@ -116,6 +118,4 @@ class ProductsViewModel extends ChangeNotifier {
     _products.remove(product);
     notifyListeners();
   }
-
-  int get qtdProducts => _products.length;
 }
