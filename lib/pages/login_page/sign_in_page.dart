@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
-import 'package:shopApp/services/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/login_viewmodel.dart';
 
 class SignInPage extends StatefulWidget {
   @override
@@ -25,18 +25,18 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  _signIn(BuildContext ctx) async {
+  _signIn(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
       showDialog(
           context: ctx,
           barrierDismissible: false,
           child: LoadingDialogView('Logando...'));
-      String resp = await context.read<AuthenticationService>().signIn(
-            email: _email.text,
-            password: _password.text,
-          );
+
+      String resp = await loginViewModel.loginUser(_email.text, _password.text);
+
       Navigator.of(context).pop();
-      if (resp == 'User criado') {
+
+      if (loginViewModel.loggedUser) {
         Navigator.pushNamedAndRemoveUntil(
             context, 'home', (Route<dynamic> route) => false);
       } else {
@@ -47,6 +47,8 @@ class _SignInPageState extends State<SignInPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -108,7 +110,7 @@ class _SignInPageState extends State<SignInPage> {
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       onPressed: () {
-                        _signIn(context);
+                        _signIn(context, loginViewModel);
                       },
                       child: Text(
                         'Entrar',

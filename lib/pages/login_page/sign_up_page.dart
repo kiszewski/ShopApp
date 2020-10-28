@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
-import 'package:shopApp/services/authentication_service.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/viewmodels/login_viewmodel.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -34,18 +34,21 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  _signUp(BuildContext ctx) async {
+  _signUp(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
       showDialog(
           context: ctx,
           barrierDismissible: false,
           child: LoadingDialogView('Cadastrando...'));
-      String resp = await context.read<AuthenticationService>().signUp(
-            email: _email.text,
-            password: _password.text,
-          );
+
+      String resp = await loginViewModel.createUser(
+        _email.text,
+        _password.text,
+      );
+
       Navigator.of(context).pop();
-      if (resp == 'User criado') {
+
+      if (loginViewModel.loggedUser) {
         Navigator.of(context).pushReplacementNamed('home');
       } else {
         _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
@@ -55,6 +58,8 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
+    final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
+
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -134,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       onPressed: () {
-                        _signUp(context);
+                        _signUp(context, loginViewModel);
                       },
                       child: Text(
                         'Criar conta',

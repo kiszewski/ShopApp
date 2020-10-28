@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/viewmodels/login_viewmodel.dart';
 
 class DrawerView extends StatelessWidget {
   static const List<DrawerOption> drawerOptions = [
@@ -11,7 +11,7 @@ class DrawerView extends StatelessWidget {
     DrawerOption(Icons.edit, 'Gerenciar produtos', 'products_list'),
   ];
 
-  _logout(BuildContext context) async {
+  _logout(BuildContext context, LoginViewModel loginViewModel) async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -19,14 +19,14 @@ class DrawerView extends StatelessWidget {
         return LoadingDialogView('Saindo');
       },
     );
-    await FirebaseAuth.instance.signOut();
+    await loginViewModel.logoutUser();
     Navigator.pushNamedAndRemoveUntil(
         context, '/', (Route<dynamic> route) => false);
   }
 
   @override
   Widget build(BuildContext context) {
-    User user = context.watch<User>();
+    final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
 
     return Drawer(
       child: Column(
@@ -38,14 +38,14 @@ class DrawerView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Seja bem-vindo(a) ${user?.email}',
+                  'Seja bem-vindo(a) ${loginViewModel.userEmail}',
                   style: TextStyle(color: Colors.white),
                 ),
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,
                     onPressed: () {
-                      _logout(context);
+                      _logout(context, loginViewModel);
                     })
               ],
             ),
