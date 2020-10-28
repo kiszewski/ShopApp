@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +10,19 @@ class DrawerView extends StatelessWidget {
     DrawerOption(Icons.credit_card, 'Compras', 'orders'),
     DrawerOption(Icons.edit, 'Gerenciar produtos', 'products_list'),
   ];
+
+  _logout(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return LoadingDialogView('Saindo');
+      },
+    );
+    await FirebaseAuth.instance.signOut();
+    Navigator.pushNamedAndRemoveUntil(
+        context, '/', (Route<dynamic> route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +44,8 @@ class DrawerView extends StatelessWidget {
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,
-                    onPressed: () async {
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: [
-                                CircularProgressIndicator(),
-                                Text("Loading"),
-                              ],
-                            ),
-                          );
-                        },
-                      );
-                      await FirebaseAuth.instance.signOut();
-                      Navigator.pushNamedAndRemoveUntil(
-                          context, '/', (Route<dynamic> route) => false);
+                    onPressed: () {
+                      _logout(context);
                     })
               ],
             ),

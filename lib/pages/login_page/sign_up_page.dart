@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/services/authentication_service.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -33,12 +34,17 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  _signUp() async {
+  _signUp(BuildContext ctx) async {
     if (_formKey.currentState.validate()) {
+      showDialog(
+          context: ctx,
+          barrierDismissible: false,
+          child: LoadingDialogView('Cadastrando...'));
       String resp = await context.read<AuthenticationService>().signUp(
             email: _email.text,
             password: _password.text,
           );
+      Navigator.of(context).pop();
       if (resp == 'User criado') {
         Navigator.of(context).pushReplacementNamed('home');
       } else {
@@ -127,7 +133,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
-                      onPressed: _signUp,
+                      onPressed: () {
+                        _signUp(context);
+                      },
                       child: Text(
                         'Criar conta',
                         style: TextStyle(

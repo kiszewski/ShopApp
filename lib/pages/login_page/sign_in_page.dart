@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/services/authentication_service.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
@@ -24,23 +25,20 @@ class _SignInPageState extends State<SignInPage> {
     });
   }
 
-  _signIn() async {
+  _signIn(BuildContext ctx) async {
     if (_formKey.currentState.validate()) {
-      SnackBar(
-        duration: Duration(seconds: 4),
-        content: Row(
-          children: <Widget>[
-            CircularProgressIndicator(),
-            Text("  Signing-In...")
-          ],
-        ),
-      );
+      showDialog(
+          context: ctx,
+          barrierDismissible: false,
+          child: LoadingDialogView('Logando...'));
       String resp = await context.read<AuthenticationService>().signIn(
             email: _email.text,
             password: _password.text,
           );
+      Navigator.of(context).pop();
       if (resp == 'User criado') {
-        Navigator.of(context).pushReplacementNamed('home');
+        Navigator.pushNamedAndRemoveUntil(
+            context, 'home', (Route<dynamic> route) => false);
       } else {
         _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
       }
@@ -109,7 +107,9 @@ class _SignInPageState extends State<SignInPage> {
                           borderRadius: BorderRadius.all(Radius.circular(8))),
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
-                      onPressed: _signIn,
+                      onPressed: () {
+                        _signIn(context);
+                      },
                       child: Text(
                         'Entrar',
                         style: TextStyle(

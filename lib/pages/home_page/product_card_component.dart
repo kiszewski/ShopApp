@@ -18,8 +18,9 @@ class ProductCardComponent extends StatelessWidget {
     if (cartViewModel.addProduct(product)) {
       Scaffold.of(ctx).showSnackBar(SnackBar(
         content: Text('${product.name} adicionado no carrinho'),
-        duration: Duration(seconds: 3),
+        duration: Duration(seconds: 2),
         action: SnackBarAction(
+            textColor: Colors.orangeAccent,
             label: 'Desfazer',
             onPressed: () {
               cartViewModel.removeProduct(product);
