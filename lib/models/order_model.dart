@@ -1,13 +1,13 @@
 import 'dart:math';
 import 'package:shopApp/models/product_model.dart';
 
-class Order {
+class OrderModel {
   final List<ProductModel> _products;
   final Random _random = Random();
   int _id;
   DateTime _date;
 
-  Order(this._products) {
+  OrderModel(this._products) {
     _id = _random.nextInt(100000);
     _date = DateTime.now();
   }

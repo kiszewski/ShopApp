@@ -13,7 +13,7 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    final CartViewModel cartModel = Provider.of<CartViewModel>(context);
+    final CartViewModel cartViewModel = Provider.of<CartViewModel>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -31,11 +31,11 @@ class _CartPageState extends State<CartPage> {
               height: SizeConfig.blockSizeVertical * 75,
               child: ListView.builder(
                 primary: false,
-                itemCount: cartModel.qtdProducts,
+                itemCount: cartViewModel.qtdProducts,
                 itemBuilder: (context, index) {
                   final ProductModel product =
-                      cartModel.productsInCart.toList()[index];
-                  return ItemCartComponent(product, cartModel);
+                      cartViewModel.productsInCart.toList()[index];
+                  return ItemCartComponent(product, cartViewModel);
                 },
               ),
             ),
@@ -64,7 +64,7 @@ class _CartPageState extends State<CartPage> {
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              'R\$ ${cartModel.totalInCart.toStringAsFixed(2)}',
+                              'R\$ ${cartViewModel.totalInCart.toStringAsFixed(2)}',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -78,12 +78,12 @@ class _CartPageState extends State<CartPage> {
                               shape: RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(8))),
-                              onPressed: () => cartModel.order(context),
-                              color: Theme.of(context).primaryColor,
                               padding: EdgeInsets.symmetric(
                                   horizontal:
                                       SizeConfig.blockSizeHorizontal * 25),
+                              color: Theme.of(context).primaryColor,
                               textColor: Colors.white,
+                              onPressed: () => cartViewModel.order(context),
                               child: Text(
                                 'Finalizar Compra',
                                 style: TextStyle(

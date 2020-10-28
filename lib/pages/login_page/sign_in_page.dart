@@ -67,7 +67,9 @@ class _SignInPageState extends State<SignInPage> {
                   Text(
                     'Seja bem-vindo',
                     style: TextStyle(
-                        fontSize: 24, color: Theme.of(context).accentColor),
+                        fontSize: 24,
+                        color: Theme.of(context).accentColor,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -103,16 +105,25 @@ class _SignInPageState extends State<SignInPage> {
                 children: [
                   Expanded(
                     child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
-                      child: Text('Entrar'),
                       onPressed: _signIn,
+                      child: Text(
+                        'Entrar',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],
               ),
               OutlineButton(
-                child: Text('Criar conta'),
+                child: Text(
+                  'Criar conta',
+                  style: TextStyle(fontSize: 16),
+                ),
                 onPressed: () {
                   Navigator.of(context).pushNamed('sign_up');
                 },
@@ -125,30 +136,3 @@ class _SignInPageState extends State<SignInPage> {
     );
   }
 }
-
-// Row(
-//                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                 children: [
-//                   Expanded(
-//                     child: FlatButton(
-//                       color: Theme.of(context).accentColor,
-//                       textColor: Colors.white,
-//                       child: Text('Cadastrar'),
-//                       onPressed: () {
-//                         Navigator.of(context).pushNamed('sign_up');
-//                       },
-//                     ),
-//                   ),
-//                   SizedBox(
-//                     width: 10,
-//                   ),
-//                   Expanded(
-//                     child: FlatButton(
-//                       color: Theme.of(context).primaryColor,
-//                       textColor: Colors.white,
-//                       child: Text('Entrar'),
-//                       onPressed: _signIn,
-//                     ),
-//                   ),
-//                 ],
-//               )

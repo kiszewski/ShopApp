@@ -34,7 +34,7 @@ class ProductCardComponent extends StatelessWidget {
         Provider.of<FavoriteViewModel>(context);
 
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
         onTap: () => Navigator.of(context)
             .pushNamed('product_details', arguments: product),

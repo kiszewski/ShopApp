@@ -47,7 +47,7 @@ class CartViewModel extends ChangeNotifier {
     OrdersViewModel ordersModel =
         Provider.of<OrdersViewModel>(context, listen: false);
 
-    Order order = Order(this._productsInCart.toList());
+    OrderModel order = OrderModel(this._productsInCart.toList());
     ordersModel.addOrder(order);
 
     _productsInCart.clear();

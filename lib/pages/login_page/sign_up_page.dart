@@ -65,7 +65,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Text('Crie a sua conta',
                       style: TextStyle(
-                          fontSize: 24, color: Theme.of(context).accentColor))
+                          fontSize: 24,
+                          color: Theme.of(context).accentColor,
+                          fontWeight: FontWeight.bold))
                 ],
               ),
               SizedBox(height: SizeConfig.blockSizeVertical * 4),
@@ -121,10 +123,16 @@ class _SignUpPageState extends State<SignUpPage> {
                 children: [
                   Expanded(
                     child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
-                      child: Text('Criar conta'),
                       onPressed: _signUp,
+                      child: Text(
+                        'Criar conta',
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ],

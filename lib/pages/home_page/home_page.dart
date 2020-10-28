@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
-import 'package:shopApp/pages/registration_pages/products_list_page.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';

@@ -6,9 +6,9 @@ import 'package:transparent_image/transparent_image.dart';
 
 class ItemCartComponent extends StatelessWidget {
   final ProductModel product;
-  final CartViewModel cartModel;
+  final CartViewModel cartViewModel;
 
-  const ItemCartComponent(this.product, this.cartModel);
+  const ItemCartComponent(this.product, this.cartViewModel);
 
   @override
   Widget build(BuildContext context) {
@@ -31,21 +31,21 @@ class ItemCartComponent extends StatelessWidget {
                     icon: Icon(
                       Icons.keyboard_arrow_up,
                     ),
-                    onPressed: () => cartModel.increaseQtd(product),
+                    onPressed: () => cartViewModel.increaseQtd(product),
                   ),
                   Text('${product.qtd}'),
                   IconButton(
                     padding: EdgeInsets.zero,
                     constraints: BoxConstraints(),
                     icon: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () => cartModel.decreaseQtd(product),
+                    onPressed: () => cartViewModel.decreaseQtd(product),
                   ),
                   IconButton(
                     icon: Icon(
                       Icons.close,
                       color: Colors.red,
                     ),
-                    onPressed: () => cartModel.removeProduct(product),
+                    onPressed: () => cartViewModel.removeProduct(product),
                   ),
                 ],
               ),

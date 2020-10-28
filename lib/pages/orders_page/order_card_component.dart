@@ -4,7 +4,7 @@ import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class OrderCard extends StatefulWidget {
-  final Order order;
+  final OrderModel order;
 
   const OrderCard(this.order);
 
@@ -24,6 +24,9 @@ class _OrderCardState extends State<OrderCard> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 6,
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       child: Column(
         children: [
           ListTile(
@@ -56,10 +59,6 @@ class _OrderCardState extends State<OrderCard> {
               : SizedBox()
         ],
       ),
-      elevation: 5,
-      margin: EdgeInsets.symmetric(
-          horizontal: SizeConfig.blockSizeHorizontal * 2,
-          vertical: SizeConfig.blockSizeVertical * 1),
     );
   }
 }
