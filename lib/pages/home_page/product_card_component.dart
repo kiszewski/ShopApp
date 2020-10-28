@@ -52,7 +52,7 @@ class ProductCardComponent extends StatelessWidget {
             Positioned(
               bottom: 0,
               child: Container(
-                color: Colors.black54,
+                color: Color.fromRGBO(0, 0, 0, 0.75),
                 width: SizeConfig.blockSizeVertical * 24,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -62,7 +62,7 @@ class ProductCardComponent extends StatelessWidget {
                           favoriteModel.isFavorite(product)
                               ? Icons.favorite
                               : Icons.favorite_border,
-                          color: Colors.deepOrange,
+                          color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () => favoriteModel.toggleFavorite(product)),
                     Expanded(
@@ -77,7 +77,7 @@ class ProductCardComponent extends StatelessWidget {
                     IconButton(
                         icon: Icon(
                           Icons.shopping_cart,
-                          color: Colors.deepOrange,
+                          color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () => _addInCart(context)),
                   ],

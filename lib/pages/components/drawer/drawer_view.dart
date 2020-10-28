@@ -48,10 +48,7 @@ class DrawerView extends StatelessWidget {
                       );
                       await FirebaseAuth.instance.signOut();
                       Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        '/',
-                        (Route<dynamic> route) => false,
-                      );
+                          context, '/', (Route<dynamic> route) => false);
                     })
               ],
             ),

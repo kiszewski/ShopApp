@@ -23,7 +23,7 @@ class ProductModel {
   double get totalValue => qtd * _price;
 
   void increaseQtd() => qtd++;
-  void decreaseQtd() => qtd > 0 ? qtd-- : null;
+  void decreaseQtd() => qtd > 1 ? qtd-- : null;
 
   ProductModel copy() {
     return new ProductModel(

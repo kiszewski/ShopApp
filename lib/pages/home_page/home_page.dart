@@ -39,12 +39,18 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        iconTheme: IconThemeData(color: Colors.black87),
+        title: Text(
+          widget.title,
+          style: TextStyle(color: Colors.black87),
+        ),
+        backgroundColor: Colors.white12,
+        elevation: 0,
         actions: [
           Center(
             child: DropdownButton(
               dropdownColor: Colors.white,
-              iconEnabledColor: Colors.white,
+              iconEnabledColor: Colors.black87,
               underline: SizedBox(),
               icon: Icon(Icons.more_vert),
               onChanged: _changeProductsList,
@@ -59,6 +65,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 IconButton(
                   icon: Icon(Icons.shopping_cart),
+                  color: Colors.black87,
                   onPressed: () => Navigator.pushNamed(context, 'cart'),
                 ),
                 Positioned(
@@ -68,7 +75,7 @@ class _HomePageState extends State<HomePage> {
                     child: Container(
                       width: SizeConfig.blockSizeHorizontal * 3,
                       height: SizeConfig.blockSizeHorizontal * 3,
-                      color: Colors.deepOrange,
+                      color: Theme.of(context).primaryColor,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Consumer<CartViewModel>(
@@ -102,13 +109,24 @@ class _HomePageState extends State<HomePage> {
               itemCount: productsToShow.length,
               padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
             )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: SizeConfig.blockSizeVertical * 5),
-                Text('Lista de produtos vazia'),
-              ],
-            ),
+          : Container(
+              width: SizeConfig.blockSizeHorizontal * 100,
+              height: SizeConfig.blockSizeVertical * 100,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/shop.png'),
+                  onlyFavorites
+                      ? Text(
+                          'Lista de favoritos vazia',
+                          style: TextStyle(fontSize: 16),
+                        )
+                      : Text(
+                          'Lista de produtos vazia',
+                          style: TextStyle(fontSize: 16),
+                        ),
+                ],
+              )),
     );
   }
 }

@@ -22,10 +22,17 @@ class _ProductsListPageState extends State<ProductsListPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Produtos'),
+        title: Text(
+          'Produtos',
+          style: TextStyle(color: Colors.black54),
+        ),
+        elevation: 0,
+        backgroundColor: Colors.white12,
+        iconTheme: IconThemeData(color: Colors.black54),
         actions: [
           IconButton(
               icon: Icon(Icons.add),
+              color: Theme.of(context).primaryColor,
               onPressed: () => Navigator.pushNamed(context, 'product_form'))
         ],
       ),
@@ -36,7 +43,9 @@ class _ProductsListPageState extends State<ProductsListPage> {
           final ProductModel product = productsViewModel.products[index];
 
           return Card(
-            elevation: 5,
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(24))),
             child: ListTile(
               title: Text(product.name),
               leading: ClipOval(
@@ -55,12 +64,14 @@ class _ProductsListPageState extends State<ProductsListPage> {
                 children: [
                   IconButton(
                       icon: Icon(Icons.edit),
+                      color: Theme.of(context).primaryColor,
                       onPressed: () {
                         Navigator.of(context)
                             .pushNamed('product_form', arguments: product);
                       }),
                   IconButton(
                       icon: Icon(Icons.delete),
+                      color: Colors.redAccent,
                       onPressed: () {
                         showDialog(
                           context: context,

@@ -17,7 +17,13 @@ class _CartPageState extends State<CartPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Carrinho de compras'),
+        iconTheme: IconThemeData(color: Colors.black87),
+        backgroundColor: Colors.white12,
+        elevation: 0,
+        title: Text(
+          'Carrinho de compras',
+          style: TextStyle(color: Colors.black87),
+        ),
       ),
       body: Container(
         color: Colors.white70,
@@ -29,15 +35,32 @@ class _CartPageState extends State<CartPage> {
               padding: EdgeInsets.only(left: 16, right: 16, top: 8),
               width: SizeConfig.blockSizeHorizontal * 100,
               height: SizeConfig.blockSizeVertical * 75,
-              child: ListView.builder(
-                primary: false,
-                itemCount: cartViewModel.qtdProducts,
-                itemBuilder: (context, index) {
-                  final ProductModel product =
-                      cartViewModel.productsInCart.toList()[index];
-                  return ItemCartComponent(product, cartViewModel);
-                },
-              ),
+              child: cartViewModel.productsInCart.isEmpty
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/cart-empty.png',
+                          fit: BoxFit.fill,
+                          height: SizeConfig.blockSizeVertical * 15,
+                          width: SizeConfig.blockSizeHorizontal * 30,
+                        ),
+                        Text(
+                          'Seu carrinho de compras está vazio',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 18),
+                        ),
+                      ],
+                    )
+                  : ListView.builder(
+                      primary: false,
+                      itemCount: cartViewModel.qtdProducts,
+                      itemBuilder: (context, index) {
+                        final ProductModel product =
+                            cartViewModel.productsInCart.toList()[index];
+                        return ItemCartComponent(product, cartViewModel);
+                      },
+                    ),
             ),
             Container(
               height: SizeConfig.blockSizeVertical * 14,

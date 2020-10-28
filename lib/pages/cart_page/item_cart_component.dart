@@ -23,31 +23,37 @@ class ItemCartComponent extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Row(
-                children: [
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    icon: Icon(
-                      Icons.keyboard_arrow_up,
+              FittedBox(
+                child: Column(
+                  children: [
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: Icon(
+                        Icons.keyboard_arrow_up,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () => cartViewModel.increaseQtd(product),
                     ),
-                    onPressed: () => cartViewModel.increaseQtd(product),
-                  ),
-                  Text('${product.qtd}'),
-                  IconButton(
-                    padding: EdgeInsets.zero,
-                    constraints: BoxConstraints(),
-                    icon: Icon(Icons.keyboard_arrow_down),
-                    onPressed: () => cartViewModel.decreaseQtd(product),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.close,
-                      color: Colors.red,
+                    Text('${product.qtd}'),
+                    IconButton(
+                      padding: EdgeInsets.zero,
+                      constraints: BoxConstraints(),
+                      icon: Icon(
+                        Icons.keyboard_arrow_down,
+                        color: Theme.of(context).primaryColor,
+                      ),
+                      onPressed: () => cartViewModel.decreaseQtd(product),
                     ),
-                    onPressed: () => cartViewModel.removeProduct(product),
-                  ),
-                ],
+                  ],
+                ),
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.close,
+                  color: Colors.red,
+                ),
+                onPressed: () => cartViewModel.removeProduct(product),
               ),
             ],
           ),

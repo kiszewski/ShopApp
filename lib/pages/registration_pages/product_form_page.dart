@@ -30,9 +30,16 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Criar Produto'),
+        backgroundColor: Colors.white12,
+        elevation: 0,
+        iconTheme: IconThemeData(color: Colors.black54),
+        title: Text(
+          'Criar Produto',
+          style: TextStyle(color: Colors.black54),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
+          backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.check),
           onPressed: () {
             if (_formKey.currentState.validate()) {
