@@ -93,6 +93,7 @@ class _HomePageState extends State<HomePage> {
               itemBuilder: (context, index) {
                 return ProductCardComponent(productsToShow[index]);
               },
+              primary: false,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 childAspectRatio: 1.5,
