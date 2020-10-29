@@ -38,6 +38,7 @@ class _ProductsListPageState extends State<ProductsListPage> {
       ),
       drawer: DrawerView(),
       body: ListView.builder(
+        physics: BouncingScrollPhysics(),
         itemCount: productsViewModel.qtdProducts,
         itemBuilder: (context, index) {
           final ProductModel product = productsViewModel.products[index];

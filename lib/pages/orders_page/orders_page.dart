@@ -43,6 +43,7 @@ class _OrdersPageState extends State<OrdersPage> {
               ),
             )
           : ListView.builder(
+              physics: BouncingScrollPhysics(),
               itemBuilder: (context, index) {
                 return OrderCard(ordersModel.orders[index]);
               },

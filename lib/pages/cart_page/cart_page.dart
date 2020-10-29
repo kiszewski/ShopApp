@@ -53,7 +53,7 @@ class _CartPageState extends State<CartPage> {
                       ],
                     )
                   : ListView.builder(
-                      primary: false,
+                      physics: BouncingScrollPhysics(),
                       itemCount: cartViewModel.qtdProducts,
                       itemBuilder: (context, index) {
                         final ProductModel product =
