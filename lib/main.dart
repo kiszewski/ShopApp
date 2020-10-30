@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/data/products_dummy_data.dart';
 import 'package:shopApp/pages/login_page/sign_in_page.dart';
 import 'package:shopApp/pages/login_page/sign_up_page.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -28,7 +29,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-        ChangeNotifierProvider(create: (context) => ProductsViewModel()),
+        ChangeNotifierProvider(
+            create: (context) => ProductsViewModel(productsDummyData)),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
         ChangeNotifierProvider(create: (context) => FavoriteViewModel()),
         ChangeNotifierProvider(create: (context) => OrdersViewModel()),

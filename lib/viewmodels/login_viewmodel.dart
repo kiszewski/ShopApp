@@ -37,7 +37,7 @@ class LoginViewModel extends ChangeNotifier {
     }
   }
 
-  Future<String> logoutUser() async {
+  Future<void> logoutUser() async {
     await _authenticationService.signOut();
     _user = null;
     notifyListeners();

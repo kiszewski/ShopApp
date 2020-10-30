@@ -31,8 +31,10 @@ class ProductModel {
         id: this.id);
   }
 
-  set setName(String name) => this._name = name;
-  set setPrice(double price) => this._price = price;
-  set setDescription(String description) => this._description = description;
-  set setImageUrl(String imageUrl) => this._imageUrl = imageUrl;
+  update(String name, String imageUrl, double price, String description) {
+    this._name = name;
+    this._imageUrl = imageUrl;
+    this._price = price;
+    this._description = description;
+  }
 }
