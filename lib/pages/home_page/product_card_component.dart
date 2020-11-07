@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
@@ -37,17 +38,24 @@ class ProductCardComponent extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
-        onTap: () => Navigator.of(context)
-            .pushNamed('product_details', arguments: product),
+        onTap: () => Navigator.push(
+            context,
+            PageRouteBuilder(
+                transitionDuration: Duration(milliseconds: 250),
+                pageBuilder: (_, __, ___) =>
+                    ProductDetailsPage(product: product))),
         child: Stack(
           children: [
             Container(
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
-              child: FadeInImage.memoryNetwork(
-                placeholder: kTransparentImage,
-                image: product.imageUrl,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: 'image_${product.id}',
+                child: FadeInImage.memoryNetwork(
+                  placeholder: kTransparentImage,
+                  image: product.imageUrl,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
             Positioned(
