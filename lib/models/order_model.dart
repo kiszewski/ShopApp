@@ -14,8 +14,8 @@ class OrderModel {
 
   List<ProductModel> get products => this._products;
 
-  double get totalOrder => _products.fold(
-      0, (previousValue, product) => previousValue + product.totalValue);
+  // double get totalOrder => _products.fold(
+  //     0, (previousValue, product) => previousValue + product.totalValue);
 
   DateTime get date => _date;
 }

@@ -12,23 +12,23 @@ class ProductCardComponent extends StatelessWidget {
 
   const ProductCardComponent(this.product);
 
-  void _addInCart(BuildContext ctx) {
-    final CartViewModel cartViewModel =
-        Provider.of<CartViewModel>(ctx, listen: false);
+  // void _addInCart(BuildContext ctx) {
+  //   final CartViewModel cartViewModel =
+  //       Provider.of<CartViewModel>(ctx, listen: false);
 
-    if (cartViewModel.addProduct(product)) {
-      Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text('${product.name} adicionado no carrinho'),
-        duration: Duration(seconds: 2),
-        action: SnackBarAction(
-            textColor: Colors.orangeAccent,
-            label: 'Desfazer',
-            onPressed: () {
-              cartViewModel.removeProduct(product);
-            }),
-      ));
-    }
-  }
+  //   if (cartViewModel.addProduct(product)) {
+  //     Scaffold.of(ctx).showSnackBar(SnackBar(
+  //       content: Text('${product.name} adicionado no carrinho'),
+  //       duration: Duration(seconds: 2),
+  //       action: SnackBarAction(
+  //           textColor: Colors.orangeAccent,
+  //           label: 'Desfazer',
+  //           onPressed: () {
+  //             cartViewModel.removeProduct(product);
+  //           }),
+  //     ));
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +88,8 @@ class ProductCardComponent extends StatelessWidget {
                           Icons.shopping_cart,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () => _addInCart(context)),
+                        onPressed: () => print('')),
+                    // onPressed: () => _addInCart(context)),
                   ],
                 ),
               ),

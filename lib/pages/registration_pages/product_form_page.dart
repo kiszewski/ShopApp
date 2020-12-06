@@ -17,28 +17,28 @@ class _ProductFormPageState extends State<ProductFormPage> {
   final _descriptionController = TextEditingController();
   final _imageUrl = TextEditingController();
 
-  _saveProduct(ProductModel product, ProductsViewModel productsViewModel) {
-    if (_formKey.currentState.validate()) {
-      if (product == null) {
-        productsViewModel.addProduct(ProductModel(
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        ));
-      } else {
-        productsViewModel.updateProduct(
-          product,
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        );
-      }
+  // _saveProduct(ProductModel product, ProductsViewModel productsViewModel) {
+  //   if (_formKey.currentState.validate()) {
+  //     if (product == null) {
+  //       productsViewModel.addProduct(ProductModel(
+  //         _nameController.text,
+  //         _imageUrl.text,
+  //         double.tryParse(_priceController.text) ?? 0.0,
+  //         _descriptionController.text,
+  //       ));
+  //     } else {
+  //       productsViewModel.updateProduct(
+  //         product,
+  //         _nameController.text,
+  //         _imageUrl.text,
+  //         double.tryParse(_priceController.text) ?? 0.0,
+  //         _descriptionController.text,
+  //       );
+  //     }
 
-      Navigator.of(context).pop();
-    }
-  }
+  //     Navigator.of(context).pop();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +65,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.check),
           onPressed: () {
-            _saveProduct(product, productsViewModel);
+            // _saveProduct(product, productsViewModel);
           }),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

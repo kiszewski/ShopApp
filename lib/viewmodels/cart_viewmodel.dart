@@ -9,39 +9,39 @@ class CartViewModel extends ChangeNotifier {
 
   Set<ProductModel> get productsInCart => _productsInCart;
 
-  double get totalInCart => _productsInCart.fold(
-      0, (previousValue, product) => previousValue + product.totalValue);
+  // double get totalInCart => _productsInCart.fold(
+  //     0, (previousValue, product) => previousValue + product.totalValue);
 
   int get qtdProducts => _productsInCart.length;
 
-  bool addProduct(ProductModel product) {
-    bool alreadyInCart =
-        _productsInCart.any((element) => element.id == product.id);
+  // bool addProduct(ProductModel product) {
+  //   bool alreadyInCart =
+  //       _productsInCart.any((element) => element.id == product.id);
 
-    if (!alreadyInCart) {
-      _productsInCart.add(product.copy());
-      notifyListeners();
+  //   if (!alreadyInCart) {
+  //     _productsInCart.add(product.copy());
+  //     notifyListeners();
 
-      return true;
-    } else {
-      return false;
-    }
-  }
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   void removeProduct(ProductModel product) {
     _productsInCart.removeWhere((element) => product.id == element.id);
     notifyListeners();
   }
 
-  void increaseQtd(ProductModel productModel) {
-    productModel.increaseQtd();
-    notifyListeners();
-  }
+  // void increaseQtd(ProductModel productModel) {
+  //   productModel.increaseQtd();
+  //   notifyListeners();
+  // }
 
-  void decreaseQtd(ProductModel productModel) {
-    productModel.decreaseQtd();
-    notifyListeners();
-  }
+  // void decreaseQtd(ProductModel productModel) {
+  //   productModel.decreaseQtd();
+  //   notifyListeners();
+  // }
 
   void order(BuildContext context) {
     OrdersViewModel ordersModel =

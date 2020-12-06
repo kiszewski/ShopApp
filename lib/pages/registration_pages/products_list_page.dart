@@ -94,8 +94,8 @@ class _ProductsListPageState extends State<ProductsListPage> {
                                       favoriteViewModel.toggleFavorite(product);
                                     }
 
-                                    productsViewModel.removeProduct(product);
-                                    Navigator.of(context).pop();
+                                    // productsViewModel.removeProduct(product);
+                                    // Navigator.of(context).pop();
                                   },
                                   child: Text('Excluir'),
                                 )

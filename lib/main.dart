@@ -29,8 +29,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-        ChangeNotifierProvider(
-            create: (context) => ProductsViewModel(productsDummyData)),
+        ChangeNotifierProvider(create: (context) => ProductsViewModel()),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
         ChangeNotifierProvider(create: (context) => FavoriteViewModel()),
         ChangeNotifierProvider(create: (context) => OrdersViewModel()),
@@ -47,9 +46,9 @@ class MyApp extends StatelessWidget {
           '/': (context) => WrapperAuthentication(),
           'sign_up': (context) => SignUpPage(),
           'home': (context) => HomePage('MyShop'),
-          'cart': (context) => CartPage(),
+          // 'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
-          'orders': (context) => OrdersPage(),
+          // 'orders': (context) => OrdersPage(),
           'products_list': (context) => ProductsListPage(),
           'product_form': (context) => ProductFormPage(),
         },
