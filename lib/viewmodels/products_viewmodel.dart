@@ -3,28 +3,25 @@ import 'package:shopApp/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductsViewModel extends ChangeNotifier {
-  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseFirestore _firestore;
 
-  List<ProductModel> _products = [];
+  ProductsViewModel(this._firestore);
 
-  ProductsViewModel() {
-    CollectionReference products = _firestore.collection('products');
-    products.get().then((querySnapshot) {
-      querySnapshot.docs.forEach((doc) {
-        _products.add(ProductModel(
-          doc['id'],
-          doc['name'],
-          doc['imageUrl'],
-          doc['price'],
-          doc['description'],
-        ));
-      });
+  Stream<List<ProductModel>> getProducts() {
+    return _firestore.collection('products').snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((document) => ProductModel(
+                document.data()['id'],
+                document.data()['name'],
+                document.data()['imageUrl'],
+                document.data()['price'],
+                document.data()['description'],
+              ))
+          .toList();
     });
   }
 
-  List<ProductModel> get products => [..._products];
-
-  int get qtdProducts => _products.length;
+  // int get qtdProducts => products;
 
   // void addProduct(ProductModel product) {
   //   _products.add(product);

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
 
     final List<ProductModel> productsToShow = onlyFavorites
         ? favoriteModel.favorites.toList()
-        : productsModel.products.toList();
+        : favoriteModel.favorites.toList();
 
     return Scaffold(
       appBar: AppBar(
