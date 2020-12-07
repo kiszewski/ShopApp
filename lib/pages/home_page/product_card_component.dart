@@ -50,7 +50,7 @@ class ProductCardComponent extends StatelessWidget {
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
               child: Hero(
-                tag: 'image_${product.id}',
+                tag: '${product.id}',
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
                   image: product.imageUrl,

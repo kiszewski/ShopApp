@@ -28,7 +28,7 @@ class ProductDetailsPage extends StatelessWidget {
               width: SizeConfig.blockSizeHorizontal * 100,
               height: SizeConfig.blockSizeVertical * 40,
               child: Hero(
-                tag: 'image_${product.id}',
+                tag: '${product.id}',
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
                   image: product.imageUrl,

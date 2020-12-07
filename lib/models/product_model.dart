@@ -9,8 +9,8 @@ class ProductModel {
   String _description;
   // int qtd = 1;
 
-  ProductModel(
-      this.id, this._name, this._imageUrl, this._price, this._description) {
+  ProductModel(this._name, this._imageUrl, this._price, this._description,
+      {this.id}) {
     // if (this.id == null) {
     //   this.id = _rnd.nextInt(1000000);
     // }

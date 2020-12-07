@@ -11,22 +11,26 @@ class ProductsViewModel extends ChangeNotifier {
     return _firestore.collection('products').snapshots().map((snapshot) {
       return snapshot.docs
           .map((document) => ProductModel(
-                document.data()['id'],
                 document.data()['name'],
                 document.data()['imageUrl'],
                 document.data()['price'],
                 document.data()['description'],
+                id: document.id,
               ))
           .toList();
     });
   }
 
-  // int get qtdProducts => products;
+  Future<String> addProduct(ProductModel product) async {
+    DocumentReference document = await _firestore.collection('products').add({
+      'name': product.name,
+      'imageUrl': product.imageUrl,
+      'price': product.price,
+      'description': product.description,
+    });
 
-  // void addProduct(ProductModel product) {
-  //   _products.add(product);
-  //   notifyListeners();
-  // }
+    return document.id;
+  }
 
   // void updateProduct(
   //   ProductModel product,
