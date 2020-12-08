@@ -32,16 +32,25 @@ class ProductsViewModel extends ChangeNotifier {
     return document.id;
   }
 
-  // void updateProduct(
-  //   ProductModel product,
-  //   String name,
-  //   String imageUrl,
-  //   double price,
-  //   String description,
-  // ) {
-  //   product.update(name, imageUrl, price, description);
-  //   notifyListeners();
-  // }
+  void updateProduct(
+    ProductModel product,
+    String name,
+    String imageUrl,
+    double price,
+    String description,
+  ) async {
+    final CollectionReference products = _firestore.collection('products');
+    products
+        .doc(product.id)
+        .update({
+          'name': name,
+          'imageUrl': imageUrl,
+          'price': price,
+          'description': description
+        })
+        .then((value) => print('User updated'))
+        .catchError((error) => print(error));
+  }
 
   // void removeProduct(ProductModel product) {
   //   _products.remove(product);

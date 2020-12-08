@@ -9,8 +9,6 @@ class ProductDetailsPage extends StatelessWidget {
   const ProductDetailsPage({Key key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final ProductModel product = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,

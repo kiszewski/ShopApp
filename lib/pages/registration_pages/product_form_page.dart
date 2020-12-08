@@ -28,13 +28,13 @@ class _ProductFormPageState extends State<ProductFormPage> {
         ));
       } else {
         // TO DO
-        // productsViewModel.updateProduct(
-        //   product,
-        //   _nameController.text,
-        //   _imageUrl.text,
-        //   double.tryParse(_priceController.text) ?? 0.0,
-        //   _descriptionController.text,
-        // );
+        productsViewModel.updateProduct(
+          product,
+          _nameController.text,
+          _imageUrl.text,
+          double.tryParse(_priceController.text) ?? 0.0,
+          _descriptionController.text,
+        );
       }
 
       Navigator.of(context).pop();
