@@ -25,6 +25,8 @@ class _ProductsListPageState extends State<ProductsListPage> {
   Widget build(BuildContext context) {
     final FavoriteViewModel favoriteViewModel =
         Provider.of<FavoriteViewModel>(context, listen: false);
+    final ProductsViewModel productsViewModel =
+        Provider.of<ProductsViewModel>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -114,8 +116,9 @@ class _ProductsListPageState extends State<ProductsListPage> {
                                                       .toggleFavorite(product);
                                                 }
 
-                                                // productsViewModel.removeProduct(product);
-                                                // Navigator.of(context).pop();
+                                                productsViewModel
+                                                    .removeProduct(product);
+                                                Navigator.of(context).pop();
                                               },
                                               child: Text('Excluir'),
                                             )

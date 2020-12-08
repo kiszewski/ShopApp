@@ -40,6 +40,7 @@ class ProductsViewModel extends ChangeNotifier {
     String description,
   ) async {
     final CollectionReference products = _firestore.collection('products');
+
     products
         .doc(product.id)
         .update({
@@ -52,8 +53,13 @@ class ProductsViewModel extends ChangeNotifier {
         .catchError((error) => print(error));
   }
 
-  // void removeProduct(ProductModel product) {
-  //   _products.remove(product);
-  //   notifyListeners();
-  // }
+  void removeProduct(ProductModel product) async {
+    final CollectionReference products = _firestore.collection('products');
+
+    products
+        .doc(product.id)
+        .delete()
+        .then((value) => print('User deleted'))
+        .catchError((error) => print(error));
+  }
 }
