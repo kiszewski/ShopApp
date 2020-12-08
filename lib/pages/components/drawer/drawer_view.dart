@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -37,10 +38,14 @@ class DrawerView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Seja bem-vindo(a) ${loginViewModel.userEmail}',
-                  style: TextStyle(color: Colors.white),
-                ),
+                StreamBuilder<User>(
+                    stream: loginViewModel.userStream,
+                    builder: (context, snapshot) {
+                      return Text(
+                        'Seja bem-vindo(a) ${snapshot.data?.displayName}',
+                        style: TextStyle(color: Colors.white),
+                      );
+                    }),
                 IconButton(
                     icon: Icon(Icons.exit_to_app),
                     color: Colors.white,

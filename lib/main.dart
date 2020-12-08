@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -65,10 +66,24 @@ class WrapperAuthentication extends StatelessWidget {
     SizeConfig().init(context);
     final LoginViewModel loginViewModel = Provider.of<LoginViewModel>(context);
 
-    if (!loginViewModel.loggedUser) {
-      return SignInPage();
-    } else {
-      return HomePage('MyShop');
-    }
+    return StreamBuilder<User>(
+      stream: loginViewModel.userStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Text(snapshot.error);
+        }
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());
+            break;
+          default:
+            if (snapshot.data?.uid != null) {
+              return HomePage('MyShop');
+            } else {
+              return SignInPage();
+            }
+        }
+      },
+    );
   }
 }

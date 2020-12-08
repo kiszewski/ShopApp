@@ -130,7 +130,17 @@ class _SignInPageState extends State<SignInPage> {
                   Navigator.of(context).pushNamed('sign_up');
                 },
                 borderSide: BorderSide(width: 0, color: Colors.white),
-              )
+              ),
+              OutlineButton(
+                child: Text(
+                  'Entrar com Google',
+                  style: TextStyle(fontSize: 16, color: Colors.red),
+                ),
+                onPressed: () {
+                  loginViewModel.signInWithGoogle();
+                },
+                borderSide: BorderSide(width: 0, color: Colors.white),
+              ),
             ],
           ),
         ),

@@ -8,6 +8,8 @@ class LoginViewModel extends ChangeNotifier {
 
   User _user;
 
+  Stream<User> get userStream => _authenticationService.authStateChanges;
+
   String get userEmail => _user?.email;
   bool get loggedUser => _user != null;
 
@@ -35,6 +37,10 @@ class LoginViewModel extends ChangeNotifier {
     } else if (resp is Exception) {
       return resp.toString();
     }
+  }
+
+  signInWithGoogle() {
+    _authenticationService.signInWithGoogle();
   }
 
   Future<void> logoutUser() async {
