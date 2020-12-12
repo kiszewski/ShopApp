@@ -1,8 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/viewmodels/products_viewmodel.dart';
+import 'package:shopApp/services/products_service.dart';
 
 class ProductFormPage extends StatefulWidget {
   @override
@@ -11,16 +11,18 @@ class ProductFormPage extends StatefulWidget {
 
 class _ProductFormPageState extends State<ProductFormPage> {
   final _formKey = GlobalKey<FormState>();
+  final ProductsService _productsService =
+      ProductsService(FirebaseFirestore.instance);
 
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _imageUrl = TextEditingController();
 
-  _saveProduct(ProductModel product, ProductsViewModel productsViewModel) {
+  _saveProduct(ProductModel product) {
     if (_formKey.currentState.validate()) {
       if (product == null) {
-        productsViewModel.addProduct(ProductModel(
+        _productsService.addProduct(ProductModel(
           _nameController.text,
           _imageUrl.text,
           double.tryParse(_priceController.text) ?? 0.0,
@@ -28,7 +30,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
         ));
       } else {
         // TO DO
-        productsViewModel.updateProduct(
+        _productsService.updateProduct(
           product,
           _nameController.text,
           _imageUrl.text,
@@ -43,8 +45,6 @@ class _ProductFormPageState extends State<ProductFormPage> {
 
   @override
   Widget build(BuildContext context) {
-    final ProductsViewModel productsViewModel =
-        Provider.of<ProductsViewModel>(context);
     final ProductModel product = ModalRoute.of(context).settings.arguments;
 
     _nameController.text = product?.name;
@@ -66,7 +66,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.check),
           onPressed: () {
-            _saveProduct(product, productsViewModel);
+            _saveProduct(product);
           }),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

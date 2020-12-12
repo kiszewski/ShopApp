@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
-import 'package:shopApp/viewmodels/products_viewmodel.dart';
+import 'package:shopApp/services/products_service.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
 
@@ -15,18 +16,19 @@ class ProductsListPage extends StatefulWidget {
 class _ProductsListPageState extends State<ProductsListPage> {
   Stream<List<ProductModel>> _productsStream;
 
+  final ProductsService _productsService =
+      ProductsService(FirebaseFirestore.instance);
+
   @override
   void initState() {
     super.initState();
-    _productsStream = context.read<ProductsViewModel>().getProducts();
+    _productsStream = _productsService.getProducts();
   }
 
   @override
   Widget build(BuildContext context) {
     final FavoriteViewModel favoriteViewModel =
         Provider.of<FavoriteViewModel>(context, listen: false);
-    final ProductsViewModel productsViewModel =
-        Provider.of<ProductsViewModel>(context, listen: false);
 
     return Scaffold(
         appBar: AppBar(
@@ -116,7 +118,7 @@ class _ProductsListPageState extends State<ProductsListPage> {
                                                       .toggleFavorite(product);
                                                 }
 
-                                                productsViewModel
+                                                _productsService
                                                     .removeProduct(product);
                                                 Navigator.of(context).pop();
                                               },

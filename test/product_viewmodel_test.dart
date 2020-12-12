@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/viewmodels/products_viewmodel.dart';
+import 'package:shopApp/services/products_service.dart';
 
 void main() {
   final ProductsViewModel productViewModel = ProductsViewModel([]);

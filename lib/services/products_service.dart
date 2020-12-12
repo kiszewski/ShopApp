@@ -1,11 +1,10 @@
-import 'package:flutter/material.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProductsViewModel extends ChangeNotifier {
+class ProductsService {
   final FirebaseFirestore _firestore;
 
-  ProductsViewModel(this._firestore);
+  ProductsService(this._firestore);
 
   Stream<List<ProductModel>> getProducts() {
     return _firestore.collection('products').snapshots().map((snapshot) {
@@ -49,7 +48,7 @@ class ProductsViewModel extends ChangeNotifier {
           'price': price,
           'description': description
         })
-        .then((value) => print('User updated'))
+        .then((value) => print('Product updated'))
         .catchError((error) => print(error));
   }
 
@@ -59,7 +58,7 @@ class ProductsViewModel extends ChangeNotifier {
     products
         .doc(product.id)
         .delete()
-        .then((value) => print('User deleted'))
+        .then((value) => print('Product deleted'))
         .catchError((error) => print(error));
   }
 }

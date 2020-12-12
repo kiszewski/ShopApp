@@ -1,10 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
-import 'package:shopApp/viewmodels/products_viewmodel.dart';
+import 'package:shopApp/services/products_service.dart';
 import 'package:shopApp/pages/home_page/product_card_component.dart';
 import 'package:shopApp/utils/size_config.dart';
 
@@ -18,19 +19,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  bool onlyFavorites = false;
-
+  bool _onlyFavorites = false;
   Stream<List<ProductModel>> _productsStream;
+
+  final ProductsService _productsService =
+      ProductsService(FirebaseFirestore.instance);
 
   @override
   void initState() {
     super.initState();
-    _productsStream = context.read<ProductsViewModel>().getProducts();
+    _productsStream = _productsService.getProducts();
   }
 
   _changeProductsList(bool value) {
     setState(() {
-      onlyFavorites = value;
+      _onlyFavorites = value;
     });
   }
 
@@ -132,7 +135,7 @@ class _HomePageState extends State<HomePage> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Image.asset('assets/shop.png'),
-                            onlyFavorites
+                            _onlyFavorites
                                 ? Text(
                                     'Lista de favoritos vazia',
                                     style: TextStyle(fontSize: 16),

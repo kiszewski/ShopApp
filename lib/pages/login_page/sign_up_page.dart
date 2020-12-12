@@ -34,27 +34,27 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  _signUp(BuildContext ctx, LoginViewModel loginViewModel) async {
-    if (_formKey.currentState.validate()) {
-      showDialog(
-          context: ctx,
-          barrierDismissible: false,
-          child: LoadingDialogView('Cadastrando...'));
+  // _signUp(BuildContext ctx, LoginViewModel loginViewModel) async {
+  //   if (_formKey.currentState.validate()) {
+  //     showDialog(
+  //         context: ctx,
+  //         barrierDismissible: false,
+  //         child: LoadingDialogView('Cadastrando...'));
 
-      String resp = await loginViewModel.createUser(
-        _email.text,
-        _password.text,
-      );
+  //     String resp = await loginViewModel.createUser(
+  //       _email.text,
+  //       _password.text,
+  //     );
 
-      Navigator.of(context).pop();
+  //     Navigator.of(context).pop();
 
-      if (loginViewModel.loggedUser) {
-        Navigator.of(context).pushReplacementNamed('home');
-      } else {
-        _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
-      }
-    }
-  }
+  //     if (await loginViewModel.loggedUser) {
+  //       Navigator.of(context).pushReplacementNamed('home');
+  //     } else {
+  //       _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +139,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       color: Theme.of(context).primaryColor,
                       textColor: Colors.white,
                       onPressed: () {
-                        _signUp(context, loginViewModel);
+                        // _signUp(context, loginViewModel);
                       },
                       child: Text(
                         'Criar conta',
