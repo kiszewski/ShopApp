@@ -3,24 +3,28 @@ import 'dart:math';
 class ProductModel {
   // final Random _rnd = Random();
   String id;
-  String _name;
-  String _imageUrl;
-  double _price;
-  String _description;
-  // int qtd = 1;
+  String name;
+  String imageUrl;
+  double price;
+  String description;
 
-  ProductModel(this._name, this._imageUrl, this._price, this._description,
-      {this.id}) {
-    // if (this.id == null) {
-    //   this.id = _rnd.nextInt(1000000);
-    // }
+  ProductModel();
+
+  ProductModel.fromMap(String id, Map<String, dynamic> productMap) {
+    this.id = id;
+    this.name = productMap['name'];
+    this.description = productMap['description'];
+    this.price = productMap['price'] + 0.0;
+    this.imageUrl = productMap['imageUrl'];
   }
 
-  String get name => this._name;
-  String get imageUrl => this._imageUrl;
-  double get price => this._price;
-  String get description => this._description;
-  // double get totalValue => qtd * _price;
+  // ProductModel(this.name, this.imageUrl, this.price, this.description,
+  //     {this.id}) {
+  // if (this.id == null) {
+  //   this.id = rnd.nextInt(1000000);
+  // }
+  // }
+  // double get totalValue => qtd * price;
 
   // void increaseQtd() => qtd++;
   // void decreaseQtd() => qtd > 1 ? qtd-- : null;

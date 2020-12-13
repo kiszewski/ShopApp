@@ -1,4 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shopApp/models/item_cart_model.dart';
+import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/user_model.dart';
 
 class UsersService {
@@ -8,12 +10,8 @@ class UsersService {
 
   Future<String> addUser(UserModel user) async {
     Map<String, dynamic> userMap = {
-      'id': user.id,
       'name': user.name,
       'email': user.email,
-      'orders': user.orders,
-      'favoriteProducts': user.favoriteProducts,
-      'productsInCart': user.productsInCart,
     };
 
     DocumentReference document = await _firestore
@@ -26,20 +24,37 @@ class UsersService {
   }
 
   Future<UserModel> findUser(String id) async {
-    final users = _firestore.collection('users');
+    final UserModel user = UserModel();
 
-    DocumentSnapshot userFromDB = await users.doc(id).get();
+    final DocumentReference userRef = _firestore.collection('users').doc(id);
 
-    UserModel user = UserModel();
+    await userRef.get().then((value) {
+      if (value.exists) {
+        user.id = value.id;
+        user.name = value.data()['name'];
+        user.email = value.data()['email'];
+      }
+    });
+    print(user);
+    await userRef.collection('cart').get().then((value) {
+      user.cart = value.docs.map((element) {
+        final ProductModel product =
+            ProductModel.fromMap(element.id, element.data());
 
-    if (userFromDB.exists) {
-      user.id = userFromDB.data()['id'];
-      user.name = userFromDB.data()['name'];
-      user.email = userFromDB.data()['email'];
-      // user.productsInCart = userFromDB.data()['productsInCart'];
-      // user.favoriteProducts = userFromDB.data()['favoriteProducts'];
-      // user.orders = userFromDB.data()['orders'];
-    }
+        final ItemCartModel item = ItemCartModel(product);
+        item.qtdSetter = element['qtd'];
+
+        return item;
+      }).toList();
+    });
+
+    print(user);
+    await userRef.collection('favorites').get().then((value) {
+      user.favorites = value.docs
+          .map((element) => ProductModel.fromMap(element.id, element.data()))
+          .toList();
+    });
+    print(user);
 
     return user;
   }

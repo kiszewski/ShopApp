@@ -1,25 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/models/user_model.dart';
-import 'package:shopApp/pages/login_page/sign_in_page.dart';
 import 'package:shopApp/pages/login_page/sign_up_page.dart';
 import 'package:shopApp/pages/wrapper_authentication.dart';
-import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
 import 'package:shopApp/viewmodels/orders_viewmodel.dart';
-import 'package:shopApp/services/products_service.dart';
 import 'package:shopApp/pages/cart_page/cart_page.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/orders_page/orders_page.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 import 'package:shopApp/pages/registration_pages/product_form_page.dart';
 import 'package:shopApp/pages/registration_pages/products_list_page.dart';
-import 'package:shopApp/services/users_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -22,12 +22,14 @@ class _ProductFormPageState extends State<ProductFormPage> {
   _saveProduct(ProductModel product) {
     if (_formKey.currentState.validate()) {
       if (product == null) {
-        _productsService.addProduct(ProductModel(
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        ));
+        final ProductModel newProduct = ProductModel();
+
+        newProduct.name = _nameController.text;
+        newProduct.imageUrl = _imageUrl.text;
+        newProduct.price = double.tryParse(_priceController.text) ?? 0.0;
+        newProduct.description = _descriptionController.text;
+
+        _productsService.addProduct(newProduct);
       } else {
         // TO DO
         _productsService.updateProduct(
