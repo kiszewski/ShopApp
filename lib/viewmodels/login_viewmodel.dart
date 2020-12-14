@@ -10,6 +10,8 @@ class LoginViewModel extends ChangeNotifier {
 
   Future<bool> get loggedUser => userStream.isEmpty;
 
+  User get currentUser => _authenticationService.currentUser;
+
   Future<String> loginUser(String email, String password) async {
     final resp =
         await _authenticationService.signIn(email: email, password: password);

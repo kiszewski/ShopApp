@@ -18,6 +18,15 @@ class ProductModel {
     this.imageUrl = productMap['imageUrl'];
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'name': this.name,
+      'imageUrl': this.imageUrl,
+      'price': this.price,
+      'description': this.description,
+    };
+  }
+
   // ProductModel(this.name, this.imageUrl, this.price, this.description,
   //     {this.id}) {
   // if (this.id == null) {

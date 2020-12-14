@@ -111,12 +111,12 @@ class _ProductsListPageState extends State<ProductsListPage> {
                                               textColor: Colors.grey,
                                             ),
                                             FlatButton(
-                                              onPressed: () {
-                                                if (favoriteViewModel.favorites
-                                                    .contains(product)) {
-                                                  favoriteViewModel
-                                                      .toggleFavorite(product);
-                                                }
+                                              onPressed: () async {
+                                                // if (await favoriteViewModel
+                                                //     .isFavorite(product)) {
+                                                //   favoriteViewModel
+                                                //       .toggleFavorite(product);
+                                                // }
 
                                                 _productsService
                                                     .removeProduct(product);

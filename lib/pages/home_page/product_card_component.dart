@@ -7,34 +7,28 @@ import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProductCardComponent extends StatelessWidget {
+class ProductCardComponent extends StatefulWidget {
   final ProductModel product;
 
   const ProductCardComponent(this.product);
 
-  // void _addInCart(BuildContext ctx) {
-  //   final CartViewModel cartViewModel =
-  //       Provider.of<CartViewModel>(ctx, listen: false);
+  @override
+  _ProductCardComponentState createState() => _ProductCardComponentState();
+}
 
-  //   if (cartViewModel.addProduct(product)) {
-  //     Scaffold.of(ctx).showSnackBar(SnackBar(
-  //       content: Text('${product.name} adicionado no carrinho'),
-  //       duration: Duration(seconds: 2),
-  //       action: SnackBarAction(
-  //           textColor: Colors.orangeAccent,
-  //           label: 'Desfazer',
-  //           onPressed: () {
-  //             cartViewModel.removeProduct(product);
-  //           }),
-  //     ));
-  //   }
-  // }
+class _ProductCardComponentState extends State<ProductCardComponent> {
+  FavoriteViewModel favoriteModel;
+  Stream<bool> isFavoriteStream;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
+    isFavoriteStream = favoriteModel.isFavorite(widget.product);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final FavoriteViewModel favoriteModel =
-        Provider.of<FavoriteViewModel>(context);
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
@@ -43,17 +37,17 @@ class ProductCardComponent extends StatelessWidget {
             PageRouteBuilder(
                 transitionDuration: Duration(milliseconds: 250),
                 pageBuilder: (_, __, ___) =>
-                    ProductDetailsPage(product: product))),
+                    ProductDetailsPage(product: widget.product))),
         child: Stack(
           children: [
             Container(
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
               child: Hero(
-                tag: '${product.id}',
+                tag: '${widget.product.id}',
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
-                  image: product.imageUrl,
+                  image: widget.product.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -67,18 +61,29 @@ class ProductCardComponent extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                        icon: Icon(
-                          favoriteModel.isFavorite(product)
-                              ? Icons.favorite
-                              : Icons.favorite_border,
-                          color: Theme.of(context).primaryColor,
+                        icon: StreamBuilder<bool>(
+                          stream: isFavoriteStream,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.done) {
+                              return Icon(
+                                snapshot.data
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Theme.of(context).primaryColor,
+                              );
+                            } else {
+                              return CircularProgressIndicator();
+                            }
+                          },
                         ),
-                        onPressed: () => favoriteModel.toggleFavorite(product)),
+                        onPressed: () =>
+                            favoriteModel.toggleFavorite(widget.product)),
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          product.name,
+                          widget.product.name,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),

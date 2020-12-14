@@ -20,15 +20,22 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool _onlyFavorites = false;
-  Stream<List<ProductModel>> _productsStream;
 
   final ProductsService _productsService =
       ProductsService(FirebaseFirestore.instance);
+
+  Stream<List<ProductModel>> _productsStream;
+  Stream<List<ProductModel>> _favoritesStream;
+
+  FavoriteViewModel _favoriteModel;
 
   @override
   void initState() {
     super.initState();
     _productsStream = _productsService.getProducts();
+    _favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
+
+    _favoritesStream = _favoriteModel.favorites;
   }
 
   _changeProductsList(bool value) {
@@ -39,9 +46,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final FavoriteViewModel favoriteModel =
-        Provider.of<FavoriteViewModel>(context);
-
     return Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black87),
@@ -100,54 +104,110 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
         drawer: DrawerView(),
-        body: StreamBuilder<List<ProductModel>>(
-          stream: _productsStream,
-          builder: (context, snapshot) {
-            if (snapshot.hasError) {
-              return Text(snapshot.error);
-            }
+        body: _onlyFavorites
+            ? StreamBuilder<List<ProductModel>>(
+                key: Key('1'),
+                stream: _favoritesStream,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return snapshot.data != null && snapshot.data.isNotEmpty
+                        ? GridView.builder(
+                            itemBuilder: (context, index) {
+                              return ProductCardComponent(
+                                  snapshot.data.toList()[index]);
+                            },
+                            physics: BouncingScrollPhysics(),
+                            gridDelegate:
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 1.5,
+                              crossAxisSpacing:
+                                  SizeConfig.blockSizeVertical * 1.5,
+                              mainAxisSpacing:
+                                  SizeConfig.blockSizeVertical * 1.5,
+                            ),
+                            itemCount: snapshot.data.length,
+                            padding: EdgeInsets.all(
+                                SizeConfig.blockSizeVertical * 1.5),
+                          )
+                        : Container(
+                            width: SizeConfig.blockSizeHorizontal * 100,
+                            height: SizeConfig.blockSizeVertical * 100,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Image.asset('assets/shop.png'),
+                                _onlyFavorites
+                                    ? Text(
+                                        'Lista de favoritos vazia',
+                                        style: TextStyle(fontSize: 16),
+                                      )
+                                    : Text(
+                                        'Lista de produtos vazia',
+                                        style: TextStyle(fontSize: 16),
+                                      ),
+                              ],
+                            ));
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              )
+            : StreamBuilder<List<ProductModel>>(
+                key: Key('2'),
+                stream: _productsStream,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Text(snapshot.error);
+                  }
 
-            switch (snapshot.connectionState) {
-              case ConnectionState.waiting:
-                return CircularProgressIndicator();
-                break;
-              default:
-                return snapshot.data.isNotEmpty
-                    ? GridView.builder(
-                        itemBuilder: (context, index) {
-                          return ProductCardComponent(snapshot.data[index]);
-                        },
-                        physics: BouncingScrollPhysics(),
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 1.5,
-                          crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-                          mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-                        ),
-                        itemCount: snapshot.data.length,
-                        padding:
-                            EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
-                      )
-                    : Container(
-                        width: SizeConfig.blockSizeHorizontal * 100,
-                        height: SizeConfig.blockSizeVertical * 100,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Image.asset('assets/shop.png'),
-                            _onlyFavorites
-                                ? Text(
-                                    'Lista de favoritos vazia',
-                                    style: TextStyle(fontSize: 16),
-                                  )
-                                : Text(
-                                    'Lista de produtos vazia',
-                                    style: TextStyle(fontSize: 16),
-                                  ),
-                          ],
-                        ));
-            }
-          },
-        ));
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return Center(child: CircularProgressIndicator());
+                      break;
+                    default:
+                      return snapshot.data.isNotEmpty
+                          ? GridView.builder(
+                              itemBuilder: (context, index) {
+                                return ProductCardComponent(
+                                    snapshot.data[index]);
+                              },
+                              physics: BouncingScrollPhysics(),
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                childAspectRatio: 1.5,
+                                crossAxisSpacing:
+                                    SizeConfig.blockSizeVertical * 1.5,
+                                mainAxisSpacing:
+                                    SizeConfig.blockSizeVertical * 1.5,
+                              ),
+                              itemCount: snapshot.data.length,
+                              padding: EdgeInsets.all(
+                                  SizeConfig.blockSizeVertical * 1.5),
+                            )
+                          : Container(
+                              width: SizeConfig.blockSizeHorizontal * 100,
+                              height: SizeConfig.blockSizeVertical * 100,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Image.asset('assets/shop.png'),
+                                  _onlyFavorites
+                                      ? Text(
+                                          'Lista de favoritos vazia',
+                                          style: TextStyle(fontSize: 16),
+                                        )
+                                      : Text(
+                                          'Lista de produtos vazia',
+                                          style: TextStyle(fontSize: 16),
+                                        ),
+                                ],
+                              ));
+                  }
+                },
+              ));
   }
 }
