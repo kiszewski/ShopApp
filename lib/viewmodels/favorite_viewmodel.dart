@@ -10,21 +10,25 @@ class FavoriteViewModel extends ChangeNotifier {
       AuthenticationService(FirebaseAuth.instance);
   UsersService _userService = UsersService(FirebaseFirestore.instance);
 
-  Stream<List<ProductModel>> get favorites {
+  List<ProductModel> _favorites;
+
+  Future<List<ProductModel>> get favorites async {
     String userId = _authService.currentUser.uid;
 
-    return _userService.getFavorites(userId).asBroadcastStream();
+    _favorites = await _userService.getFavorites(userId);
+
+    return _favorites;
   }
 
-  void toggleFavorite(ProductModel product) {
+  void toggleFavorite(ProductModel product) async {
     String userId = _authService.currentUser.uid;
-    _userService.toggleFavoriteProduct(userId, product);
+    await _userService.toggleFavoriteProduct(userId, product);
     notifyListeners();
   }
 
-  Stream<bool> isFavorite(ProductModel product) {
-    String userId = _authService.currentUser.uid;
+  Future<bool> isFavorite(ProductModel product) async {
+    List<ProductModel> favs = await favorites;
 
-    return _userService.isFavorite(userId, product).asBroadcastStream();
+    return favs.any((prod) => prod.id == product.id);
   }
 }

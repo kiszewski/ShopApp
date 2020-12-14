@@ -25,17 +25,17 @@ class _HomePageState extends State<HomePage> {
       ProductsService(FirebaseFirestore.instance);
 
   Stream<List<ProductModel>> _productsStream;
-  Stream<List<ProductModel>> _favoritesStream;
+  Future<List<ProductModel>> _favoritesFuture;
 
   FavoriteViewModel _favoriteModel;
 
   @override
   void initState() {
     super.initState();
-    _productsStream = _productsService.getProducts();
     _favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
 
-    _favoritesStream = _favoriteModel.favorites;
+    _productsStream = _productsService.getProducts();
+    _favoritesFuture = _favoriteModel.favorites;
   }
 
   _changeProductsList(bool value) {
@@ -105,9 +105,9 @@ class _HomePageState extends State<HomePage> {
         ),
         drawer: DrawerView(),
         body: _onlyFavorites
-            ? StreamBuilder<List<ProductModel>>(
+            ? FutureBuilder<List<ProductModel>>(
                 key: Key('1'),
-                stream: _favoritesStream,
+                future: _favoritesFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return snapshot.data != null && snapshot.data.isNotEmpty

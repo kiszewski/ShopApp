@@ -18,17 +18,18 @@ class ProductCardComponent extends StatefulWidget {
 
 class _ProductCardComponentState extends State<ProductCardComponent> {
   FavoriteViewModel favoriteModel;
-  Stream<bool> isFavoriteStream;
+  // Future<bool> isFavoriteFuture;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
-    isFavoriteStream = favoriteModel.isFavorite(widget.product);
+    // isFavoriteFuture = favoriteModel.isFavorite(widget.product);
   }
 
   @override
   Widget build(BuildContext context) {
+    FavoriteViewModel favoriteModel2 = Provider.of<FavoriteViewModel>(context);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
@@ -61,8 +62,8 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                        icon: StreamBuilder<bool>(
-                          stream: isFavoriteStream,
+                        icon: FutureBuilder<bool>(
+                          future: favoriteModel2.isFavorite(widget.product),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
@@ -73,12 +74,18 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                                 color: Theme.of(context).primaryColor,
                               );
                             } else {
-                              return CircularProgressIndicator();
+                              return Icon(
+                                snapshot.data != null && snapshot.data
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: Theme.of(context).primaryColor,
+                              );
                             }
                           },
                         ),
                         onPressed: () =>
                             favoriteModel.toggleFavorite(widget.product)),
+
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
