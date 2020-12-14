@@ -26,29 +26,29 @@ class AuthenticationService {
 
   Future signOut() async => await _firebaseAuth.signOut();
 
-  // Future<Object> signIn({
-  //   @required String email,
-  //   @required String password,
-  // }) async {
-  //   try {
-  //     await _firebaseAuth.signInWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return true;
-  //   } on FirebaseAuthException catch (e) {
-  //     return e;
-  //   }
-  // }
+  Future<Object> signIn({
+    @required String email,
+    @required String password,
+  }) async {
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      return e;
+    }
+  }
 
-  // Future<Object> signUp({
-  //   @required String email,
-  //   @required String password,
-  // }) async {
-  //   try {
-  //     await _firebaseAuth.createUserWithEmailAndPassword(
-  //         email: email, password: password);
-  //     return true;
-  //   } on FirebaseAuthException catch (e) {
-  //     return e;
-  //   }
-  // }
+  Future<Object> signUp({
+    @required String email,
+    @required String password,
+  }) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      return true;
+    } on FirebaseAuthException catch (e) {
+      return e;
+    }
+  }
 }
