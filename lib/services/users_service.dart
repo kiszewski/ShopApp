@@ -35,7 +35,7 @@ class UsersService {
         user.email = value.data()['email'];
       }
     });
-    print(user);
+
     await userRef.collection('cart').get().then((value) {
       user.cart = value.docs.map((element) {
         final ProductModel product =
@@ -48,13 +48,11 @@ class UsersService {
       }).toList();
     });
 
-    print(user);
     await userRef.collection('favorites').get().then((value) {
       user.favorites = value.docs
           .map((element) => ProductModel.fromMap(element.id, element.data()))
           .toList();
     });
-    print(user);
 
     return user;
   }

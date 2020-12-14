@@ -8,7 +8,6 @@ import 'package:shopApp/pages/login_page/sign_in_page.dart';
 import 'package:shopApp/services/authentication_service.dart';
 import 'package:shopApp/services/users_service.dart';
 import 'package:shopApp/utils/size_config.dart';
-import 'package:shopApp/viewmodels/login_viewmodel.dart';
 
 class WrapperAuthentication extends StatefulWidget {
   @override
@@ -20,15 +19,22 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
   final AuthenticationService authService =
       AuthenticationService(FirebaseAuth.instance);
 
+  Stream<User> streamToCall;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    streamToCall = authService.authStateChanges;
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    // final LoginViewModel loginViewModel =
-    //     Provider.of<LoginViewModel>(context, listen: false);
-
     return StreamBuilder<User>(
-      stream: authService.authStateChanges,
+      stream: streamToCall,
       builder: (context, snapshotUser) {
         if (snapshotUser.hasError) {
           return Text(snapshotUser.error);
@@ -52,32 +58,48 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
   }
 }
 
-class MainHomePageFuture extends StatelessWidget {
-  final UsersService userService = UsersService(FirebaseFirestore.instance);
+class MainHomePageFuture extends StatefulWidget {
   final User userFromApi;
 
   MainHomePageFuture({Key key, this.userFromApi}) : super(key: key);
 
   @override
+  _MainHomePageFutureState createState() => _MainHomePageFutureState();
+}
+
+class _MainHomePageFutureState extends State<MainHomePageFuture> {
+  UsersService userService;
+  Future<UserModel> findUser;
+
+  @override
+  void initState() {
+    super.initState();
+    // TODO: implement initState
+    userService = UsersService(FirebaseFirestore.instance);
+    findUser = userService.findUser(widget.userFromApi.uid);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<UserModel>(
-      future: userService.findUser(userFromApi.uid),
+      future: findUser,
       builder: (context, snapshotUserModel) {
-        if (snapshotUserModel.data?.id == null) {
-          // First login in app
-          final UserModel user = UserModel();
+        if (snapshotUserModel.connectionState == ConnectionState.done) {
+          if (snapshotUserModel.data?.id == null) {
+            // First login in app
+            final UserModel user = UserModel();
 
-          user.email = userFromApi.email;
-          user.name = userFromApi.displayName;
-          user.id = userFromApi.uid;
+            user.email = widget.userFromApi.email;
+            user.name = widget.userFromApi.displayName;
+            user.id = widget.userFromApi.uid;
 
-          userService.addUser(user);
+            userService.addUser(user);
+          }
           return HomePage('MyShop');
         } else {
-          return HomePage('My Shop');
+          return CircularProgressIndicator();
         }
       },
     );
-    ;
   }
 }
