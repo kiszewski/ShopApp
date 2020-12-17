@@ -18,18 +18,15 @@ class ProductCardComponent extends StatefulWidget {
 
 class _ProductCardComponentState extends State<ProductCardComponent> {
   FavoriteViewModel favoriteModel;
-  // Future<bool> isFavoriteFuture;
+
   @override
   void initState() {
     super.initState();
     favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
-    // isFavoriteFuture = favoriteModel.isFavorite(widget.product);
   }
 
   @override
   Widget build(BuildContext context) {
-    FavoriteViewModel favoriteModel2 = Provider.of<FavoriteViewModel>(context);
-
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
@@ -63,7 +60,7 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                   children: [
                     IconButton(
                         icon: FutureBuilder<bool>(
-                          future: favoriteModel2.isFavorite(widget.product),
+                          future: favoriteModel.isFavorite(widget.product),
                           builder: (context, snapshot) {
                             if (snapshot.connectionState ==
                                 ConnectionState.done) {
