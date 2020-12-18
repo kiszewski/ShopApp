@@ -12,12 +12,10 @@ class FavoriteViewModel extends ChangeNotifier {
 
   List<ProductModel> _favorites;
 
-  Future<List<ProductModel>> get favorites async {
+  Stream<List<ProductModel>> get favorites {
     String userId = _authService.currentUser.uid;
 
-    _favorites = await _userService.getFavorites(userId);
-
-    return _favorites;
+    return _userService.getFavorites(userId);
   }
 
   void toggleFavorite(ProductModel product) async {
@@ -26,9 +24,9 @@ class FavoriteViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> isFavorite(ProductModel product) async {
-    List<ProductModel> favs = await favorites;
+  // Future<bool> isFavorite(ProductModel product) async {
+  //   List<ProductModel> favs = await favorites;
 
-    return favs.any((prod) => prod.id == product.id);
-  }
+  //   return favs.any((prod) => prod.id == product.id);
+  // }
 }

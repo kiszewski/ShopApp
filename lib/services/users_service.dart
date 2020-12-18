@@ -76,14 +76,14 @@ class UsersService {
     await docRef.collection('favorites').doc(product.id).delete();
   }
 
-  Future<List<ProductModel>> getFavorites(String userId) async {
+  Stream<List<ProductModel>> getFavorites(String userId) {
     DocumentReference docRef = _firestore.collection('users').doc(userId);
 
-    return await docRef.collection('favorites').get().then((value) {
+    return docRef.collection('favorites').get().then((value) {
       return value.docs
           .map((element) => ProductModel.fromMap(element.id, element.data()))
           .toList();
-    });
+    }).asStream();
   }
 
   Future<bool> isFavorite(String userId, ProductModel product) async {

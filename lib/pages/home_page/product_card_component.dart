@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
-import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -17,12 +16,12 @@ class ProductCardComponent extends StatefulWidget {
 }
 
 class _ProductCardComponentState extends State<ProductCardComponent> {
-  FavoriteViewModel favoriteModel;
+  FavoriteViewModel _favoriteModel;
 
   @override
   void initState() {
     super.initState();
-    favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
+    _favoriteModel = Provider.of<FavoriteViewModel>(context, listen: false);
   }
 
   @override
@@ -59,29 +58,12 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     IconButton(
-                        icon: FutureBuilder<bool>(
-                          future: favoriteModel.isFavorite(widget.product),
-                          builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return Icon(
-                                snapshot.data
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: Theme.of(context).primaryColor,
-                              );
-                            } else {
-                              return Icon(
-                                snapshot.data != null && snapshot.data
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: Theme.of(context).primaryColor,
-                              );
-                            }
-                          },
+                        icon: Icon(
+                          false ? Icons.favorite : Icons.favorite_border,
+                          color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () =>
-                            favoriteModel.toggleFavorite(widget.product)),
+                            _favoriteModel.toggleFavorite(widget.product)),
 
                     Expanded(
                       child: FittedBox(
