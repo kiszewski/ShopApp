@@ -79,11 +79,11 @@ class UsersService {
   Stream<List<ProductModel>> getFavorites(String userId) {
     DocumentReference docRef = _firestore.collection('users').doc(userId);
 
-    return docRef.collection('favorites').get().then((value) {
-      return value.docs
+    return docRef.collection('favorites').snapshots().map((snapshot) {
+      return snapshot.docs
           .map((element) => ProductModel.fromMap(element.id, element.data()))
           .toList();
-    }).asStream();
+    });
   }
 
   Future<bool> isFavorite(String userId, ProductModel product) async {
