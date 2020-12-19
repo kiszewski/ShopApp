@@ -9,8 +9,9 @@ import 'package:transparent_image/transparent_image.dart';
 
 class ProductCardComponent extends StatefulWidget {
   final ProductModel product;
+  final bool isFavorite;
 
-  const ProductCardComponent(this.product);
+  const ProductCardComponent(this.product, this.isFavorite);
 
   @override
   _ProductCardComponentState createState() => _ProductCardComponentState();
@@ -54,7 +55,9 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                   children: [
                     IconButton(
                         icon: Icon(
-                          false ? Icons.favorite : Icons.favorite_border,
+                          widget.isFavorite
+                              ? Icons.favorite
+                              : Icons.favorite_border,
                           color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () => _userRepository

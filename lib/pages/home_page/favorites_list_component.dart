@@ -22,7 +22,8 @@ class FavoritesListComponent extends StatelessWidget {
           return snapshot.data != null && snapshot.data.isNotEmpty
               ? GridView.builder(
                   itemBuilder: (context, index) {
-                    return ProductCardComponent(snapshot.data.toList()[index]);
+                    return ProductCardComponent(
+                        snapshot.data.toList()[index], true);
                   },
                   physics: BouncingScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
