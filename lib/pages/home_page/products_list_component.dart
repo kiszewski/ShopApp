@@ -2,20 +2,20 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/home_page/product_card_component.dart';
-import 'package:shopApp/services/products_service.dart';
+import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class ProductsListComponent extends StatelessWidget {
-  final ProductsService _productService =
-      ProductsService(FirebaseFirestore.instance);
+  final ProductRepository _productRepository =
+      ProductRepository(FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context) {
     final Stream<List<ProductModel>> _productsStream =
-        _productService.getProducts();
+        _productRepository.getProducts();
 
     return StreamBuilder<List<ProductModel>>(
-      // key: Key('2'),
+      key: Key('2'),
       stream: _productsStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {

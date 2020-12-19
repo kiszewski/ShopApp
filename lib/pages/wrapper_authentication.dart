@@ -6,7 +6,7 @@ import 'package:shopApp/models/user_model.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/login_page/sign_in_page.dart';
 import 'package:shopApp/services/authentication_service.dart';
-import 'package:shopApp/services/users_service.dart';
+import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class WrapperAuthentication extends StatefulWidget {
@@ -15,7 +15,6 @@ class WrapperAuthentication extends StatefulWidget {
 }
 
 class _WrapperAuthenticationState extends State<WrapperAuthentication> {
-  final UsersService userService = UsersService(FirebaseFirestore.instance);
   final AuthenticationService authService =
       AuthenticationService(FirebaseAuth.instance);
 
@@ -23,7 +22,6 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     streamToCall = authService.authStateChanges;
@@ -68,21 +66,14 @@ class MainHomePageFuture extends StatefulWidget {
 }
 
 class _MainHomePageFutureState extends State<MainHomePageFuture> {
-  UsersService userService;
-  Future<UserModel> findUser;
-
-  @override
-  void initState() {
-    super.initState();
-    // TODO: implement initState
-    userService = UsersService(FirebaseFirestore.instance);
-    findUser = userService.findUser(widget.userFromApi.uid);
-  }
-
   @override
   Widget build(BuildContext context) {
+    AuthenticationService _authenticationService =
+        AuthenticationService(FirebaseAuth.instance);
+    User _currentUser = _authenticationService.currentUser;
+    UserRepository _userRepository = Provider.of<UserRepository>(context);
     return FutureBuilder<UserModel>(
-      future: findUser,
+      future: _userRepository.findUser(_currentUser.uid),
       builder: (context, snapshotUserModel) {
         if (snapshotUserModel.connectionState == ConnectionState.done) {
           if (snapshotUserModel.data?.id == null) {
@@ -93,7 +84,7 @@ class _MainHomePageFutureState extends State<MainHomePageFuture> {
             user.name = widget.userFromApi.displayName;
             user.id = widget.userFromApi.uid;
 
-            userService.addUser(user);
+            _userRepository.addUser(user);
           }
           return HomePage('MyShop');
         } else {

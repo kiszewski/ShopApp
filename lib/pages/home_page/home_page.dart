@@ -6,8 +6,7 @@ import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/pages/home_page/favorites_list_component.dart';
 import 'package:shopApp/pages/home_page/products_list_component.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
-import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
-import 'package:shopApp/services/products_service.dart';
+import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {

@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/services/products_service.dart';
+import 'package:shopApp/repository/product_repository.dart';
 
 class ProductFormPage extends StatefulWidget {
   @override
@@ -11,8 +11,8 @@ class ProductFormPage extends StatefulWidget {
 
 class _ProductFormPageState extends State<ProductFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final ProductsService _productsService =
-      ProductsService(FirebaseFirestore.instance);
+  final ProductRepository _productsService =
+      ProductRepository(FirebaseFirestore.instance);
 
   final _nameController = TextEditingController();
   final _priceController = TextEditingController();

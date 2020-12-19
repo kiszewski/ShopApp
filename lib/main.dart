@@ -1,10 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/login_page/sign_up_page.dart';
 import 'package:shopApp/pages/wrapper_authentication.dart';
+import 'package:shopApp/repository/product_repository.dart';
+import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
-import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
 import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/pages/cart_page/cart_page.dart';
@@ -25,9 +27,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        Provider<ProductRepository>(
+            create: (context) => ProductRepository(FirebaseFirestore.instance)),
+        Provider<UserRepository>(
+            create: (context) => UserRepository(FirebaseFirestore.instance)),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
         ChangeNotifierProvider(create: (context) => CartViewModel()),
-        ChangeNotifierProvider(create: (context) => FavoriteViewModel()),
         ChangeNotifierProvider(create: (context) => OrdersViewModel()),
       ],
       child: MaterialApp(

@@ -1,10 +1,10 @@
 import 'package:shopApp/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ProductsService {
+class ProductRepository {
   final FirebaseFirestore _firestore;
 
-  ProductsService(this._firestore);
+  ProductRepository(this._firestore);
 
   Stream<List<ProductModel>> getProducts() {
     return _firestore.collection('products').snapshots().map((snapshot) {

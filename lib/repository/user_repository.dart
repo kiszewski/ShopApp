@@ -1,12 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/user_model.dart';
+import 'package:shopApp/services/authentication_service.dart';
 
-class UsersService {
+class UserRepository {
   final FirebaseFirestore _firestore;
 
-  UsersService(this._firestore);
+  final AuthenticationService _authenticationService =
+      AuthenticationService(FirebaseAuth.instance);
+
+  UserRepository(this._firestore);
 
   Future<String> addUser(UserModel user) async {
     Map<String, dynamic> userMap = {
@@ -58,8 +63,10 @@ class UsersService {
     return user;
   }
 
-  Future toggleFavoriteProduct(String userId, ProductModel product) async {
-    DocumentReference docRef = _firestore.collection('users').doc(userId);
+  Future toggleFavoriteProduct(ProductModel product) async {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
 
     CollectionReference favorites = docRef.collection('favorites');
 
@@ -70,27 +77,21 @@ class UsersService {
     });
   }
 
-  Future removeFavoriteProduct(String userId, ProductModel product) async {
+  Future _removeFavoriteProduct(String userId, ProductModel product) async {
     DocumentReference docRef = _firestore.collection('users').doc(userId);
 
     await docRef.collection('favorites').doc(product.id).delete();
   }
 
-  Stream<List<ProductModel>> getFavorites(String userId) {
-    DocumentReference docRef = _firestore.collection('users').doc(userId);
+  Stream<List<ProductModel>> getFavorites() {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
 
     return docRef.collection('favorites').snapshots().map((snapshot) {
       return snapshot.docs
           .map((element) => ProductModel.fromMap(element.id, element.data()))
           .toList();
     });
-  }
-
-  Future<bool> isFavorite(String userId, ProductModel product) async {
-    DocumentReference docRef = _firestore.collection('users').doc(userId);
-
-    CollectionReference favorites = docRef.collection('favorites');
-
-    return await favorites.doc(product.id).get().then((value) => value.exists);
   }
 }
