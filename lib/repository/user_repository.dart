@@ -28,39 +28,36 @@ class UserRepository {
     return document?.id;
   }
 
-  Future<UserModel> findUser(String userId) async {
-    final UserModel user = UserModel();
+  Future<UserModel> getCurrentUser() async {
+    User _currentUser = _authenticationService.currentUser;
+    final UserModel _user = UserModel();
 
     final DocumentReference userRef =
-        _firestore.collection('users').doc(userId);
+        _firestore.collection('users').doc(_currentUser.uid);
 
     await userRef.get().then((value) {
       if (value.exists) {
-        user.id = value.id;
-        user.name = value.data()['name'];
-        user.email = value.data()['email'];
+        _user.id = value.id;
+        _user.name = value.data()['name'];
+        _user.email = value.data()['email'];
       }
     });
 
     await userRef.collection('cart').get().then((value) {
-      user.cart = value.docs.map((element) {
-        final ProductModel product =
-            ProductModel.fromMap(element.id, element.data());
-
-        final ItemCartModel item = ItemCartModel(product);
-        item.qtdSetter = element['qtd'];
-
-        return item;
+      _user.cart = value.docs.map((element) {
+        final ItemCartModel product =
+            ItemCartModel.fromJson(element.id, element.data());
+        return product;
       }).toList();
     });
 
     await userRef.collection('favorites').get().then((value) {
-      user.favorites = value.docs
-          .map((element) => ProductModel.fromMap(element.id, element.data()))
+      _user.favorites = value.docs
+          .map((element) => ProductModel.fromJson(element.id, element.data()))
           .toList();
     });
 
-    return user;
+    return _user;
   }
 
   Future toggleFavoriteProduct(ProductModel product) async {
@@ -73,7 +70,7 @@ class UserRepository {
     await favorites.doc(product.id).get().then((value) {
       value.exists
           ? favorites.doc(product.id).delete()
-          : favorites.doc(product.id).set(product.toMap());
+          : favorites.doc(product.id).set(product.toJson());
     });
   }
 
@@ -90,7 +87,33 @@ class UserRepository {
 
     return docRef.collection('favorites').snapshots().map((snapshot) {
       return snapshot.docs
-          .map((element) => ProductModel.fromMap(element.id, element.data()))
+          .map((element) => ProductModel.fromJson(element.id, element.data()))
+          .toList();
+    });
+  }
+
+  Future addInCart(ProductModel product) async {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
+
+    CollectionReference cart = docRef.collection('cart');
+
+    ItemCartModel itemCart =
+        ItemCartModel.fromJson(product.id, product.toJson());
+    itemCart.qtd = 1;
+
+    await cart.doc(product.id).set(itemCart.toJson());
+  }
+
+  Stream<List<ItemCartModel>> getCart() {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
+
+    return docRef.collection('cart').snapshots().map((snapshot) {
+      return snapshot.docs
+          .map((element) => ItemCartModel.fromJson(element.id, element.data()))
           .toList();
     });
   }
