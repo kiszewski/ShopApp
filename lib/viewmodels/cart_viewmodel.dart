@@ -1,16 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shopApp/models/item_cart_model.dart';
-import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/repository/user_repository.dart';
-import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 
 class CartViewModel extends ChangeNotifier {
   final UserRepository userRepository;
   StreamSubscription<List<ItemCartModel>> subscription;
+  List<ItemCartModel> productsInCart;
 
   CartViewModel(this.userRepository) {
     subscription = userRepository.getCart().listen((data) {
@@ -20,10 +18,14 @@ class CartViewModel extends ChangeNotifier {
     });
   }
 
-  List<ItemCartModel> productsInCart;
+  Future addInCart(ProductModel product) async {
+    await userRepository.addInCart(product);
+  }
 
-  // double get totalInCart => _productsInCart.fold(
-  //     0, (previousValue, product) => previousValue + product.totalValue);
+  double get totalInCart => productsInCart.fold(
+      0,
+      (previousValue, product) =>
+          previousValue + (product.price * product.qtd));
 
   int get qtdProducts => productsInCart.length;
 
