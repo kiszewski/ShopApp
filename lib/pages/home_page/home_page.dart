@@ -1,12 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/pages/home_page/favorites_list_component.dart';
 import 'package:shopApp/pages/home_page/products_list_component.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
-import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {
