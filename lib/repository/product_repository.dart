@@ -9,7 +9,8 @@ class ProductRepository {
   Stream<List<ProductModel>> getProducts() {
     return _firestore.collection('products').snapshots().map((snapshot) {
       return snapshot.docs
-          .map((document) => ProductModel.fromMap(document.id, document.data()))
+          .map(
+              (document) => ProductModel.fromJson(document.id, document.data()))
           .toList();
     });
   }

@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,13 +17,13 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
   final AuthenticationService authService =
       AuthenticationService(FirebaseAuth.instance);
 
-  Stream<User> streamToCall;
+  Stream<User> authStateChangeStream;
 
   @override
   void initState() {
     super.initState();
 
-    streamToCall = authService.authStateChanges;
+    authStateChangeStream = authService.authStateChanges;
   }
 
   @override
@@ -32,14 +31,18 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
     SizeConfig().init(context);
 
     return StreamBuilder<User>(
-      stream: streamToCall,
+      stream: authStateChangeStream,
       builder: (context, snapshotUser) {
         if (snapshotUser.hasError) {
           return Text(snapshotUser.error);
         }
         switch (snapshotUser.connectionState) {
           case ConnectionState.waiting:
-            return Center(child: CircularProgressIndicator());
+            return Column(
+              children: [
+                Center(child: CircularProgressIndicator()),
+              ],
+            );
             break;
           default:
             if (snapshotUser.hasData && snapshotUser.requireData is User) {
@@ -68,12 +71,10 @@ class MainHomePageFuture extends StatefulWidget {
 class _MainHomePageFutureState extends State<MainHomePageFuture> {
   @override
   Widget build(BuildContext context) {
-    AuthenticationService _authenticationService =
-        AuthenticationService(FirebaseAuth.instance);
-    User _currentUser = _authenticationService.currentUser;
     UserRepository _userRepository = Provider.of<UserRepository>(context);
+
     return FutureBuilder<UserModel>(
-      future: _userRepository.findUser(_currentUser.uid),
+      future: _userRepository.getCurrentUser(),
       builder: (context, snapshotUserModel) {
         if (snapshotUserModel.connectionState == ConnectionState.done) {
           if (snapshotUserModel.data?.id == null) {
