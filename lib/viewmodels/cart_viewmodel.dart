@@ -1,56 +1,46 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/models/order_model.dart';
+import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 
 class CartViewModel extends ChangeNotifier {
-  Set<ProductModel> _productsInCart = {};
+  final UserRepository userRepository;
+  StreamSubscription<List<ItemCartModel>> subscription;
 
-  Set<ProductModel> get productsInCart => _productsInCart;
+  CartViewModel(this.userRepository) {
+    subscription = userRepository.getCart().listen((data) {
+      productsInCart = data;
+      notifyListeners();
+      return data;
+    });
+  }
+
+  List<ItemCartModel> productsInCart;
 
   // double get totalInCart => _productsInCart.fold(
   //     0, (previousValue, product) => previousValue + product.totalValue);
 
-  int get qtdProducts => _productsInCart.length;
+  int get qtdProducts => productsInCart.length;
 
-  // bool addProduct(ProductModel product) {
-  //   bool alreadyInCart =
-  //       _productsInCart.any((element) => element.id == product.id);
+  // void order(BuildContext context) {
+  //   OrdersViewModel ordersModel =
+  //       Provider.of<OrdersViewModel>(context, listen: false);
 
-  //   if (!alreadyInCart) {
-  //     _productsInCart.add(product.copy());
-  //     notifyListeners();
+  //   OrderModel order = OrderModel(this._productsInCart.toList());
+  //   ordersModel.addOrder(order);
 
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  void removeProduct(ProductModel product) {
-    _productsInCart.removeWhere((element) => product.id == element.id);
-    notifyListeners();
-  }
-
-  // void increaseQtd(ProductModel productModel) {
-  //   productModel.increaseQtd();
+  //   _productsInCart.clear();
   //   notifyListeners();
   // }
 
-  // void decreaseQtd(ProductModel productModel) {
-  //   productModel.decreaseQtd();
-  //   notifyListeners();
-  // }
-
-  void order(BuildContext context) {
-    OrdersViewModel ordersModel =
-        Provider.of<OrdersViewModel>(context, listen: false);
-
-    OrderModel order = OrderModel(this._productsInCart.toList());
-    ordersModel.addOrder(order);
-
-    _productsInCart.clear();
-    notifyListeners();
+  @override
+  void dispose() {
+    super.dispose();
+    subscription.cancel();
   }
 }

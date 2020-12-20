@@ -32,7 +32,9 @@ class MyApp extends StatelessWidget {
         Provider<UserRepository>(
             create: (context) => UserRepository(FirebaseFirestore.instance)),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-        ChangeNotifierProvider(create: (context) => CartViewModel()),
+        ChangeNotifierProvider(
+            create: (context) =>
+                CartViewModel(Provider.of<UserRepository>(context))),
         ChangeNotifierProvider(create: (context) => OrdersViewModel()),
       ],
       child: MaterialApp(
