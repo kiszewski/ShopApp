@@ -1,11 +1,26 @@
-import 'package:shopApp/models/product_model.dart';
-
 class ItemCartModel {
-  final ProductModel product;
-  int _qtd = 1;
+  String id;
+  String name;
+  String imageUrl;
+  double price;
+  int qtd;
 
-  ItemCartModel(this.product);
+  ItemCartModel({this.id, this.name, this.imageUrl, this.price, this.qtd});
 
-  get qtd => _qtd + 0;
-  set qtdSetter(int qtd) => _qtd = qtd;
+  ItemCartModel.fromJson(String id, Map<String, dynamic> json) {
+    id = id;
+    name = json['name'];
+    imageUrl = json['imageUrl'];
+    price = json['price'];
+    qtd = json['qtd'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['name'] = this.name;
+    data['imageUrl'] = this.imageUrl;
+    data['price'] = this.price;
+    data['qtd'] = this.qtd;
+    return data;
+  }
 }
