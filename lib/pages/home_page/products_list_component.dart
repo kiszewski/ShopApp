@@ -21,9 +21,11 @@ class ProductsListComponent extends StatelessWidget {
 
     return StreamBuilder<List<ProductModel>>(
       key: Key('2'),
+      initialData: [],
       stream: _productsStream,
       builder: (context, productsSnapshot) {
         return StreamBuilder<List<ProductModel>>(
+          initialData: [],
           stream: _favoritesStream,
           builder: (context, favoritesSnapshot) {
             if (productsSnapshot.hasError) {
@@ -38,10 +40,14 @@ class ProductsListComponent extends StatelessWidget {
                 return productsSnapshot.data.isNotEmpty
                     ? GridView.builder(
                         itemBuilder: (context, index) {
-                          bool isFavorite = favoritesSnapshot.data.any(
-                              (favorite) =>
-                                  favorite.id ==
-                                  productsSnapshot.data[index].id);
+                          bool isFavorite = false;
+
+                          if (favoritesSnapshot.data.isNotEmpty) {
+                            isFavorite = favoritesSnapshot.data.any(
+                                (favorite) =>
+                                    favorite.id ==
+                                    productsSnapshot.data[index].id);
+                          }
                           return ProductCardComponent(
                               productsSnapshot.data[index], isFavorite);
                         },
