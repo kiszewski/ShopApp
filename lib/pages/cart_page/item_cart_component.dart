@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
@@ -6,12 +7,13 @@ import 'package:transparent_image/transparent_image.dart';
 
 class ItemCartComponent extends StatelessWidget {
   final ItemCartModel product;
-  final CartViewModel cartViewModel;
 
-  const ItemCartComponent(this.product, this.cartViewModel);
+  const ItemCartComponent(this.product);
 
   @override
   Widget build(BuildContext context) {
+    final CartViewModel cartViewModel = Provider.of<CartViewModel>(context);
+
     return Card(
       elevation: 6,
       shadowColor: Colors.white,
@@ -53,7 +55,7 @@ class ItemCartComponent extends StatelessWidget {
                   Icons.close,
                   color: Colors.red,
                 ),
-                onPressed: () => print('remove'),
+                onPressed: () => cartViewModel.removeFromCart(product),
               ),
             ],
           ),

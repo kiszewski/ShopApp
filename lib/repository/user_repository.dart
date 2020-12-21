@@ -117,4 +117,14 @@ class UserRepository {
           .toList();
     });
   }
+
+  Future removeFromCart(ItemCartModel product) async {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
+
+    CollectionReference cart = docRef.collection('cart');
+
+    await cart.doc(product.id).delete();
+  }
 }

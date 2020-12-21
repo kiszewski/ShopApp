@@ -59,7 +59,7 @@ class _CartPageState extends State<CartPage> {
                       itemBuilder: (context, index) {
                         final ItemCartModel product =
                             cartViewModel.productsInCart.toList()[index];
-                        return ItemCartComponent(product, cartViewModel);
+                        return ItemCartComponent(product);
                       },
                     ),
             ),

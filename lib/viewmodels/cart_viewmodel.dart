@@ -8,7 +8,7 @@ import 'package:shopApp/models/product_model.dart';
 class CartViewModel extends ChangeNotifier {
   final UserRepository userRepository;
   StreamSubscription<List<ItemCartModel>> subscription;
-  List<ItemCartModel> productsInCart;
+  List<ItemCartModel> productsInCart = [];
 
   CartViewModel(this.userRepository) {
     subscription = userRepository.getCart().listen((data) {
@@ -20,6 +20,10 @@ class CartViewModel extends ChangeNotifier {
 
   Future addInCart(ProductModel product) async {
     await userRepository.addInCart(product);
+  }
+
+  Future removeFromCart(ItemCartModel product) async {
+    await userRepository.removeFromCart(product);
   }
 
   double get totalInCart => productsInCart.fold(
