@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
 
 class DrawerView extends StatelessWidget {
@@ -20,6 +21,7 @@ class DrawerView extends StatelessWidget {
         return LoadingDialogView('Saindo');
       },
     );
+
     await loginViewModel.logoutUser();
     Navigator.pushNamedAndRemoveUntil(
         context, '/', (Route<dynamic> route) => false);

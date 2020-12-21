@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
-import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
