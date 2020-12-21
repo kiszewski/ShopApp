@@ -11,6 +11,10 @@ class CartViewModel extends ChangeNotifier {
   List<ItemCartModel> productsInCart = [];
 
   CartViewModel(this.userRepository) {
+    updatingCurrentSubscription();
+  }
+
+  updatingCurrentSubscription() {
     subscription = userRepository.getCart().listen((data) {
       productsInCart = data;
       notifyListeners();
@@ -19,19 +23,29 @@ class CartViewModel extends ChangeNotifier {
   }
 
   Future addInCart(ProductModel product) async {
+    updatingCurrentSubscription();
     await userRepository.addInCart(product);
   }
 
   Future removeFromCart(ItemCartModel product) async {
+    updatingCurrentSubscription();
     await userRepository.removeFromCart(product);
   }
 
-  double get totalInCart => productsInCart.fold(
-      0,
-      (previousValue, product) =>
-          previousValue + (product.price * product.qtd));
+  double get totalInCart {
+    updatingCurrentSubscription();
 
-  int get qtdProducts => productsInCart.length ?? 0;
+    return productsInCart.fold(
+        0,
+        (previousValue, product) =>
+            previousValue + (product.price * product.qtd));
+  }
+
+  int get qtdProducts {
+    updatingCurrentSubscription();
+
+    return productsInCart.length ?? 0;
+  }
 
   // void order(BuildContext context) {
   //   OrdersViewModel ordersModel =
