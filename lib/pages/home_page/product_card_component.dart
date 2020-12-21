@@ -5,6 +5,7 @@ import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductCardComponent extends StatefulWidget {
@@ -20,8 +21,11 @@ class ProductCardComponent extends StatefulWidget {
 class _ProductCardComponentState extends State<ProductCardComponent> {
   @override
   Widget build(BuildContext context) {
+    CartViewModel cartViewModel = Provider.of<CartViewModel>(context);
+
     UserRepository _userRepository =
         Provider.of<UserRepository>(context, listen: false);
+
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
       child: GestureDetector(
@@ -62,7 +66,6 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                         ),
                         onPressed: () => _userRepository
                             .toggleFavoriteProduct(widget.product)),
-
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
@@ -77,8 +80,8 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                           Icons.shopping_cart,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () => print('')),
-                    // onPressed: () => _addInCart(context)),
+                        onPressed: () =>
+                            cartViewModel.addInCart(widget.product)),
                   ],
                 ),
               ),
