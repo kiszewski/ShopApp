@@ -27,7 +27,7 @@ class CartViewModel extends ChangeNotifier {
       (previousValue, product) =>
           previousValue + (product.price * product.qtd));
 
-  int get qtdProducts => productsInCart.length;
+  int get qtdProducts => productsInCart.length ?? 0;
 
   // void order(BuildContext context) {
   //   OrdersViewModel ordersModel =
