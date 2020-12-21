@@ -8,7 +8,10 @@ class LoginViewModel extends ChangeNotifier {
 
   Stream<User> get userStream => _authenticationService.authStateChanges;
 
-  Future<bool> get loggedUser => userStream.isEmpty;
+  Future<bool> get loggedUser async {
+    bool isEmpty = await userStream.isEmpty;
+    return !isEmpty;
+  }
 
   User get currentUser => _authenticationService.currentUser;
 
