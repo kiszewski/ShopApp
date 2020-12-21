@@ -7,8 +7,8 @@ class ItemCartModel {
 
   ItemCartModel({this.id, this.name, this.imageUrl, this.price, this.qtd});
 
-  ItemCartModel.fromJson(String id, Map<String, dynamic> json) {
-    id = id;
+  ItemCartModel.fromJson(String documentId, Map<String, dynamic> json) {
+    id = documentId;
     name = json['name'];
     imageUrl = json['imageUrl'];
     price = json['price'];
