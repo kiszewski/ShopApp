@@ -33,8 +33,8 @@ class MyApp extends StatelessWidget {
             create: (context) => UserRepository(FirebaseFirestore.instance)),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
         ChangeNotifierProvider(
-            create: (context) =>
-                CartViewModel(Provider.of<UserRepository>(context))),
+            create: (context) => CartViewModel(
+                Provider.of<UserRepository>(context, listen: false))),
         ChangeNotifierProvider(create: (context) => OrdersViewModel()),
       ],
       child: MaterialApp(
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => WrapperAuthentication(),
           'sign_up': (context) => SignUpPage(),
           'home': (context) => HomePage('MyShop'),
-          // 'cart': (context) => CartPage(),
+          'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
           // 'orders': (context) => OrdersPage(),
           'products_list': (context) => ProductsListPage(),
