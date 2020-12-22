@@ -59,16 +59,11 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
   }
 }
 
-class MainHomePageFuture extends StatefulWidget {
+class MainHomePageFuture extends StatelessWidget {
   final User userFromApi;
 
-  MainHomePageFuture({Key key, this.userFromApi}) : super(key: key);
+  const MainHomePageFuture({Key key, this.userFromApi}) : super(key: key);
 
-  @override
-  _MainHomePageFutureState createState() => _MainHomePageFutureState();
-}
-
-class _MainHomePageFutureState extends State<MainHomePageFuture> {
   @override
   Widget build(BuildContext context) {
     UserRepository _userRepository = Provider.of<UserRepository>(context);
@@ -81,15 +76,19 @@ class _MainHomePageFutureState extends State<MainHomePageFuture> {
             // First login in app
             final UserModel user = UserModel();
 
-            user.email = widget.userFromApi.email;
-            user.name = widget.userFromApi.displayName;
-            user.id = widget.userFromApi.uid;
+            user.email = userFromApi.email;
+            user.name = userFromApi.displayName;
+            user.id = userFromApi.uid;
 
             _userRepository.addUser(user);
           }
           return HomePage('MyShop');
         } else {
-          return CircularProgressIndicator();
+          return Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
         }
       },
     );
