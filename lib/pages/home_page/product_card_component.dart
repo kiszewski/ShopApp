@@ -4,7 +4,6 @@ import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
-import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductCardComponent extends StatefulWidget {
@@ -20,8 +19,6 @@ class ProductCardComponent extends StatefulWidget {
 class _ProductCardComponentState extends State<ProductCardComponent> {
   @override
   Widget build(BuildContext context) {
-    CartViewModel cartViewModel = Provider.of<CartViewModel>(context);
-
     UserRepository _userRepository =
         Provider.of<UserRepository>(context, listen: false);
 
@@ -80,7 +77,7 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                           color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () =>
-                            cartViewModel.addInCart(widget.product)),
+                            _userRepository.addInCart(widget.product)),
                   ],
                 ),
               ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/item_cart_model.dart';
+import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
-import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ItemCartComponent extends StatelessWidget {
@@ -12,7 +12,7 @@ class ItemCartComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final CartViewModel cartViewModel = Provider.of<CartViewModel>(context);
+    final UserRepository _userRepository = Provider.of<UserRepository>(context);
 
     return Card(
       elevation: 6,
@@ -35,9 +35,12 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_up,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () => print(''),
+                      onPressed: () {
+                        product.qtd++;
+                        _userRepository.updateQtdItemCart(product);
+                      },
                     ),
-                    Text('qtd X'),
+                    Text(product.qtd.toString()),
                     IconButton(
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
@@ -45,7 +48,12 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_down,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () => print(''),
+                      onPressed: () {
+                        if (product.qtd > 1) {
+                          product.qtd--;
+                          _userRepository.updateQtdItemCart(product);
+                        }
+                      },
                     ),
                   ],
                 ),
@@ -55,7 +63,7 @@ class ItemCartComponent extends StatelessWidget {
                   Icons.close,
                   color: Colors.red,
                 ),
-                onPressed: () => cartViewModel.removeFromCart(product),
+                onPressed: () => _userRepository.removeFromCart(product),
               ),
             ],
           ),
