@@ -37,7 +37,7 @@ class _SignInPageState extends State<SignInPage> {
 
       Navigator.of(context).pop();
 
-      if (await loginViewModel.loggedUser) {
+      if (loginViewModel.loggedUser) {
         Navigator.pushNamedAndRemoveUntil(
             context, 'home', (Route<dynamic> route) => false);
       } else {
