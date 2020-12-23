@@ -1,21 +1,29 @@
-import 'dart:math';
-import 'package:shopApp/models/product_model.dart';
+import 'package:shopApp/models/item_cart_model.dart';
 
 class OrderModel {
-  final List<ProductModel> _products;
-  final Random _random = Random();
-  int _id;
-  DateTime _date;
+  String id;
+  String date;
+  List<ItemCartModel> products;
 
-  OrderModel(this._products) {
-    _id = _random.nextInt(100000);
-    _date = DateTime.now();
+  OrderModel({this.id, this.date, this.products});
+
+  OrderModel.fromJson(String documentId, Map<String, dynamic> json) {
+    id = documentId;
+    date = json['date'];
+    if (json['products'] != null) {
+      products = new List<ItemCartModel>();
+      json['products'].forEach((v) {
+        products.add(new ItemCartModel.fromJson(v.id, v));
+      });
+    }
   }
 
-  List<ProductModel> get products => this._products;
-
-  // double get totalOrder => _products.fold(
-  //     0, (previousValue, product) => previousValue + product.totalValue);
-
-  DateTime get date => _date;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['date'] = this.date;
+    if (this.products != null) {
+      data['products'] = this.products.map((v) => v.toJson()).toList();
+    }
+    return data;
+  }
 }
