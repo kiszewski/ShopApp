@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shopApp/models/item_cart_model.dart';
+import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/models/user_model.dart';
 import 'package:shopApp/services/authentication_service.dart';
@@ -137,5 +138,17 @@ class UserRepository {
     CollectionReference cart = docRef.collection('cart');
 
     cart.doc(product.id).update(product.toJson());
+  }
+
+  Stream<List<OrderModel>> getOrders() {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
+
+    return docRef.collection('orders').snapshots().map((snapshots) {
+      return snapshots.docs
+          .map((element) => OrderModel.fromJson(element.id, element.data()))
+          .toList();
+    });
   }
 }
