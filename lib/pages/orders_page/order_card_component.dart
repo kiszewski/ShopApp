@@ -31,8 +31,8 @@ class _OrderCardState extends State<OrderCard> {
         children: [
           ListTile(
             title: Text('R\$1000'),
-            // subtitle: Text(DateFormat('dd/M/y H:m').format(widget.order.date)),
-            subtitle: Text(widget.order.date),
+            subtitle: Text(
+                DateFormat('dd/M/y HH:mm').format(widget.order.date.toDate())),
             trailing: IconButton(
               icon: Icon(expandedCard ? Icons.expand_less : Icons.expand_more),
               onPressed: toggleExpandCard,
