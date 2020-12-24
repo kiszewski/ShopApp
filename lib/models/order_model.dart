@@ -1,8 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shopApp/models/item_cart_model.dart';
 
 class OrderModel {
   String id;
-  String date;
+  Timestamp date;
   List<ItemCartModel> products;
 
   OrderModel({this.id, this.date, this.products});
@@ -13,7 +14,7 @@ class OrderModel {
     if (json['products'] != null) {
       products = new List<ItemCartModel>();
       json['products'].forEach((v) {
-        products.add(new ItemCartModel.fromJson(v.id, v));
+        products.add(new ItemCartModel.fromJson(v['id'], v));
       });
     }
   }
