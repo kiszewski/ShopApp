@@ -7,7 +7,6 @@ import 'package:shopApp/pages/wrapper_authentication.dart';
 import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
-import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/pages/cart_page/cart_page.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/orders_page/orders_page.dart';
@@ -31,7 +30,6 @@ class MyApp extends StatelessWidget {
         Provider<UserRepository>(
             create: (context) => UserRepository(FirebaseFirestore.instance)),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
-        ChangeNotifierProvider(create: (context) => OrdersViewModel()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -47,7 +45,7 @@ class MyApp extends StatelessWidget {
           'home': (context) => HomePage('MyShop'),
           'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
-          // 'orders': (context) => OrdersPage(),
+          'orders': (context) => OrdersPage(),
           'products_list': (context) => ProductsListPage(),
           'product_form': (context) => ProductFormPage(),
         },
