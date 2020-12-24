@@ -118,7 +118,8 @@ class _CartPageState extends State<CartPage> {
                                           SizeConfig.blockSizeHorizontal * 25),
                                   color: Theme.of(context).primaryColor,
                                   textColor: Colors.white,
-                                  onPressed: () => print('comprar'),
+                                  onPressed: () =>
+                                      _userRepository.addOrder(snapshot.data),
                                   child: Text(
                                     'Finalizar Compra',
                                     style: TextStyle(
