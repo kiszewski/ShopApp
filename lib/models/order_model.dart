@@ -23,7 +23,11 @@ class OrderModel {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['date'] = this.date;
     if (this.products != null) {
-      data['products'] = this.products.map((v) => v.toJson()).toList();
+      data['products'] = this.products.map((v) {
+        Map<String, dynamic> itemData = v.toJson();
+        itemData['id'] = v.id;
+        return itemData;
+      }).toList();
     }
     return data;
   }
