@@ -151,4 +151,20 @@ class UserRepository {
           .toList();
     });
   }
+
+  Future addOrder(List<ItemCartModel> productsInCart) async {
+    User _currentUser = _authenticationService.currentUser;
+    DocumentReference docRef =
+        _firestore.collection('users').doc(_currentUser.uid);
+
+    OrderModel order = OrderModel(
+      date: Timestamp.now(),
+      products: productsInCart,
+    );
+
+    await docRef.collection('orders').add(order.toJson());
+    productsInCart.forEach((product) {
+      removeFromCart(product);
+    });
+  }
 }
