@@ -26,34 +26,21 @@ class ProductRepository {
     return document.id;
   }
 
-  void updateProduct(
-    ProductModel product,
-    String name,
-    String imageUrl,
-    double price,
-    String description,
-  ) async {
+  void updateProduct(ProductModel product, String name, String imageUrl,
+      double price, String description) async {
     final CollectionReference products = _firestore.collection('products');
 
-    products
-        .doc(product.id)
-        .update({
-          'name': name,
-          'imageUrl': imageUrl,
-          'price': price,
-          'description': description
-        })
-        .then((value) => print('Product updated'))
-        .catchError((error) => print(error));
+    products.doc(product.id).update({
+      'name': name,
+      'imageUrl': imageUrl,
+      'price': price,
+      'description': description
+    });
   }
 
   void removeProduct(ProductModel product) async {
     final CollectionReference products = _firestore.collection('products');
 
-    products
-        .doc(product.id)
-        .delete()
-        .then((value) => print('Product deleted'))
-        .catchError((error) => print(error));
+    await products.doc(product.id).delete();
   }
 }
