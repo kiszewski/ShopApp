@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/repository/product_repository.dart';
+import 'package:shopApp/viewmodels/products_viewmodel.dart';
 
 class ProductFormPage extends StatefulWidget {
   @override
@@ -11,48 +11,24 @@ class ProductFormPage extends StatefulWidget {
 
 class _ProductFormPageState extends State<ProductFormPage> {
   final _formKey = GlobalKey<FormState>();
-  final ProductRepository _productsService =
-      ProductRepository(FirebaseFirestore.instance);
 
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _imageUrl = TextEditingController();
-
-  _saveProduct(ProductModel product) {
-    if (_formKey.currentState.validate()) {
-      if (product == null) {
-        final ProductModel newProduct = ProductModel();
-
-        newProduct.name = _nameController.text;
-        newProduct.imageUrl = _imageUrl.text;
-        newProduct.price = double.tryParse(_priceController.text) ?? 0.0;
-        newProduct.description = _descriptionController.text;
-
-        _productsService.addProduct(newProduct);
-      } else {
-        // TO DO
-        _productsService.updateProduct(
-          product,
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        );
-      }
-
-      Navigator.of(context).pop();
-    }
-  }
+  Map<String, TextEditingController> _controllers = {
+    'name': TextEditingController(),
+    'price': TextEditingController(),
+    'description': TextEditingController(),
+    'imageUrl': TextEditingController(),
+  };
 
   @override
   Widget build(BuildContext context) {
+    final ProductsViewModel _productViewModel =
+        Provider.of<ProductsViewModel>(context);
     final ProductModel product = ModalRoute.of(context).settings.arguments;
 
-    _nameController.text = product?.name;
-    _priceController.text = product?.price?.toString();
-    _descriptionController.text = product?.description;
-    _imageUrl.text = product?.imageUrl;
+    _controllers['name'].text = product?.name;
+    _controllers['price'].text = product?.price?.toString();
+    _controllers['description'].text = product?.description;
+    _controllers['imageUrl'].text = product?.imageUrl;
 
     return Scaffold(
       appBar: AppBar(
@@ -68,7 +44,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.check),
           onPressed: () {
-            _saveProduct(product);
+            if (_formKey.currentState.validate()) {
+              _productViewModel.saveProduct(product, _controllers);
+            }
+            Navigator.of(context).pop();
           }),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -77,7 +56,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: _nameController,
+                  controller: _controllers['name'],
                   decoration: InputDecoration(
                       labelText: 'Nome*', hintText: 'Digite o nome do produto'),
                   validator: (String value) {
@@ -85,7 +64,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _priceController,
+                  controller: _controllers['price'],
                   keyboardType: TextInputType.number,
                   inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(
@@ -96,7 +75,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _descriptionController,
+                  controller: _controllers['description'],
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                       labelText: 'Descrição*',
@@ -106,7 +85,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _imageUrl,
+                  controller: _controllers['imageUrl'],
                   keyboardType: TextInputType.url,
                   decoration: InputDecoration(
                       labelText: 'Link da imagem*',
