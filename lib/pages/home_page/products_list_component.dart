@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/home_page/product_card_component.dart';
-import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/products_viewmodel.dart';
 
 class ProductsListComponent extends StatelessWidget {
-  final ProductRepository _productRepository =
-      ProductRepository(FirebaseFirestore.instance);
   final UserRepository _userRepository =
       UserRepository(FirebaseFirestore.instance);
 
   @override
   Widget build(BuildContext context) {
-    final Stream<List<ProductModel>> _productsStream =
-        _productRepository.getProducts();
+    final _productsViewModel =
+        Provider.of<ProductsViewModel>(context, listen: false);
+
     final Stream<List<ProductModel>> _favoritesStream =
         _userRepository.getFavorites();
 
     return StreamBuilder<List<ProductModel>>(
       key: Key('2'),
       initialData: [],
-      stream: _productsStream,
+      stream: _productsViewModel.getProducts,
       builder: (context, productsSnapshot) {
         return StreamBuilder<List<ProductModel>>(
           initialData: [],

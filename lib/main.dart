@@ -13,6 +13,7 @@ import 'package:shopApp/pages/orders_page/orders_page.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 import 'package:shopApp/pages/registration_pages/product_form_page.dart';
 import 'package:shopApp/pages/registration_pages/products_list_page.dart';
+import 'package:shopApp/viewmodels/products_viewmodel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,8 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        Provider<ProductRepository>(
-            create: (context) => ProductRepository(FirebaseFirestore.instance)),
+        Provider<ProductsViewModel>(create: (context) => ProductsViewModel()),
         Provider<UserRepository>(
             create: (context) => UserRepository(FirebaseFirestore.instance)),
         ChangeNotifierProvider(create: (context) => LoginViewModel()),
