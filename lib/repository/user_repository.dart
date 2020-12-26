@@ -14,6 +14,11 @@ class UserRepository {
 
   UserRepository(this._firestore);
 
+  DocumentReference _getCurrentUserDocRef() {
+    User _currentUser = _authenticationService.currentUser;
+    return _firestore.collection('users').doc(_currentUser.uid);
+  }
+
   Future<void> addUser(UserModel user) async {
     DocumentReference docRef = _firestore.collection('users').doc(user.id);
 
@@ -30,9 +35,7 @@ class UserRepository {
   }
 
   Future toggleFavoriteProduct(ProductModel product) async {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     CollectionReference favorites = docRef.collection('favorites');
 
@@ -43,16 +46,8 @@ class UserRepository {
     });
   }
 
-  Future _removeFavoriteProduct(String userId, ProductModel product) async {
-    DocumentReference docRef = _firestore.collection('users').doc(userId);
-
-    await docRef.collection('favorites').doc(product.id).delete();
-  }
-
   Stream<List<ProductModel>> getFavorites() {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     return docRef.collection('favorites').snapshots().map((snapshot) {
       return snapshot.docs
@@ -62,9 +57,7 @@ class UserRepository {
   }
 
   Future addInCart(ProductModel product) async {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     CollectionReference cart = docRef.collection('cart');
 
@@ -76,9 +69,7 @@ class UserRepository {
   }
 
   Stream<List<ItemCartModel>> getCart() {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     return docRef.collection('cart').snapshots().map((snapshot) {
       return snapshot.docs
@@ -88,9 +79,7 @@ class UserRepository {
   }
 
   Future removeFromCart(ItemCartModel product) async {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     CollectionReference cart = docRef.collection('cart');
 
@@ -109,9 +98,7 @@ class UserRepository {
   }
 
   Stream<List<OrderModel>> getOrders() {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     return docRef.collection('orders').snapshots().map((snapshots) {
       return snapshots.docs
@@ -121,9 +108,7 @@ class UserRepository {
   }
 
   Future addOrder(List<ItemCartModel> productsInCart) async {
-    User _currentUser = _authenticationService.currentUser;
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
+    final DocumentReference docRef = _getCurrentUserDocRef();
 
     OrderModel order = OrderModel(
       date: Timestamp.now(),
