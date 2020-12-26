@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
@@ -37,18 +36,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _signUp(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
-      showDialog(
-          context: ctx,
-          barrierDismissible: false,
-          child: LoadingDialogView('Cadastrando...'));
-
       String resp = await loginViewModel.createUser(
         _email.text,
         _password.text,
         _name.text,
       );
-
-      Navigator.of(context).pop();
 
       if (loginViewModel.loggedUser) {
         Navigator.of(context).pushReplacementNamed('home');

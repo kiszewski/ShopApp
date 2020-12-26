@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -28,14 +27,7 @@ class _SignInPageState extends State<SignInPage> {
 
   _signIn(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
-      showDialog(
-          context: ctx,
-          barrierDismissible: false,
-          child: LoadingDialogView('Logando...'));
-
       String resp = await loginViewModel.loginUser(_email.text, _password.text);
-
-      Navigator.of(context).pop();
 
       if (loginViewModel.loggedUser) {
         Navigator.pushNamedAndRemoveUntil(

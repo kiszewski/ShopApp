@@ -39,9 +39,7 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
         switch (snapshotUser.connectionState) {
           case ConnectionState.waiting:
             return Column(
-              children: [
-                Center(child: CircularProgressIndicator()),
-              ],
+              children: [Center(child: CircularProgressIndicator())],
             );
             break;
           default:
