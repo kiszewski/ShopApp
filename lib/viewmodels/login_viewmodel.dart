@@ -19,9 +19,15 @@ class LoginViewModel extends ChangeNotifier {
     return resp.toString();
   }
 
-  Future<String> createUser(String email, String password) async {
+  Future<String> createUser(String email, String password, String name) async {
     final resp =
         await _authenticationService.signUp(email: email, password: password);
+
+    if (resp == true) {
+      User user = _authenticationService.currentUser;
+
+      await user.updateProfile(displayName: name);
+    }
 
     return resp.toString();
   }
