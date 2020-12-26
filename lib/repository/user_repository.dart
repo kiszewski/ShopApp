@@ -20,20 +20,13 @@ class UserRepository {
     await docRef.set(user.toJson());
   }
 
-  Future<UserModel> getCurrentUser() async {
-    UserModel _user;
+  Future<DocumentSnapshot> getCurrentUser() async {
     User _currentUser = _authenticationService.currentUser;
 
     final DocumentReference userRef =
         _firestore.collection('users').doc(_currentUser.uid);
 
-    await userRef.get().then((user) {
-      user.exists
-          ? _user = UserModel.fromJson(user.id, user.data())
-          : _user = UserModel();
-    });
-
-    return _user;
+    return await userRef.get();
   }
 
   Future toggleFavoriteProduct(ProductModel product) async {
