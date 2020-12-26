@@ -44,20 +44,6 @@ class UserRepository {
       }
     });
 
-    await userRef.collection('cart').get().then((value) {
-      _user.cart = value.docs.map((element) {
-        final ItemCartModel product =
-            ItemCartModel.fromJson(element.id, element.data());
-        return product;
-      }).toList();
-    });
-
-    await userRef.collection('favorites').get().then((value) {
-      _user.favorites = value.docs
-          .map((element) => ProductModel.fromJson(element.id, element.data()))
-          .toList();
-    });
-
     return _user;
   }
 
