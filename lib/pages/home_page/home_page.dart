@@ -8,9 +8,7 @@ import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
-
-  HomePage(this.title);
+  HomePage();
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -36,7 +34,7 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.black87),
           title: Text(
-            widget.title,
+            'MyShop',
             style: TextStyle(color: Colors.black87),
           ),
           backgroundColor: Colors.white12,

@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => WrapperAuthentication(),
           'sign_up': (context) => SignUpPage(),
-          'home': (context) => HomePage('MyShop'),
+          'home': (context) => HomePage(),
           'cart': (context) => CartPage(),
           'product_details': (context) => ProductDetailsPage(),
           'orders': (context) => OrdersPage(),

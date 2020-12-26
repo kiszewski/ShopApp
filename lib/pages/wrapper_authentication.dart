@@ -82,7 +82,7 @@ class MainHomePageFuture extends StatelessWidget {
 
             _userRepository.addUser(user);
           }
-          return HomePage('MyShop');
+          return HomePage();
         } else {
           return Scaffold(
             body: Center(
