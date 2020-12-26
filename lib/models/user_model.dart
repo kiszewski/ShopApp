@@ -10,14 +10,18 @@ class UserModel {
   List<ItemCartModel> cart = [];
   List<OrderModel> orders = [];
 
-  get toMap {
+  UserModel();
+
+  UserModel.fromJson(String documentId, Map<String, dynamic> json) {
+    this.id = documentId;
+    this.name = json['name'];
+    this.email = json['email'];
+  }
+
+  Map<String, String> toJson() {
     return {
-      'id': this.id,
       'name': this.name,
       'email': this.email,
-      'orders': this.orders,
-      'favorites': this.favorites,
-      'cart': this.cart,
     };
   }
 }

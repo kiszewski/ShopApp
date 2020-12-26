@@ -14,34 +14,23 @@ class UserRepository {
 
   UserRepository(this._firestore);
 
-  Future<String> addUser(UserModel user) async {
-    Map<String, dynamic> userMap = {
-      'name': user.name,
-      'email': user.email,
-    };
+  Future<void> addUser(UserModel user) async {
+    DocumentReference docRef = _firestore.collection('users').doc(user.id);
 
-    DocumentReference document = await _firestore
-        .collection('users')
-        .doc(user.id)
-        .set(userMap)
-        .then((value) => null);
-
-    return document?.id;
+    await docRef.set(user.toJson());
   }
 
   Future<UserModel> getCurrentUser() async {
+    UserModel _user;
     User _currentUser = _authenticationService.currentUser;
-    final UserModel _user = UserModel();
 
     final DocumentReference userRef =
         _firestore.collection('users').doc(_currentUser.uid);
 
-    await userRef.get().then((value) {
-      if (value.exists) {
-        _user.id = value.id;
-        _user.name = value.data()['name'];
-        _user.email = value.data()['email'];
-      }
+    await userRef.get().then((user) {
+      user.exists
+          ? _user = UserModel.fromJson(user.id, user.data())
+          : _user = UserModel();
     });
 
     return _user;
