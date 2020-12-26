@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/login_page/sign_up_page.dart';
 import 'package:shopApp/pages/wrapper_authentication.dart';
-import 'package:shopApp/repository/product_repository.dart';
 import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
 import 'package:shopApp/pages/cart_page/cart_page.dart';

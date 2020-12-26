@@ -119,6 +119,5 @@ class _ProductsListPageState extends State<ProductsListPage> {
                   );
               }
             }));
-    ;
   }
 }

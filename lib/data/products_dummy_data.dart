@@ -1,5 +1,3 @@
-import 'package:shopApp/models/product_model.dart';
-
 // List<ProductModel> productsDummyData = [
 //   ProductModel(
 //       'Black T-shirt',

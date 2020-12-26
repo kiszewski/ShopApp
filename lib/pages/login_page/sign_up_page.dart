@@ -48,7 +48,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
       Navigator.of(context).pop();
 
-      if (await loginViewModel.loggedUser) {
+      if (loginViewModel.loggedUser) {
         Navigator.of(context).pushReplacementNamed('home');
       } else {
         _scaffoldKey.currentState.showSnackBar(SnackBar(content: Text(resp)));
