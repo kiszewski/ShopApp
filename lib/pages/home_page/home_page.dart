@@ -17,11 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   bool _onlyFavorites = false;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   _changeProductsList(bool value) {
     setState(() {
       _onlyFavorites = value;
