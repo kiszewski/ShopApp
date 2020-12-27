@@ -91,17 +91,8 @@ class UserRepository {
     });
   }
 
-  Future addOrder(List<ItemCartModel> productsInCart) async {
+  Future addOrder(OrderModel order) async {
     final DocumentReference docRef = _getCurrentUserDocRef();
-
-    OrderModel order = OrderModel(
-      date: Timestamp.now(),
-      products: productsInCart,
-    );
-
     await docRef.collection('orders').add(order.toJson());
-    productsInCart.forEach((product) {
-      removeFromCart(product);
-    });
   }
 }
