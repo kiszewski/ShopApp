@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/item_cart_model.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ItemCartComponent extends StatelessWidget {
@@ -12,7 +12,8 @@ class ItemCartComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final UserRepository _userRepository = Provider.of<UserRepository>(context);
+    final CartViewModel _cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
 
     return Card(
       elevation: 6,
@@ -35,10 +36,7 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_up,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () {
-                        product.qtd++;
-                        _userRepository.updateQtdItemCart(product);
-                      },
+                      onPressed: () => _cartViewModel.increaseQtdItem(product),
                     ),
                     Text(product.qtd.toString()),
                     IconButton(
@@ -48,12 +46,7 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_down,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () {
-                        if (product.qtd > 1) {
-                          product.qtd--;
-                          _userRepository.updateQtdItemCart(product);
-                        }
-                      },
+                      onPressed: () => _cartViewModel.decreaseQtdItem(product),
                     ),
                   ],
                 ),
@@ -63,7 +56,7 @@ class ItemCartComponent extends StatelessWidget {
                   Icons.close,
                   color: Colors.red,
                 ),
-                onPressed: () => _userRepository.removeFromCart(product),
+                onPressed: () => _cartViewModel.removeFromCart(product),
               ),
             ],
           ),

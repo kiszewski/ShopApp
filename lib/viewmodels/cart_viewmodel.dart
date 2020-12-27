@@ -22,6 +22,18 @@ class CartViewModel {
   Future removeFromCart(ItemCartModel product) async =>
       await _userRepository.removeFromCart(product);
 
-  Future updateQtdItemCart(ItemCartModel product) async =>
+  Future increaseQtdItem(ItemCartModel product) async {
+    product.qtd++;
+    await _userRepository.updateQtdItemCart(product);
+  }
+
+  Future decreaseQtdItem(ItemCartModel product) async {
+    if (product.qtd > 1) {
+      product.qtd--;
       await _userRepository.updateQtdItemCart(product);
+    }
+  }
+
+  // TO DO
+  // double get totalInCart =>
 }
