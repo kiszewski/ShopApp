@@ -56,16 +56,9 @@ class UserRepository {
     });
   }
 
-  Future addInCart(ProductModel product) async {
-    final DocumentReference docRef = _getCurrentUserDocRef();
-
-    CollectionReference cart = docRef.collection('cart');
-
-    ItemCartModel itemCart =
-        ItemCartModel.fromJson(product.id, product.toJson());
-    itemCart.qtd = 1;
-
-    await cart.doc(product.id).set(itemCart.toJson());
+  Future addInCart(ItemCartModel itemProduct) async {
+    CollectionReference cart = _getCurrentUserDocRef().collection('cart');
+    await cart.doc(itemProduct.id).set(itemProduct.toJson());
   }
 
   Stream<List<ItemCartModel>> getCart() {
@@ -79,22 +72,13 @@ class UserRepository {
   }
 
   Future removeFromCart(ItemCartModel product) async {
-    final DocumentReference docRef = _getCurrentUserDocRef();
-
-    CollectionReference cart = docRef.collection('cart');
-
+    CollectionReference cart = _getCurrentUserDocRef().collection('cart');
     await cart.doc(product.id).delete();
   }
 
   Future updateQtdItemCart(ItemCartModel product) async {
-    User _currentUser = _authenticationService.currentUser;
-
-    DocumentReference docRef =
-        _firestore.collection('users').doc(_currentUser.uid);
-
-    CollectionReference cart = docRef.collection('cart');
-
-    cart.doc(product.id).update(product.toJson());
+    CollectionReference cart = _getCurrentUserDocRef().collection('cart');
+    await cart.doc(product.id).update(product.toJson());
   }
 
   Stream<List<OrderModel>> getOrders() {
