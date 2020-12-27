@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/order_viewmodel.dart';
 
 class OrderCard extends StatefulWidget {
   final OrderModel order;
@@ -23,6 +25,9 @@ class _OrderCardState extends State<OrderCard> {
 
   @override
   Widget build(BuildContext context) {
+    OrderViewModel _orderViewModel =
+        Provider.of<OrderViewModel>(context, listen: false);
+
     return Card(
       elevation: 6,
       margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -30,7 +35,8 @@ class _OrderCardState extends State<OrderCard> {
       child: Column(
         children: [
           ListTile(
-            title: Text('R\$1000'),
+            title: Text(
+                'R\$ ${_orderViewModel.totalOrder(widget.order).toString()}'),
             subtitle: Text(
                 DateFormat('dd/M/y HH:mm').format(widget.order.date.toDate())),
             trailing: IconButton(

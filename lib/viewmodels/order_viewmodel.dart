@@ -22,4 +22,11 @@ class OrderViewModel {
       await _userRepository.removeFromCart(product);
     });
   }
+
+  double totalOrder(OrderModel order) {
+    return order.products.fold(
+      0,
+      (previousValue, product) => previousValue + (product.price * product.qtd),
+    );
+  }
 }
