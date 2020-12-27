@@ -4,8 +4,8 @@ import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/pages/home_page/favorites_list_component.dart';
 import 'package:shopApp/pages/home_page/products_list_component.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
   HomePage();
@@ -67,11 +67,11 @@ class _HomePageState extends State<HomePage> {
                         color: Theme.of(context).primaryColor,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
-                          child: Consumer<UserRepository>(
+                          child: Consumer<CartViewModel>(
                             builder: (context, userRepository, child) {
                               return StreamBuilder<List<ItemCartModel>>(
                                 initialData: [],
-                                stream: userRepository.getCart(),
+                                stream: userRepository.cart,
                                 builder: (context, snapshot) {
                                   return Text(snapshot.data.length.toString());
                                 },
