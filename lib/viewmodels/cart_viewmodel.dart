@@ -34,6 +34,9 @@ class CartViewModel {
     }
   }
 
-  // TO DO
-  // double get totalInCart =>
+  double totalInCart(List<ItemCartModel> cart) => cart.fold(
+        0,
+        (previousValue, product) =>
+            previousValue + (product.price * product.qtd),
+      );
 }

@@ -36,10 +36,7 @@ class _CartPageState extends State<CartPage> {
           initialData: [],
           stream: _cartViewModel.cart,
           builder: (context, snapshot) {
-            double totalInCart = snapshot.data.fold(
-                0,
-                (previousValue, product) =>
-                    previousValue + (product.price * product.qtd));
+            double _totalInCart = _cartViewModel.totalInCart(snapshot.data);
 
             return Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -102,7 +99,7 @@ class _CartPageState extends State<CartPage> {
                                       fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  'R\$ ${totalInCart.toStringAsFixed(2)}',
+                                  'R\$ ${_totalInCart.toStringAsFixed(2)}',
                                   style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold),
