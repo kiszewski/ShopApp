@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
 import 'package:shopApp/models/product_model.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
+import 'package:shopApp/viewmodels/favorites_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ProductCardComponent extends StatefulWidget {
@@ -19,8 +20,10 @@ class ProductCardComponent extends StatefulWidget {
 class _ProductCardComponentState extends State<ProductCardComponent> {
   @override
   Widget build(BuildContext context) {
-    UserRepository _userRepository =
-        Provider.of<UserRepository>(context, listen: false);
+    CartViewModel _cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
+    FavoritesViewModel _favoritesViewModel =
+        Provider.of<FavoritesViewModel>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -60,7 +63,7 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                               : Icons.favorite_border,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () => _userRepository
+                        onPressed: () => _favoritesViewModel
                             .toggleFavoriteProduct(widget.product)),
                     Expanded(
                       child: FittedBox(
@@ -77,7 +80,7 @@ class _ProductCardComponentState extends State<ProductCardComponent> {
                           color: Theme.of(context).primaryColor,
                         ),
                         onPressed: () =>
-                            _userRepository.addInCart(widget.product)),
+                            _cartViewModel.addInCart(widget.product)),
                   ],
                 ),
               ),

@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/pages/cart_page/item_cart_component.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
+import 'package:shopApp/viewmodels/order_viewmodel.dart';
 
 class CartPage extends StatefulWidget {
   @override
@@ -13,7 +14,10 @@ class CartPage extends StatefulWidget {
 class _CartPageState extends State<CartPage> {
   @override
   Widget build(BuildContext context) {
-    final UserRepository _userRepository = Provider.of<UserRepository>(context);
+    final CartViewModel _cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
+    final OrderViewModel _orderViewModel =
+        Provider.of<OrderViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -30,7 +34,7 @@ class _CartPageState extends State<CartPage> {
         height: SizeConfig.blockSizeVertical * 100,
         child: StreamBuilder<List<ItemCartModel>>(
           initialData: [],
-          stream: _userRepository.getCart(),
+          stream: _cartViewModel.cart,
           builder: (context, snapshot) {
             double totalInCart = snapshot.data.fold(
                 0,
@@ -119,7 +123,7 @@ class _CartPageState extends State<CartPage> {
                                   color: Theme.of(context).primaryColor,
                                   textColor: Colors.white,
                                   onPressed: () =>
-                                      _userRepository.addOrder(snapshot.data),
+                                      _orderViewModel.checkOut(snapshot.data),
                                   child: Text(
                                     'Finalizar Compra',
                                     style: TextStyle(

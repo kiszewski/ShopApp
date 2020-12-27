@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/home_page/product_card_component.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/favorites_viewmodel.dart';
 
 class FavoritesListComponent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    UserRepository _userRepository = Provider.of<UserRepository>(context);
-
-    final Stream<List<ProductModel>> _favoritesStream =
-        _userRepository.getFavorites();
+    FavoritesViewModel _favoritesViewModel =
+        Provider.of<FavoritesViewModel>(context, listen: false);
 
     return StreamBuilder<List<ProductModel>>(
       key: Key('1'),
       initialData: [],
-      stream: _favoritesStream,
+      stream: _favoritesViewModel.favorites,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           return snapshot.data != null && snapshot.data.isNotEmpty

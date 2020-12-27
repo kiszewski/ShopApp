@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/pages/orders_page/order_card_component.dart';
+import 'package:shopApp/viewmodels/order_viewmodel.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
@@ -14,7 +14,8 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
-    UserRepository userRepository = Provider.of<UserRepository>(context);
+    OrderViewModel _orderViewModel =
+        Provider.of<OrderViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +29,7 @@ class _OrdersPageState extends State<OrdersPage> {
       ),
       drawer: DrawerView(),
       body: StreamBuilder<List<OrderModel>>(
-        stream: userRepository.getOrders(),
+        stream: _orderViewModel.orders,
         initialData: [],
         builder: (context, snapshot) {
           return snapshot.data.isEmpty

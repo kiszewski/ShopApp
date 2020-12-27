@@ -5,8 +5,8 @@ import 'package:shopApp/models/user_model.dart';
 import 'package:shopApp/pages/home_page/home_page.dart';
 import 'package:shopApp/pages/login_page/sign_in_page.dart';
 import 'package:shopApp/services/authentication_service.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/user_viewmodel.dart';
 
 class WrapperAuthentication extends StatefulWidget {
   @override
@@ -22,7 +22,6 @@ class _WrapperAuthenticationState extends State<WrapperAuthentication> {
   @override
   void initState() {
     super.initState();
-
     authStateChangeStream = authService.authStateChanges;
   }
 
@@ -64,10 +63,10 @@ class MainHomePageFuture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    UserRepository _userRepository = Provider.of<UserRepository>(context);
+    UserViewModel _userViewModel = Provider.of<UserViewModel>(context);
 
     return FutureBuilder<UserModel>(
-      future: _userRepository.getCurrentUser(),
+      future: _userViewModel.getCurrentUser(),
       builder: (context, snapshotUserModel) {
         if (snapshotUserModel.connectionState == ConnectionState.done) {
           if (snapshotUserModel.data?.id == null) {
@@ -78,7 +77,7 @@ class MainHomePageFuture extends StatelessWidget {
             user.name = userFromApi.displayName;
             user.id = userFromApi.uid;
 
-            _userRepository.addUser(user);
+            _userViewModel.addUser(user);
           }
           return HomePage();
         } else {

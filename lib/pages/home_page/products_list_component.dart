@@ -3,21 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/pages/home_page/product_card_component.dart';
-import 'package:shopApp/repository/user_repository.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/favorites_viewmodel.dart';
 import 'package:shopApp/viewmodels/products_viewmodel.dart';
 
 class ProductsListComponent extends StatelessWidget {
-  final UserRepository _userRepository =
-      UserRepository(FirebaseFirestore.instance);
-
   @override
   Widget build(BuildContext context) {
-    final _productsViewModel =
+    final ProductsViewModel _productsViewModel =
         Provider.of<ProductsViewModel>(context, listen: false);
-
-    final Stream<List<ProductModel>> _favoritesStream =
-        _userRepository.getFavorites();
+    final FavoritesViewModel _favoritesViewModel =
+        Provider.of<FavoritesViewModel>(context, listen: false);
 
     return StreamBuilder<List<ProductModel>>(
       key: Key('2'),
@@ -26,7 +22,7 @@ class ProductsListComponent extends StatelessWidget {
       builder: (context, productsSnapshot) {
         return StreamBuilder<List<ProductModel>>(
           initialData: [],
-          stream: _favoritesStream,
+          stream: _favoritesViewModel.favorites,
           builder: (context, favoritesSnapshot) {
             if (productsSnapshot.hasError) {
               return Text(productsSnapshot.error);
