@@ -24,7 +24,10 @@ class AuthenticationService {
     return await _firebaseAuth.signInWithCredential(credential);
   }
 
-  Future signOut() async => await _firebaseAuth.signOut();
+  Future signOut() async {
+    await GoogleSignIn().signOut();
+    await _firebaseAuth.signOut();
+  }
 
   Future<Object> signIn(
       {@required String email, @required String password}) async {
