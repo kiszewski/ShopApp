@@ -65,8 +65,11 @@ class _ProductFormPageState extends State<ProductFormPage> {
                 ),
                 TextFormField(
                   controller: _controllers['price'],
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
+                  ],
                   decoration: InputDecoration(
                       labelText: 'Preço*',
                       hintText: 'Digite o preço do produto'),
