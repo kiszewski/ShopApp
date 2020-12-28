@@ -71,7 +71,10 @@ class DrawerView extends StatelessWidget {
                 itemCount: drawerOptions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: Icon(drawerOptions[index]._icon),
+                    leading: Icon(
+                      drawerOptions[index]._icon,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     title: Text(drawerOptions[index]._title),
                     onTap: () => Navigator.pushReplacementNamed(
                         context, drawerOptions[index]._route),
