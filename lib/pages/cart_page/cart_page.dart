@@ -73,8 +73,9 @@ class _CartPageState extends State<CartPage> {
                         ),
                 ),
                 Container(
-                  height: SizeConfig.blockSizeVertical * 14,
+                  height: SizeConfig.blockSizeVertical * 14.15,
                   child: Card(
+                    margin: EdgeInsets.all(0),
                     elevation: 16,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
