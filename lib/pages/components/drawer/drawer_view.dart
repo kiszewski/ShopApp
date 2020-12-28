@@ -42,23 +42,30 @@ class DrawerView extends StatelessWidget {
                 StreamBuilder<User>(
                     stream: loginViewModel.userStream,
                     builder: (context, snapshot) {
-                      return Text(
-                        'Seja bem-vindo(a) ${snapshot.data?.displayName}',
-                        style: TextStyle(color: Colors.white),
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                              radius: SizeConfig.blockSizeHorizontal * 5,
+                              backgroundImage: snapshot.data?.photoURL != null
+                                  ? Image.network(snapshot.data?.photoURL).image
+                                  : Image.asset('assets/user-profile.png')
+                                      .image),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          Text(
+                            '${snapshot.data?.displayName}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
                       );
                     }),
-                IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    color: Colors.white,
-                    onPressed: () {
-                      _logout(context, loginViewModel);
-                    })
               ],
             ),
             color: Theme.of(context).primaryColor,
           ),
           Container(
-            height: SizeConfig.blockSizeVertical * 80,
+            height: SizeConfig.blockSizeVertical * 70,
             width: double.maxFinite,
             child: ListView.builder(
                 itemCount: drawerOptions.length,
@@ -70,6 +77,17 @@ class DrawerView extends StatelessWidget {
                         context, drawerOptions[index]._route),
                   );
                 }),
+          ),
+          Container(
+            height: SizeConfig.blockSizeVertical * 10,
+            width: double.maxFinite,
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: () {
+                _logout(context, loginViewModel);
+              },
+            ),
           ),
         ],
       ),
