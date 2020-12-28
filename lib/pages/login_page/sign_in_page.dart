@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignInPage extends StatefulWidget {
+  const SignInPage({Key key}) : super(key: key);
   @override
   _SignInPageState createState() => _SignInPageState();
 }
@@ -27,14 +28,7 @@ class _SignInPageState extends State<SignInPage> {
 
   _signIn(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
-      showDialog(
-          context: ctx,
-          barrierDismissible: false,
-          child: LoadingDialogView('Logando...'));
-
       String resp = await loginViewModel.loginUser(_email.text, _password.text);
-
-      Navigator.of(context).pop();
 
       if (loginViewModel.loggedUser) {
         Navigator.pushNamedAndRemoveUntil(
@@ -130,7 +124,42 @@ class _SignInPageState extends State<SignInPage> {
                   Navigator.of(context).pushNamed('sign_up');
                 },
                 borderSide: BorderSide(width: 0, color: Colors.white),
-              )
+              ),
+              Container(
+                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          endIndent: 10,
+                          color: Colors.black,
+                          height: 10,
+                        ),
+                      ),
+                      Text('Ou'),
+                      Expanded(
+                        child: Divider(
+                          indent: 10,
+                          color: Colors.black,
+                          height: 10,
+                        ),
+                      ),
+                    ],
+                  )),
+              Row(
+                children: [
+                  Expanded(
+                    child: SignInButton(
+                      Buttons.Google,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      text: "Sign up with Google",
+                      onPressed: () => loginViewModel.signInWithGoogle(),
+                    ),
+                  ),
+                ],
+              ),
             ],
           ),
         ),

@@ -12,44 +12,23 @@ class ProductFormPage extends StatefulWidget {
 class _ProductFormPageState extends State<ProductFormPage> {
   final _formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
-  final _priceController = TextEditingController();
-  final _descriptionController = TextEditingController();
-  final _imageUrl = TextEditingController();
-
-  _saveProduct(ProductModel product, ProductsViewModel productsViewModel) {
-    if (_formKey.currentState.validate()) {
-      if (product == null) {
-        productsViewModel.addProduct(ProductModel(
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        ));
-      } else {
-        productsViewModel.updateProduct(
-          product,
-          _nameController.text,
-          _imageUrl.text,
-          double.tryParse(_priceController.text) ?? 0.0,
-          _descriptionController.text,
-        );
-      }
-
-      Navigator.of(context).pop();
-    }
-  }
+  Map<String, TextEditingController> _controllers = {
+    'name': TextEditingController(),
+    'price': TextEditingController(),
+    'description': TextEditingController(),
+    'imageUrl': TextEditingController(),
+  };
 
   @override
   Widget build(BuildContext context) {
-    final ProductsViewModel productsViewModel =
+    final ProductsViewModel _productViewModel =
         Provider.of<ProductsViewModel>(context);
     final ProductModel product = ModalRoute.of(context).settings.arguments;
 
-    _nameController.text = product?.name;
-    _priceController.text = product?.price?.toString();
-    _descriptionController.text = product?.description;
-    _imageUrl.text = product?.imageUrl;
+    _controllers['name'].text = product?.name;
+    _controllers['price'].text = product?.price?.toString();
+    _controllers['description'].text = product?.description;
+    _controllers['imageUrl'].text = product?.imageUrl;
 
     return Scaffold(
       appBar: AppBar(
@@ -65,7 +44,10 @@ class _ProductFormPageState extends State<ProductFormPage> {
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.check),
           onPressed: () {
-            _saveProduct(product, productsViewModel);
+            if (_formKey.currentState.validate()) {
+              _productViewModel.saveProduct(product, _controllers);
+            }
+            Navigator.of(context).pop();
           }),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -74,7 +56,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
             child: Column(
               children: [
                 TextFormField(
-                  controller: _nameController,
+                  controller: _controllers['name'],
                   decoration: InputDecoration(
                       labelText: 'Nome*', hintText: 'Digite o nome do produto'),
                   validator: (String value) {
@@ -82,9 +64,12 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _priceController,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  controller: _controllers['price'],
+                  keyboardType: TextInputType.numberWithOptions(
+                      signed: false, decimal: true),
+                  inputFormatters: [
+                    FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d*'))
+                  ],
                   decoration: InputDecoration(
                       labelText: 'Preço*',
                       hintText: 'Digite o preço do produto'),
@@ -93,7 +78,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _descriptionController,
+                  controller: _controllers['description'],
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
                       labelText: 'Descrição*',
@@ -103,7 +88,7 @@ class _ProductFormPageState extends State<ProductFormPage> {
                   },
                 ),
                 TextFormField(
-                  controller: _imageUrl,
+                  controller: _controllers['imageUrl'],
                   keyboardType: TextInputType.url,
                   decoration: InputDecoration(
                       labelText: 'Link da imagem*',

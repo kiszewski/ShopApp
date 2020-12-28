@@ -1,56 +1,42 @@
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-import 'package:shopApp/models/order_model.dart';
-import 'package:shopApp/viewmodels/orders_viewmodel.dart';
+import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/models/product_model.dart';
+import 'package:shopApp/repository/user_repository.dart';
 
-class CartViewModel extends ChangeNotifier {
-  Set<ProductModel> _productsInCart = {};
+class CartViewModel {
+  final UserRepository _userRepository;
 
-  Set<ProductModel> get productsInCart => _productsInCart;
+  CartViewModel(this._userRepository);
 
-  double get totalInCart => _productsInCart.fold(
-      0, (previousValue, product) => previousValue + product.totalValue);
+  Stream<List<ItemCartModel>> get cart => _userRepository.getCart();
 
-  int get qtdProducts => _productsInCart.length;
+  Future addInCart(ProductModel product) async {
+    ItemCartModel item = ItemCartModel.fromJson(
+      product.id,
+      product.toJson(),
+    );
+    item.qtd = 1;
 
-  bool addProduct(ProductModel product) {
-    bool alreadyInCart =
-        _productsInCart.any((element) => element.id == product.id);
+    await _userRepository.addInCart(item);
+  }
 
-    if (!alreadyInCart) {
-      _productsInCart.add(product.copy());
-      notifyListeners();
+  Future removeFromCart(ItemCartModel product) async =>
+      await _userRepository.removeFromCart(product);
 
-      return true;
-    } else {
-      return false;
+  Future increaseQtdItem(ItemCartModel product) async {
+    product.qtd++;
+    await _userRepository.updateQtdItemCart(product);
+  }
+
+  Future decreaseQtdItem(ItemCartModel product) async {
+    if (product.qtd > 1) {
+      product.qtd--;
+      await _userRepository.updateQtdItemCart(product);
     }
   }
 
-  void removeProduct(ProductModel product) {
-    _productsInCart.removeWhere((element) => product.id == element.id);
-    notifyListeners();
-  }
-
-  void increaseQtd(ProductModel productModel) {
-    productModel.increaseQtd();
-    notifyListeners();
-  }
-
-  void decreaseQtd(ProductModel productModel) {
-    productModel.decreaseQtd();
-    notifyListeners();
-  }
-
-  void order(BuildContext context) {
-    OrdersViewModel ordersModel =
-        Provider.of<OrdersViewModel>(context, listen: false);
-
-    OrderModel order = OrderModel(this._productsInCart.toList());
-    ordersModel.addOrder(order);
-
-    _productsInCart.clear();
-    notifyListeners();
-  }
+  double totalInCart(List<ItemCartModel> cart) => cart.fold(
+        0,
+        (previousValue, product) =>
+            previousValue + (product.price * product.qtd),
+      );
 }

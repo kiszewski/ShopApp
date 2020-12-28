@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/size_config.dart';
@@ -19,6 +20,7 @@ class DrawerView extends StatelessWidget {
         return LoadingDialogView('Saindo');
       },
     );
+
     await loginViewModel.logoutUser();
     Navigator.pushNamedAndRemoveUntil(
         context, '/', (Route<dynamic> route) => false);
@@ -37,33 +39,58 @@ class DrawerView extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  'Seja bem-vindo(a) ${loginViewModel.userEmail}',
-                  style: TextStyle(color: Colors.white),
-                ),
-                IconButton(
-                    icon: Icon(Icons.exit_to_app),
-                    color: Colors.white,
-                    onPressed: () {
-                      _logout(context, loginViewModel);
-                    })
+                StreamBuilder<User>(
+                    stream: loginViewModel.userStream,
+                    builder: (context, snapshot) {
+                      return Column(
+                        children: [
+                          CircleAvatar(
+                              radius: SizeConfig.blockSizeHorizontal * 5,
+                              backgroundImage: snapshot.data?.photoURL != null
+                                  ? Image.network(snapshot.data?.photoURL).image
+                                  : Image.asset('assets/user-profile.png')
+                                      .image),
+                          SizedBox(
+                            height: SizeConfig.blockSizeVertical * 2,
+                          ),
+                          Text(
+                            '${snapshot.data?.displayName}',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ],
+                      );
+                    }),
               ],
             ),
             color: Theme.of(context).primaryColor,
           ),
           Container(
-            height: SizeConfig.blockSizeVertical * 80,
+            height: SizeConfig.blockSizeVertical * 70,
             width: double.maxFinite,
             child: ListView.builder(
                 itemCount: drawerOptions.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    leading: Icon(drawerOptions[index]._icon),
+                    leading: Icon(
+                      drawerOptions[index]._icon,
+                      color: Theme.of(context).primaryColor,
+                    ),
                     title: Text(drawerOptions[index]._title),
                     onTap: () => Navigator.pushReplacementNamed(
                         context, drawerOptions[index]._route),
                   );
                 }),
+          ),
+          Container(
+            height: SizeConfig.blockSizeVertical * 10,
+            width: double.maxFinite,
+            child: ListTile(
+              leading: Icon(Icons.exit_to_app),
+              title: Text('Logout'),
+              onTap: () {
+                _logout(context, loginViewModel);
+              },
+            ),
           ),
         ],
       ),
