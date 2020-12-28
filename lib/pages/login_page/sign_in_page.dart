@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/login_viewmodel.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({Key key}) : super(key: key);
@@ -124,15 +125,40 @@ class _SignInPageState extends State<SignInPage> {
                 },
                 borderSide: BorderSide(width: 0, color: Colors.white),
               ),
-              OutlineButton(
-                child: Text(
-                  'Entrar com Google',
-                  style: TextStyle(fontSize: 16, color: Colors.red),
-                ),
-                onPressed: () {
-                  loginViewModel.signInWithGoogle();
-                },
-                borderSide: BorderSide(width: 0, color: Colors.white),
+              Container(
+                  padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          endIndent: 10,
+                          color: Colors.black,
+                          height: 10,
+                        ),
+                      ),
+                      Text('Ou'),
+                      Expanded(
+                        child: Divider(
+                          indent: 10,
+                          color: Colors.black,
+                          height: 10,
+                        ),
+                      ),
+                    ],
+                  )),
+              Row(
+                children: [
+                  Expanded(
+                    child: SignInButton(
+                      Buttons.Google,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(8))),
+                      text: "Sign up with Google",
+                      onPressed: () => loginViewModel.signInWithGoogle(),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
