@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/models/product_model.dart';
+import 'package:provider/provider.dart';
+import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class ItemCartComponent extends StatelessWidget {
-  final ProductModel product;
-  final CartViewModel cartViewModel;
+  final ItemCartModel product;
 
-  const ItemCartComponent(this.product, this.cartViewModel);
+  const ItemCartComponent(this.product);
 
   @override
   Widget build(BuildContext context) {
+    final CartViewModel _cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
+
     return Card(
       elevation: 6,
       shadowColor: Colors.white,
@@ -33,9 +36,9 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_up,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () => cartViewModel.increaseQtd(product),
+                      onPressed: () => _cartViewModel.increaseQtdItem(product),
                     ),
-                    Text('${product.qtd}'),
+                    Text(product.qtd.toString()),
                     IconButton(
                       padding: EdgeInsets.zero,
                       constraints: BoxConstraints(),
@@ -43,7 +46,7 @@ class ItemCartComponent extends StatelessWidget {
                         Icons.keyboard_arrow_down,
                         color: Theme.of(context).primaryColor,
                       ),
-                      onPressed: () => cartViewModel.decreaseQtd(product),
+                      onPressed: () => _cartViewModel.decreaseQtdItem(product),
                     ),
                   ],
                 ),
@@ -53,7 +56,7 @@ class ItemCartComponent extends StatelessWidget {
                   Icons.close,
                   color: Colors.red,
                 ),
-                onPressed: () => cartViewModel.removeProduct(product),
+                onPressed: () => _cartViewModel.removeFromCart(product),
               ),
             ],
           ),

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopApp/models/order_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
 import 'package:shopApp/utils/size_config.dart';
-import 'package:shopApp/viewmodels/orders_viewmodel.dart';
 import 'package:shopApp/pages/orders_page/order_card_component.dart';
+import 'package:shopApp/viewmodels/order_viewmodel.dart';
 
 class OrdersPage extends StatefulWidget {
   @override
@@ -13,7 +14,8 @@ class OrdersPage extends StatefulWidget {
 class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
-    OrdersViewModel ordersModel = Provider.of<OrdersViewModel>(context);
+    OrderViewModel _orderViewModel =
+        Provider.of<OrderViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -26,29 +28,35 @@ class _OrdersPageState extends State<OrdersPage> {
         ),
       ),
       drawer: DrawerView(),
-      body: ordersModel.orders.isEmpty
-          ? Container(
-              width: SizeConfig.blockSizeHorizontal * 100,
-              height: SizeConfig.blockSizeVertical * 100,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/shop.png'),
-                  Text(
-                    'Sem compras registradas',
-                    style: TextStyle(fontSize: 16),
+      body: StreamBuilder<List<OrderModel>>(
+        stream: _orderViewModel.orders,
+        initialData: [],
+        builder: (context, snapshot) {
+          return snapshot.data.isEmpty
+              ? Container(
+                  width: SizeConfig.blockSizeHorizontal * 100,
+                  height: SizeConfig.blockSizeVertical * 100,
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset('assets/shop.png'),
+                      Text(
+                        'Sem compras registradas',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            )
-          : ListView.builder(
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (context, index) {
-                return OrderCard(ordersModel.orders[index]);
-              },
-              itemCount: ordersModel.orders.length,
-            ),
+                )
+              : ListView.builder(
+                  physics: BouncingScrollPhysics(),
+                  itemCount: snapshot.data.length,
+                  itemBuilder: (context, index) {
+                    return OrderCard(snapshot.data[index]);
+                  },
+                );
+        },
+      ),
     );
   }
 }

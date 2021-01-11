@@ -6,40 +6,38 @@ class LoginViewModel extends ChangeNotifier {
   final AuthenticationService _authenticationService =
       AuthenticationService(FirebaseAuth.instance);
 
-  User _user;
+  Stream<User> get userStream => _authenticationService.authStateChanges;
 
-  String get userEmail => _user?.email;
-  bool get loggedUser => _user != null;
+  bool get loggedUser => currentUser?.email == null ? false : true;
+
+  User get currentUser => _authenticationService.currentUser;
 
   Future<String> loginUser(String email, String password) async {
     final resp =
         await _authenticationService.signIn(email: email, password: password);
 
-    if (resp is bool && resp == true) {
-      _user = _authenticationService.currentUser;
-      notifyListeners();
-      return '';
-    } else if (resp is Exception) {
-      return resp.toString();
-    }
+    return resp.toString();
   }
 
-  Future<String> createUser(String email, String password) async {
+  Future<String> createUser(String email, String password, String name) async {
     final resp =
         await _authenticationService.signUp(email: email, password: password);
 
-    if (resp is bool && resp == true) {
-      _user = _authenticationService.currentUser;
-      notifyListeners();
-      return '';
-    } else if (resp is Exception) {
-      return resp.toString();
+    if (resp == true) {
+      User user = _authenticationService.currentUser;
+
+      await user.updateProfile(displayName: name);
     }
+
+    return resp.toString();
+  }
+
+  signInWithGoogle() {
+    _authenticationService.signInWithGoogle();
   }
 
   Future<void> logoutUser() async {
     await _authenticationService.signOut();
-    _user = null;
     notifyListeners();
   }
 }

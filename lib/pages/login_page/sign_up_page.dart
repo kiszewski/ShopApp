@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shopApp/pages/components/loading_dialog/loading_dialog_view.dart';
 import 'package:shopApp/utils/general_form_field_validator.dart';
 import 'package:shopApp/utils/size_config.dart';
 import 'package:provider/provider.dart';
@@ -14,6 +13,7 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
 
+  TextEditingController _name = TextEditingController();
   TextEditingController _email = TextEditingController();
   TextEditingController _password = TextEditingController();
   TextEditingController _confirmPassword = TextEditingController();
@@ -36,17 +36,11 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _signUp(BuildContext ctx, LoginViewModel loginViewModel) async {
     if (_formKey.currentState.validate()) {
-      showDialog(
-          context: ctx,
-          barrierDismissible: false,
-          child: LoadingDialogView('Cadastrando...'));
-
       String resp = await loginViewModel.createUser(
         _email.text,
         _password.text,
+        _name.text,
       );
-
-      Navigator.of(context).pop();
 
       if (loginViewModel.loggedUser) {
         Navigator.of(context).pushReplacementNamed('home');
@@ -83,10 +77,13 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               SizedBox(height: SizeConfig.blockSizeVertical * 4),
               TextFormField(
+                controller: _name,
+                decoration: InputDecoration(labelText: 'Nome'),
+                keyboardType: TextInputType.name,
+              ),
+              TextFormField(
                 controller: _email,
-                decoration: InputDecoration(
-                  labelText: 'Email',
-                ),
+                decoration: InputDecoration(labelText: 'Email'),
                 keyboardType: TextInputType.emailAddress,
                 validator: GeneralFormFieldValidator.emailValidator,
               ),

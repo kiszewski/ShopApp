@@ -9,8 +9,6 @@ class ProductDetailsPage extends StatelessWidget {
   const ProductDetailsPage({Key key, this.product}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    // final ProductModel product = ModalRoute.of(context).settings.arguments;
-
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -28,7 +26,7 @@ class ProductDetailsPage extends StatelessWidget {
               width: SizeConfig.blockSizeHorizontal * 100,
               height: SizeConfig.blockSizeVertical * 40,
               child: Hero(
-                tag: 'image_${product.id}',
+                tag: '${product.id}',
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
                   image: product.imageUrl,

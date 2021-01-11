@@ -1,39 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopApp/pages/product_details_page/product_details_page.dart';
-import 'package:shopApp/viewmodels/cart_viewmodel.dart';
-import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
 import 'package:shopApp/models/product_model.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
+import 'package:shopApp/viewmodels/favorites_viewmodel.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-class ProductCardComponent extends StatelessWidget {
+class ProductCardComponent extends StatefulWidget {
   final ProductModel product;
+  final bool isFavorite;
 
-  const ProductCardComponent(this.product);
-
-  void _addInCart(BuildContext ctx) {
-    final CartViewModel cartViewModel =
-        Provider.of<CartViewModel>(ctx, listen: false);
-
-    if (cartViewModel.addProduct(product)) {
-      Scaffold.of(ctx).showSnackBar(SnackBar(
-        content: Text('${product.name} adicionado no carrinho'),
-        duration: Duration(seconds: 2),
-        action: SnackBarAction(
-            textColor: Colors.orangeAccent,
-            label: 'Desfazer',
-            onPressed: () {
-              cartViewModel.removeProduct(product);
-            }),
-      ));
-    }
-  }
+  const ProductCardComponent(this.product, this.isFavorite);
 
   @override
+  _ProductCardComponentState createState() => _ProductCardComponentState();
+}
+
+class _ProductCardComponentState extends State<ProductCardComponent> {
+  @override
   Widget build(BuildContext context) {
-    final FavoriteViewModel favoriteModel =
-        Provider.of<FavoriteViewModel>(context);
+    CartViewModel _cartViewModel =
+        Provider.of<CartViewModel>(context, listen: false);
+    FavoritesViewModel _favoritesViewModel =
+        Provider.of<FavoritesViewModel>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -43,17 +33,17 @@ class ProductCardComponent extends StatelessWidget {
             PageRouteBuilder(
                 transitionDuration: Duration(milliseconds: 250),
                 pageBuilder: (_, __, ___) =>
-                    ProductDetailsPage(product: product))),
+                    ProductDetailsPage(product: widget.product))),
         child: Stack(
           children: [
             Container(
               height: SizeConfig.blockSizeVertical * 25,
               width: SizeConfig.blockSizeVertical * 25,
               child: Hero(
-                tag: 'image_${product.id}',
+                tag: '${widget.product.id}',
                 child: FadeInImage.memoryNetwork(
                   placeholder: kTransparentImage,
-                  image: product.imageUrl,
+                  image: widget.product.imageUrl,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -68,17 +58,18 @@ class ProductCardComponent extends StatelessWidget {
                   children: [
                     IconButton(
                         icon: Icon(
-                          favoriteModel.isFavorite(product)
+                          widget.isFavorite
                               ? Icons.favorite
                               : Icons.favorite_border,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () => favoriteModel.toggleFavorite(product)),
+                        onPressed: () => _favoritesViewModel
+                            .toggleFavoriteProduct(widget.product)),
                     Expanded(
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
                         child: Text(
-                          product.name,
+                          widget.product.name,
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -88,7 +79,8 @@ class ProductCardComponent extends StatelessWidget {
                           Icons.shopping_cart,
                           color: Theme.of(context).primaryColor,
                         ),
-                        onPressed: () => _addInCart(context)),
+                        onPressed: () =>
+                            _cartViewModel.addInCart(widget.product)),
                   ],
                 ),
               ),

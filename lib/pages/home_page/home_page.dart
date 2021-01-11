@@ -1,132 +1,96 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shopApp/models/product_model.dart';
+import 'package:shopApp/models/item_cart_model.dart';
 import 'package:shopApp/pages/components/drawer/drawer_view.dart';
-import 'package:shopApp/viewmodels/cart_viewmodel.dart';
-import 'package:shopApp/viewmodels/favorite_viewmodel.dart';
-import 'package:shopApp/viewmodels/products_viewmodel.dart';
-import 'package:shopApp/pages/home_page/product_card_component.dart';
+import 'package:shopApp/pages/home_page/favorites_list_component.dart';
+import 'package:shopApp/pages/home_page/products_list_component.dart';
 import 'package:shopApp/utils/size_config.dart';
+import 'package:shopApp/viewmodels/cart_viewmodel.dart';
 
 class HomePage extends StatefulWidget {
-  final String title;
-
-  HomePage(this.title);
+  HomePage();
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  bool onlyFavorites = false;
+  bool _onlyFavorites = false;
 
   _changeProductsList(bool value) {
     setState(() {
-      onlyFavorites = value;
+      _onlyFavorites = value;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final ProductsViewModel productsModel =
-        Provider.of<ProductsViewModel>(context);
-    final FavoriteViewModel favoriteModel =
-        Provider.of<FavoriteViewModel>(context);
-
-    final List<ProductModel> productsToShow = onlyFavorites
-        ? favoriteModel.favorites.toList()
-        : productsModel.products.toList();
-
     return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.black87),
-        title: Text(
-          widget.title,
-          style: TextStyle(color: Colors.black87),
-        ),
-        backgroundColor: Colors.white12,
-        elevation: 0,
-        actions: [
-          Center(
-            child: DropdownButton(
-              dropdownColor: Colors.white,
-              iconEnabledColor: Colors.black87,
-              underline: SizedBox(),
-              icon: Icon(Icons.more_vert),
-              onChanged: _changeProductsList,
-              items: [
-                DropdownMenuItem(child: Text('Somente favoritos'), value: true),
-                DropdownMenuItem(child: Text('Mostrar todos'), value: false)
-              ],
-            ),
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: Colors.black87),
+          title: Text(
+            'MyShop',
+            style: TextStyle(color: Colors.black87),
           ),
-          Center(
-            child: Stack(
-              children: [
-                IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  color: Colors.black87,
-                  onPressed: () => Navigator.pushNamed(context, 'cart'),
-                ),
-                Positioned(
-                  right: 10,
-                  top: 5,
-                  child: ClipRRect(
-                    child: Container(
-                      width: SizeConfig.blockSizeHorizontal * 3,
-                      height: SizeConfig.blockSizeHorizontal * 3,
-                      color: Theme.of(context).primaryColor,
-                      child: FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Consumer<CartViewModel>(
-                          builder: (context, cart, child) {
-                            return Text(cart.qtdProducts.toString());
-                          },
+          backgroundColor: Colors.white12,
+          elevation: 0,
+          actions: [
+            Center(
+              child: DropdownButton(
+                dropdownColor: Colors.white,
+                iconEnabledColor: Colors.black87,
+                underline: SizedBox(),
+                icon: Icon(Icons.more_vert),
+                onChanged: _changeProductsList,
+                items: [
+                  DropdownMenuItem(
+                      child: Text('Somente favoritos'), value: true),
+                  DropdownMenuItem(child: Text('Mostrar todos'), value: false)
+                ],
+              ),
+            ),
+            Center(
+              child: Stack(
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.shopping_cart),
+                    color: Colors.black87,
+                    onPressed: () => Navigator.pushNamed(context, 'cart'),
+                  ),
+                  Positioned(
+                    right: 10,
+                    top: 5,
+                    child: ClipRRect(
+                      child: Container(
+                        width: SizeConfig.blockSizeHorizontal * 3,
+                        height: SizeConfig.blockSizeHorizontal * 3,
+                        color: Theme.of(context).primaryColor,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Consumer<CartViewModel>(
+                            builder: (context, userRepository, child) {
+                              return StreamBuilder<List<ItemCartModel>>(
+                                initialData: [],
+                                stream: userRepository.cart,
+                                builder: (context, snapshot) {
+                                  return Text(snapshot.data.length.toString());
+                                },
+                              );
+                            },
+                          ),
                         ),
                       ),
+                      borderRadius: BorderRadius.circular(90),
                     ),
-                    borderRadius: BorderRadius.circular(90),
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-      drawer: DrawerView(),
-      body: productsToShow.isNotEmpty
-          ? GridView.builder(
-              itemBuilder: (context, index) {
-                return ProductCardComponent(productsToShow[index]);
-              },
-              physics: BouncingScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 1.5,
-                crossAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-                mainAxisSpacing: SizeConfig.blockSizeVertical * 1.5,
-              ),
-              itemCount: productsToShow.length,
-              padding: EdgeInsets.all(SizeConfig.blockSizeVertical * 1.5),
-            )
-          : Container(
-              width: SizeConfig.blockSizeHorizontal * 100,
-              height: SizeConfig.blockSizeVertical * 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset('assets/shop.png'),
-                  onlyFavorites
-                      ? Text(
-                          'Lista de favoritos vazia',
-                          style: TextStyle(fontSize: 16),
-                        )
-                      : Text(
-                          'Lista de produtos vazia',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                  )
                 ],
-              )),
-    );
+              ),
+            )
+          ],
+        ),
+        drawer: DrawerView(),
+        body: _onlyFavorites
+            ? FavoritesListComponent()
+            : ProductsListComponent());
   }
 }
